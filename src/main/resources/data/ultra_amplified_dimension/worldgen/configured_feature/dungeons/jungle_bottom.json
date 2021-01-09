@@ -1,0 +1,86 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "replace_air": false,
+                "min_air_space": 1,
+                "max_air_space": 14,
+                "max_num_of_chests": 2,
+                "chest_loottable_resourcelocation": "ultra_amplified_dimension:chests/dungeon/jungle",
+                "dungeon_nbt_entries": [
+                    {
+                        "resourcelocation": "ultra_amplified_dimension:dungeons/jungle_1",
+                        "weight": 1
+                    },
+                    {
+                        "resourcelocation": "ultra_amplified_dimension:dungeons/jungle_2",
+                        "weight": 1
+                    },
+                    {
+                        "resourcelocation": "ultra_amplified_dimension:dungeons/jungle_3",
+                        "weight": 1
+                    }
+                ],
+                "spawner_mob_entries": [
+                    {
+                        "resourcelocation": "minecraft:zombie",
+                        "weight": 37
+                    },
+                    {
+                        "resourcelocation": "minecraft:parrot",
+                        "weight": 25
+                    },
+                    {
+                        "resourcelocation": "minecraft:spider",
+                        "weight": 18
+                    },
+                    {
+                        "resourcelocation": "minecraft:skeleton",
+                        "weight": 18
+                    },
+                    {
+                        "resourcelocation": "minecraft:chicken",
+                        "weight": 1
+                    },
+                    {
+                        "resourcelocation": "minecraft:creeper",
+                        "weight": 1
+                    }
+                ],
+                "processors": "ultra_amplified_dimension:dungeons/jungle"
+              },
+              "type": "ultra_amplified_dimension:nbt_dungeon"
+            },
+            "decorator": {
+              "config": {
+                "bottom_offset": 1,
+                "top_offset": 0,
+                "maximum": 160
+              },
+              "type": "minecraft:range"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 11,
+        "extra_chance": 0,
+        "extra_count": 0      
+      },
+      "type": "minecraft:count_extra"
+    }
+  },
+  "type": "minecraft:decorated"
+}

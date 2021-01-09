@@ -1,0 +1,40 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "state_1": { "Name": "minecraft:ice" },
+                "state_2": { "Name": "minecraft:packed_ice" }
+              },
+              "type": "ultra_amplified_dimension:non_liquid_waterfall"
+            },
+            "decorator": {
+              "config": {
+                "bottom_offset": 1,
+                "top_offset": 0,
+                "maximum": 256
+              },
+              "type": "minecraft:range_biased"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 46
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

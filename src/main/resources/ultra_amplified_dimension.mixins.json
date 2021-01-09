@@ -1,0 +1,46 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.telepathicgrunt.ultraamplifieddimension.mixin",
+  "refmap": "ultra_amplified_dimension.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "blocks.AbstractFireBlockMixin",
+    "blocks.SpreadableSnowyDirtBlockAccessor",
+    "dimension.BiomeContainerAccessor",
+    "dimension.ChunkGeneratorAccessor",
+    "dimension.DimensionSettingsInvoker",
+    "dimension.LayerAccessor",
+    "dimension.MinecraftServerMixin",
+    "dimension.NoiseChunkGeneratorAccessor",
+    "features.EndermanSpawnerMixin",
+    "features.TemplateInvoker",
+    "features.TreeFeatureMixin",
+    "features.ZombifiedPiglinSpawnerMixin",
+    "structures.DesertPyramidPieceMixin",
+    "structures.EndCityStructureStartMixin",
+    "structures.FortressStructureStartMixin",
+    "structures.JunglePyramidPieceMixin",
+    "structures.MineshaftPiecesMixin",
+    "structures.MineshaftRoomAccessor",
+    "structures.OceanMonumentPiecesMonumentBuildingMixin",
+    "structures.OceanMonumentPiecesPieceMixin",
+    "structures.OceanRuinPiecesPieceAccessor",
+    "structures.OceanRuinPiecesPieceMixin",
+    "structures.ShipwreckPiecesPieceAccessor",
+    "structures.ShipwreckPiecesPieceMixin",
+    "structures.StructurePieceAccessor",
+    "structures.StructureStartAccessor",
+    "structures.SwampHutPieceMixin",
+    "structures.TemplateStructurePieceAccessor",
+    "structures.WoodlandMansionStructureStartMixin",
+    "surfacebuilders.NetherForestSurfaceBuilderMixin",
+    "surfacebuilders.ValleySurfaceBuilderMixin"
+  ],
+  "client": [
+    "dimension.SkyPropertiesAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,25 @@
+package com.telepathicgrunt.ultraamplifieddimension.world.decorators;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.function.Function;
+import net.minecraft.world.gen.decorator.DecoratorConfig;
+
+
+public class RangeValidationPlacerConfig implements DecoratorConfig {
+    public static final Codec<RangeValidationPlacerConfig> CODEC = RecordCodecBuilder.<RangeValidationPlacerConfig>create((builder) -> builder.group(
+            Codec.INT.fieldOf("max_Y").forGetter((config) -> config.maxY),
+            Codec.INT.fieldOf("min_Y").forGetter((config) -> config.minY))
+        .apply(builder, RangeValidationPlacerConfig::new))
+            .comapFlatMap((rangeValidationPlacerConfig) -> rangeValidationPlacerConfig.maxY <= rangeValidationPlacerConfig.minY ?
+                    DataResult.error("min_Y has to be smaller than max_Y") : DataResult.success(rangeValidationPlacerConfig), Function.identity());
+
+    public final int maxY;
+    public final int minY;
+
+    public RangeValidationPlacerConfig(int maxY, int minY) {
+        this.maxY = maxY;
+        this.minY = minY;
+    }
+}

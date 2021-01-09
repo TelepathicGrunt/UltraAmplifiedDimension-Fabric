@@ -1,0 +1,388 @@
+{
+  "type": "ultra_amplified_dimension:ultra_amplified_dimension",
+  
+  "generator": {
+    "type": "ultra_amplified_dimension:terrain",
+    
+    "biome_source": {
+      "type": "ultra_amplified_dimension:biome_source",
+      "biome_size": 5,
+      "sub_biome_rate": 0.44,
+      "mutated_biome_rate": 0.42,
+
+      "regions": {
+        "ocean_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:ocean",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:ocean",
+                "sub_biome": "ultra_amplified_dimension:ocean_deep"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:ocean_cold",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:ocean_cold",
+                "sub_biome": "ultra_amplified_dimension:ocean_cold_deep"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:ocean_frozen",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:ocean_frozen",
+                "sub_biome": "ultra_amplified_dimension:ocean_frozen_deep"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:ocean_lukewarm",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:ocean_lukewarm",
+                "sub_biome": "ultra_amplified_dimension:ocean_lukewarm_deep"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:ocean_warm",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:ocean_warm",
+                "sub_biome": "ultra_amplified_dimension:ocean_warm_deep"
+            }
+        ],
+        "end_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:end_fields",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:end_barren_fields"
+            }
+        ],
+        "nether_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:nether_wastes",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:savanna"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:crimson_forest",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:savanna"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:basalt_deltas",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:savanna"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:soul_sand_valley",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:savanna"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:warped_forest",
+                "weight": 10,
+                "border_biome": "ultra_amplified_dimension:savanna"
+            }
+        ],
+        "hot_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:badlands",
+                "weight": 15,
+                "shore_biome": "ultra_amplified_dimension:badlands_sandless",
+                "border_biome": "ultra_amplified_dimension:desert",
+                "sub_biome": "ultra_amplified_dimension:badlands_woods",
+                "mutated_biome": "ultra_amplified_dimension:badlands_spiky",
+                "mutated_sub_biome": "ultra_amplified_dimension:badlands_dense_woods",
+                "mutated_border_biome": "ultra_amplified_dimension:badlands_dissected_plateau"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:desert",
+                "weight": 15,
+                "sub_biome": "ultra_amplified_dimension:desert_relics",
+                "mutated_biome": "ultra_amplified_dimension:desert_lakes"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:savanna",
+                "weight": 15,
+                "sub_biome": "ultra_amplified_dimension:savanna_terrace",
+                "mutated_biome": "ultra_amplified_dimension:shattered_savanna",
+                "mutated_sub_biome": "ultra_amplified_dimension:shattered_savanna_terrace"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:jungle",
+                "weight": 15,
+                "border_biome": "ultra_amplified_dimension:jungle_edge",
+                "sub_biome": "ultra_amplified_dimension:jungle_relic",
+                "mutated_biome": "ultra_amplified_dimension:flower_jungle",
+                "mutated_sub_biome": "ultra_amplified_dimension:bamboo_jungle_relic",
+                "mutated_border_biome": "ultra_amplified_dimension:flower_jungle_edge"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:mushroom_fields",
+                "weight": 2
+            }
+        ],
+        "warm_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:plains",
+                "weight": 16,
+                "mutated_biome": "ultra_amplified_dimension:sunflower_plains"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:dark_forest",
+                "weight": 16,
+                "sub_biome": "ultra_amplified_dimension:dark_forest_relic"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:oak_forest",
+                "weight": 16,
+                "sub_biome": "ultra_amplified_dimension:oak_forest_relic",
+                "mutated_biome": "ultra_amplified_dimension:flower_forest"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:birch_forest",
+                "weight": 16,
+                "sub_biome": "ultra_amplified_dimension:birch_forest_relic",
+                "mutated_biome": "ultra_amplified_dimension:tall_birch_forest",
+                "mutated_sub_biome": "ultra_amplified_dimension:tall_birch_forest_relic"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:swamp",
+                "weight": 12,
+                "mutated_biome": "ultra_amplified_dimension:swamp_spooky"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:rocky_fields",
+                "weight": 7,
+                "shore_biome": "ultra_amplified_dimension:stone_plains",
+                "sub_biome": "ultra_amplified_dimension:rocky_field_wooded",
+                "mutated_biome": "ultra_amplified_dimension:gravelly_fields",
+                "mutated_sub_biome": "ultra_amplified_dimension:gravelly_columns_relic"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:mushroom_fields",
+                "weight": 1
+            }
+        ],
+        "cool_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:plains",
+                "weight": 10,
+                "mutated_biome": "ultra_amplified_dimension:sunflower_plains"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:taiga",
+                "weight": 20
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:rocky_fields",
+                "weight": 20,
+                "shore_biome": "ultra_amplified_dimension:stone_plains",
+                "sub_biome": "ultra_amplified_dimension:rocky_field_wooded",
+                "mutated_biome": "ultra_amplified_dimension:gravelly_fields",
+                "mutated_sub_biome": "ultra_amplified_dimension:gravelly_columns_relic"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:stone_plains",
+                "weight": 10
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:giant_tree_taiga",
+                "weight": 20,
+                "border_biome": "ultra_amplified_dimension:taiga",
+                "sub_biome": "ultra_amplified_dimension:giant_tree_taiga_relic",
+                "mutated_biome": "ultra_amplified_dimension:giant_spruce_taiga_pillars",
+                "mutated_sub_biome": "ultra_amplified_dimension:giant_spruce_taiga_pillars_relic",
+                "mutated_border_biome": "ultra_amplified_dimension:taiga_rocky"
+            }
+        ],
+        "icy_biomes": [
+            {
+                "main_biome": "ultra_amplified_dimension:snowy_tundra",
+                "weight": 20,
+                "shore_biome": "ultra_amplified_dimension:frozen_desert",
+                "sub_biome": "ultra_amplified_dimension:ice_spikes",
+                "mutated_biome": "ultra_amplified_dimension:iced_terrain",
+                "mutated_sub_biome": "ultra_amplified_dimension:iced_terrain"
+            },
+            {
+                "main_biome": "ultra_amplified_dimension:snowy_taiga",
+                "weight": 20,
+                "sub_biome": "ultra_amplified_dimension:snowy_taiga_relic",
+                "mutated_biome": "ultra_amplified_dimension:snowy_taiga_rocky",
+                "mutated_sub_biome": "ultra_amplified_dimension:ice_spikes"
+            }
+        ]
+      }
+    },
+    
+    "settings": {
+      "disable_mob_generation": false,
+      
+      "default_block": {
+        "Name": "minecraft:stone"
+      },
+      "default_fluid": {
+        "Properties": {
+          "level": "0"
+        },
+        "Name": "minecraft:water"
+      },
+      
+      "bedrock_roof_position": -10,
+      "bedrock_floor_position": 0,
+      "sea_level": 75,
+      "noise": {
+        "height": 245,
+        "random_density_offset": true,
+        "simplex_surface_noise": true,
+        "size_horizontal": 1,
+        "size_vertical": 2,
+        "density_factor": 0.95,
+        "density_offset": -0.46875,
+        "top_slide": {
+          "target": -10,
+          "size": 3,
+          "offset": 0
+        },
+        "bottom_slide": {
+          "target": 10,
+          "size": 1,
+          "offset": 4
+        },
+        "sampling": {
+          "xz_scale": 2,
+          "y_scale": 420,
+          "xz_factor": 684,
+          "y_factor": 68400
+        }
+      },
+      
+      "structures": {
+        "stronghold": {
+          "distance": 32,
+          "spread": 3,
+          "count": 128
+        },
+        "structures": {
+        
+          "minecraft:village": {
+            "spacing": 30,
+            "separation": 8,
+            "salt": 10767543
+          },
+          "minecraft:pillager_outpost": {
+            "spacing": 30,
+            "separation": 8,
+            "salt": 165545296
+          },
+          
+          
+          "minecraft:mansion": {
+            "spacing": 35,
+            "separation": 15,
+            "salt": 10181213
+          },
+          "minecraft:desert_pyramid": {
+            "spacing": 20,
+            "separation": 4,
+            "salt": 22256784
+          },
+          "minecraft:jungle_pyramid": {
+            "spacing": 20,
+            "separation": 4,
+            "salt": 16767617
+          },
+          "minecraft:igloo": {
+            "spacing": 8,
+            "separation": 3,
+            "salt": 24337518
+          },
+          "minecraft:swamp_hut": {
+            "spacing": 8,
+            "separation": 3,
+            "salt": 28351110
+          },
+          
+          
+          "minecraft:ocean_ruin": {
+            "spacing": 8,
+            "separation": 2,
+            "salt": 12556621
+          },
+          "minecraft:shipwreck": {
+            "spacing": 15,
+            "separation": 4,
+            "salt": 165745295
+          },
+          "minecraft:monument": {
+            "spacing": 30,
+            "separation": 5,
+            "salt": 10387313
+          },
+          
+          
+          "minecraft:endcity": {
+            "spacing": 20,
+            "separation": 11,
+            "salt": 19677399
+          },
+          
+          
+          "minecraft:bastion_remnant": {
+            "spacing": 25,
+            "separation": 4,
+            "salt": 25764232
+          },
+          "minecraft:fortress": {
+            "spacing": 25,
+            "separation": 4,
+            "salt": 30084232
+          },
+          "minecraft:ruined_portal": {
+            "spacing": 35,
+            "separation": 10,
+            "salt": 34222645
+          },
+          "minecraft:nether_fossil": {
+            "spacing": 2,
+            "separation": 1,
+            "salt": 14357921
+          },
+          
+          
+          "minecraft:buried_treasure": {
+            "spacing": 1,
+            "separation": 0,
+            "salt": 0
+          },
+          "minecraft:mineshaft": {
+            "spacing": 1,
+            "separation": 0,
+            "salt": 0
+          },
+          "minecraft:stronghold": {
+            "spacing": 1,
+            "separation": 0,
+            "salt": 0
+          },
+          
+          
+          "ultra_amplified_dimension:sun_shrine": {
+            "spacing": 60,
+            "separation": 1,
+            "salt": 1831585669
+          },
+          "ultra_amplified_dimension:stonehenge": {
+            "spacing": 5,
+            "separation": 1,
+            "salt": 1633388381
+          },
+          "ultra_amplified_dimension:ice_spike_temple": {
+            "spacing": 9,
+            "separation": 2,
+            "salt": 1435761947
+          },
+          "ultra_amplified_dimension:mushroom_temple": {
+            "spacing": 9,
+            "separation": 2,
+            "salt": 1340434666
+          }
+        }
+      }
+    }
+  }
+}

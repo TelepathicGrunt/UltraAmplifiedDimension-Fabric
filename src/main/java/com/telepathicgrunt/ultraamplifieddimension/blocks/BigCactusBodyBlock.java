@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 
-public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.minecraftforge.common.IPlantable {
+public class BigCactusBodyBlock extends HorizontalFacingBlock {
     public static final IntProperty AGE = Properties.AGE_15;
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
     protected static final VoxelShape HITBOX_DIMENSIONS = Block.createCuboidShape(1.0D, 0.0D, 0.0D, 15.0D, 15.0D, 16.0D);
@@ -43,7 +43,7 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
     @Override
     @SuppressWarnings("deprecation")
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (!world.isAreaLoaded(pos, 1))
+        if (!world.isChunkLoaded(pos.getX() >> 4, pos.getZ() >> 4))
             return; // Forge: prevent growing cactus from loading unloaded chunks with block update
         if (!state.canPlaceAt(world, pos)) {
             world.breakBlock(pos, true);
@@ -53,19 +53,15 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
             if (world.isAir(blockpos)) {
 
                 int j = state.get(AGE);
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(world, blockpos, state, true)) {
-                    if (j == 15) {
-                        world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.get().getDefaultState());
-                        BlockState blockstate = state.with(AGE, 0);
-                        world.setBlockState(pos, blockstate, 4);
-                        blockstate.neighborUpdate(world, blockpos, this, pos, false);
-                    }
-                    else {
-                        world.setBlockState(pos, state.with(AGE, j + 1), 4);
-                    }
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(world, pos, state);
+                if (j == 15) {
+                    world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.getDefaultState());
+                    BlockState blockstate = state.with(AGE, 0);
+                    world.setBlockState(pos, blockstate, 4);
+                    blockstate.neighborUpdate(world, blockpos, this, pos, false);
                 }
-
+                else {
+                    world.setBlockState(pos, state.with(AGE, j + 1), 4);
+                }
             }
         }
     }
@@ -84,7 +80,6 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
     }
 
 
-    @Nonnull
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -92,7 +87,6 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
     }
 
 
-    @Nonnull
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -105,7 +99,7 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
      * fences make their connections to the passed in state if possible, and wet concrete powder immediately returns its
      * solidified counterpart. Note that this method should ideally consider only the specific face passed in.
      */
-    @Nonnull
+
     @Override
     @SuppressWarnings("deprecation")
     public BlockState getStateForNeighborUpdate(BlockState stateIn, Direction facing, BlockState facingState, WorldAccess world, BlockPos currentPos, BlockPos facingPos) {
@@ -153,15 +147,4 @@ public class BigCactusBodyBlock extends HorizontalFacingBlock implements net.min
         return false;
     }
 
-
-    @Override
-    public net.minecraftforge.common.PlantType getPlantType(BlockView world, BlockPos pos) {
-        return PlantType.DESERT;
-    }
-
-
-    @Override
-    public BlockState getPlant(BlockView world, BlockPos pos) {
-        return getDefaultState();
-    }
 }

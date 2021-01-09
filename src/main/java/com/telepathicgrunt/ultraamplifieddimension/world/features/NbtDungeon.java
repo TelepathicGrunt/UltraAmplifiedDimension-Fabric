@@ -269,7 +269,7 @@ public class NbtDungeon extends Feature<NbtDungeonConfig>{
                         }
 
                         BlockState originalBlockState = world.getBlockState(blockpos);
-                        if (!originalBlockState.hasTileEntity())
+                        if (!originalBlockState.getBlock().hasBlockEntity())
                         {
                             // No floating chests or spawners
                             BlockState aboveState = world.getBlockState(mutable.set(blockpos).move(Direction.UP));
@@ -283,7 +283,7 @@ public class NbtDungeon extends Feature<NbtDungeonConfig>{
                                     (config.replaceAir ||
                                     forcePlaceBlock ||
                                     GeneralUtils.isFullCube(world, mutable, originalBlockState) ||
-                                    blockstate.hasTileEntity()))
+                                    blockstate.getBlock().hasBlockEntity()))
                             {
                                 // Attempt to let leaves stay in the dungeon space and not be cut off
                                 if(!(isValidNonSolidBlock(config, blockstate) && originalBlockState.isIn(BlockTags.LEAVES))){
@@ -338,7 +338,7 @@ public class NbtDungeon extends Feature<NbtDungeonConfig>{
                 }
 
                 if (!placementIn.shouldIgnoreEntities()) {
-                    structureAccessor.invokeSpawnEntities(world, pos, placementIn);
+                    structureAccessor.invokeSpawnEntities(world, pos, placementIn.getMirror(), placementIn.getRotation(), placementIn.getPosition(), placementIn.getBoundingBox(), placementIn.method_27265());
                 }
             }
         }

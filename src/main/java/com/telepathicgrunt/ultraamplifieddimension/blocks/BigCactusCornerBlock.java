@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 
-public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.minecraftforge.common.IPlantable
+public class BigCactusCornerBlock extends HorizontalFacingBlock
 {
 	public static final IntProperty AGE = Properties.AGE_15;
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
@@ -44,7 +44,7 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 	@Override
 	@SuppressWarnings("deprecation")
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isAreaLoaded(pos, 1))
+		if (!world.isChunkLoaded(pos.getX() >> 4, pos.getZ() >> 4))
 			return; // Forge: prevent growing cactus from loading unloaded chunks with block update
 		if (!state.canPlaceAt(world, pos)) {
 			world.breakBlock(pos, true);
@@ -54,19 +54,15 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 			if (world.isAir(blockpos)) {
 
 				int j = state.get(AGE);
-				if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(world, blockpos, state, true)) {
-					if (j == 15) {
-						world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.get().getDefaultState());
-						BlockState blockstate = state.with(AGE, 0);
-						world.setBlockState(pos, blockstate, 4);
-						blockstate.neighborUpdate(world, blockpos, this, pos, false);
-					}
-					else {
-						world.setBlockState(pos, state.with(AGE, j + 1), 4);
-					}
-					net.minecraftforge.common.ForgeHooks.onCropsGrowPost(world, pos, state);
+				if (j == 15) {
+					world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.get().getDefaultState());
+					BlockState blockstate = state.with(AGE, 0);
+					world.setBlockState(pos, blockstate, 4);
+					blockstate.neighborUpdate(world, blockpos, this, pos, false);
 				}
-
+				else {
+					world.setBlockState(pos, state.with(AGE, j + 1), 4);
+				}
 			}
 		}
 	}
@@ -84,16 +80,12 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 		builder.add(FACING);
 	}
 
-
-	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return HITBOX_DIMENSIONS;
 	}
 
-
-	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -106,7 +98,6 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 	 * fences make their connections to the passed in state if possible, and wet concrete powder immediately returns its
 	 * solidified counterpart. Note that this method should ideally consider only the specific face passed in.
 	 */
-	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
 	public BlockState getStateForNeighborUpdate(BlockState stateIn, Direction facing, BlockState facingState, WorldAccess world, BlockPos currentPos, BlockPos facingPos) {
@@ -141,7 +132,7 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 				//handling two edge cases
 				//Case 1: attached to horizontal main cactus block that has corner blocks on both sides but neither corner block has a valid block below
 				//Case 2: two corner blocks are facing each otehr with no valid space below
-				if (offsetBlock.getBlock() == UADBlocks.BIG_CACTUS_MAIN_BLOCK.get()) {
+				if (offsetBlock.getBlock() == UADBlocks.BIG_CACTUS_MAIN_BLOCK) {
 					return ((BigCactusMainBlock) offsetBlock.getBlock()).canPlaceAt(offsetBlock, (WorldView) world, pos.offset(facing.getOpposite()));
 				}
 				else if (offsetBlock.getBlock() == this) {
@@ -176,17 +167,5 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock implements net.m
 	@SuppressWarnings("deprecation")
 	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
 		return false;
-	}
-
-
-	@Override
-	public net.minecraftforge.common.PlantType getPlantType(BlockView world, BlockPos pos) {
-		return PlantType.DESERT;
-	}
-
-
-	@Override
-	public BlockState getPlant(BlockView world, BlockPos pos) {
-		return getDefaultState();
 	}
 }

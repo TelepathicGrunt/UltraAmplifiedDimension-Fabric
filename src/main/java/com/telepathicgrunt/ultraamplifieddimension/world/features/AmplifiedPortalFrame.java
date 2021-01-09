@@ -64,7 +64,7 @@ public class AmplifiedPortalFrame extends Feature<DefaultFeatureConfig>
 		//the portal itself
 		world.setBlockState(
 				pos.add(0, 1, 0),
-				UADBlocks.AMPLIFIED_PORTAL.get().getDefaultState(),
+				UADBlocks.AMPLIFIED_PORTAL.getDefaultState(),
 				3);
 
 		//top of portal frame

@@ -21,10 +21,7 @@ import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +37,8 @@ public class UADBiomeProvider extends BiomeSource {
                     RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.dynamicRegistry),
                     Codec.intRange(1, 20).fieldOf("biome_size").forGetter((biomeSource) -> biomeSource.biomeSize),
                     Codec.floatRange(0, 1).fieldOf("sub_biome_rate").forGetter((biomeSource) -> biomeSource.subBiomeRate),
-                    Codec.floatRange(0, 1).fieldOf("mutated_biome_rate").forGetter((biomeSource) -> biomeSource.mutatedBiomeRate))
+                    Codec.floatRange(0, 1).fieldOf("mutated_biome_rate").forGetter((biomeSource) -> biomeSource.mutatedBiomeRate),
+                    RegionManager.CODEC.fieldOf("regions").forGetter((biomeSource) -> biomeSource.regionManager))
             .apply(instance, instance.stable(UADBiomeProvider::new)));
 
     private final Registry<Biome> dynamicRegistry;
@@ -52,7 +50,7 @@ public class UADBiomeProvider extends BiomeSource {
     private final long seed;
     private final Set<Integer> printedMissingBiomes = new HashSet<>();
 
-    public UADBiomeProvider(long seed, Registry<Biome> biomeRegistry, int biomeSize, float subBiomeRate, float mutatedBiomeRate) {
+    public UADBiomeProvider(long seed, Registry<Biome> biomeRegistry, int biomeSize, float subBiomeRate, float mutatedBiomeRate, RegionManager regionManager) {
         super(biomeRegistry.getEntries().stream()
                 .filter(entry -> entry.getKey().getValue().getNamespace().equals(UltraAmplifiedDimension.MODID))
                 .map(Map.Entry::getValue)
@@ -107,7 +105,7 @@ public class UADBiomeProvider extends BiomeSource {
         return layer;
     }
 
-    @Nonnull
+
     @Override
     public Biome getBiomeForNoiseGen(int x, int y, int z) {
         int biomeID = ((LayerAccessor)this.biomeSampler).getSampler().sample(x, z);
@@ -134,19 +132,20 @@ public class UADBiomeProvider extends BiomeSource {
         return biome;
     }
 
-    @Nonnull
+
     @Override
     protected Codec<? extends BiomeSource> getCodec() {
         return CODEC;
     }
 
-    @Nonnull
+
     @Override
     @Environment(EnvType.CLIENT)
     public BiomeSource withSeed(long seed) {
-        return new UADBiomeProvider(seed, this.dynamicRegistry, this.biomeSize, this.subBiomeRate, this.mutatedBiomeRate);
+        return new UADBiomeProvider(seed, this.dynamicRegistry, this.biomeSize, this.subBiomeRate, this.mutatedBiomeRate, this.regionManager);
     }
 
+    // TODO: use this in layers
     public enum REGIONS {
         END,
         NETHER,

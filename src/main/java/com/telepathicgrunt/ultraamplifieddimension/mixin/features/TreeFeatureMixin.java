@@ -32,7 +32,7 @@ public class TreeFeatureMixin {
 	 * The other alternatives over this mixin are ether hackier, more fragile, an insane amount of work, or lacks mod compat.
 	 * @author TelepathicGrunt
 	 */
-	@Inject(method = "Lnet/minecraft/world/gen/feature/TreeFeature;place(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
+	@Inject(method = "generate(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
 			at = @At(value = "HEAD"))
 	private void setUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
 	{
@@ -55,7 +55,7 @@ public class TreeFeatureMixin {
 	 * The other alternatives over this mixin are ether hackier, more fragile, an insane amount of work, or lacks mod compat.
 	 * @author TelepathicGrunt
 	 */
-	@Inject(method = "Lnet/minecraft/world/gen/feature/TreeFeature;place(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
+	@Inject(method = "generate(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
 			at = @At(value = "RETURN"))
 	private void undoUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
 	{

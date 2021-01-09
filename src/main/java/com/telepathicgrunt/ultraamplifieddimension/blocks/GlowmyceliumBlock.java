@@ -24,14 +24,18 @@ public class GlowmyceliumBlock extends MyceliumBlock {
      * every tick, it'll attempt to spread normal mycelium instead of itself. If covered, will turn into glowdirt.
      */
     @Override
-    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!world.isClient) {
-            if (!world.isAreaLoaded(pos, 3))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-            if (!SpreadableSnowyDirtBlockAccessor.callIsSnowyConditions(state, world, pos)) {
+            for(int xOffset = -1; xOffset <= 1; xOffset++){
+                for(int zOffset = -1; zOffset <= 1; zOffset++){
+                    if (!world.isChunkLoaded((pos.getX() >> 4) + xOffset, (pos.getZ() >> 4) + zOffset))
+                        return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+                }
+            }
+
+            if (!SpreadableSnowyDirtBlockAccessor.callCanSurvive(state, world, pos)) {
                 //block is covered and so will turn into glowdirt
-                world.setBlockState(pos, UADBlocks.GLOWDIRT.get().getDefaultState());
+                world.setBlockState(pos, UADBlocks.GLOWDIRT.getDefaultState());
             }
             else if (world.getLightLevel(pos.up()) >= 4) {
                 if (world.getLightLevel(pos.up()) >= 9) {
@@ -40,7 +44,7 @@ public class GlowmyceliumBlock extends MyceliumBlock {
 
                     for (int i = 0; i < 4; ++i) {
                         BlockPos blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.callIsSnowyAndNotUnderwater(replacementBlock, world, blockpos)) {
+                        if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.callCanSpread(replacementBlock, world, blockpos)) {
                             world.setBlockState(blockpos, replacementBlock.with(SNOWY, world.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW));
                         }
                     }

@@ -1,10 +1,12 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.dimension;
 
+import com.telepathicgrunt.ultraamplifieddimension.dimension.UADWorldSavedData;
 import com.telepathicgrunt.ultraamplifieddimension.utils.BiomeSetsHelper;
 import com.telepathicgrunt.ultraamplifieddimension.utils.WorldSeedHolder;
 import com.telepathicgrunt.ultraamplifieddimension.world.carver.CaveCavityCarver;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
@@ -18,6 +20,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.Iterator;
+import java.util.function.BooleanSupplier;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
@@ -41,5 +46,13 @@ public class MinecraftServerMixin {
 		MutableRegistry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
 		CaveCavityCarver.setSeed(hashedSeed);
 		BiomeSetsHelper.generateBiomeSets(biomeRegistry);
+	}
+
+
+	@Inject(method = "tickWorlds(Ljava/util/function/BooleanSupplier;)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;tick(Ljava/util/function/BooleanSupplier;)V"),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void worldTick(BooleanSupplier shouldKeepTicking, CallbackInfo ci, Iterator<ServerWorld> serverWorldIterator, ServerWorld serverWorld) {
+		UADWorldSavedData.tick(serverWorld);
 	}
 }

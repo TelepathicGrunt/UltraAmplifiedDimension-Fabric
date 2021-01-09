@@ -23,7 +23,7 @@ public class DeepOceanSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig
 
 
     @Override
-    public void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
         this.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), seaLevel);
     }
 
@@ -39,7 +39,7 @@ public class DeepOceanSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig
         BlockState above2Block = middleBlock;
         BlockState above3Block = middleBlock;
         BlockState currentBlock;
-        boolean useCoral = bottomBlock.getBlockState() == DEAD_CORAL_ARRAY[0];
+        boolean useCoral = bottomBlock == DEAD_CORAL_ARRAY[0];
 
         for (int y = startHeight; y >= seaLevel - 10; --y) {
             blockpos$MutableUp.set(blockpos$Mutable); // store old pos (above 1 block)

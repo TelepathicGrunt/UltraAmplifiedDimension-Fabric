@@ -13,6 +13,22 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class RegionManager {
+    public static final Codec<RegionManager> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+            BiomeGroup.CODEC.listOf().fieldOf("ocean_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.oceanList),
+            BiomeGroup.CODEC.listOf().fieldOf("end_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.endList),
+            BiomeGroup.CODEC.listOf().fieldOf("nether_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.netherList),
+            BiomeGroup.CODEC.listOf().fieldOf("hot_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.hotList),
+            BiomeGroup.CODEC.listOf().fieldOf("warm_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.warmList),
+            BiomeGroup.CODEC.listOf().fieldOf("cool_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.coolList),
+            BiomeGroup.CODEC.listOf().fieldOf("icy_biomes").xmap(biomeGroupList -> new Pair<>(biomeGroupList, biomeGroupList.stream().mapToInt(BiomeGroup::getWeight).sum()), Pair::getFirst)
+                    .forGetter(regionManager -> regionManager.icyList)
+    ).apply(instance, RegionManager::new));
 
     private final Pair<List<BiomeGroup>, Integer> oceanList;
     private final Pair<List<BiomeGroup>, Integer> endList;

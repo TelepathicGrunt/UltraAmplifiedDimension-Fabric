@@ -42,7 +42,7 @@ public class RavineCarver extends Carver<RavineConfig>
 	}
 
 	@Override
-	public boolean carveRegion(Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int chunkX, int chunkZ, int originalX, int originalZ, BitSet mask, RavineConfig config) {
+	public boolean carve(Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int chunkX, int chunkZ, int originalX, int originalZ, BitSet mask, RavineConfig config) {
 		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).getField_25831() : null;
 		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
 			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).getField_25831();

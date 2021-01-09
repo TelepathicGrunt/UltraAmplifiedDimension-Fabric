@@ -47,8 +47,12 @@ public class GlowdirtBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (!world.isAreaLoaded(pos, 3))
-            return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+        for(int xOffset = -1; xOffset <= 1; xOffset++){
+            for(int zOffset = -1; zOffset <= 1; zOffset++){
+                if (!world.isChunkLoaded((pos.getX() >> 4) + xOffset, (pos.getZ() >> 4) + zOffset))
+                    return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+            }
+        }
 
         //if block is already in an invalid light level or has water/non-air/non-snow layer block above, exits method
         //as this block cannot convert now.
@@ -64,12 +68,12 @@ public class GlowdirtBlock extends Block {
                     BlockPos blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
                     Block neighborBlock = world.getBlockState(blockpos).getBlock();
 
-                    if (neighborBlock == Blocks.GRASS_BLOCK || neighborBlock == UADBlocks.GLOWGRASS_BLOCK.get()) {
-                        replacementBlock = UADBlocks.GLOWGRASS_BLOCK.get().getDefaultState();
+                    if (neighborBlock == Blocks.GRASS_BLOCK || neighborBlock == UADBlocks.GLOWGRASS_BLOCK) {
+                        replacementBlock = UADBlocks.GLOWGRASS_BLOCK.getDefaultState();
                         world.setBlockState(pos, replacementBlock.with(SnowyBlock.SNOWY, world.getBlockState(pos.up()).getBlock() == Blocks.SNOW));
                     }
-                    else if (neighborBlock == Blocks.MYCELIUM || neighborBlock == UADBlocks.GLOWMYCELIUM.get()) {
-                        replacementBlock = UADBlocks.GLOWMYCELIUM.get().getDefaultState();
+                    else if (neighborBlock == Blocks.MYCELIUM || neighborBlock == UADBlocks.GLOWMYCELIUM) {
+                        replacementBlock = UADBlocks.GLOWMYCELIUM.getDefaultState();
                         world.setBlockState(pos, replacementBlock.with(SnowyBlock.SNOWY, world.getBlockState(pos.up()).getBlock() == Blocks.SNOW));
                     }
                 }

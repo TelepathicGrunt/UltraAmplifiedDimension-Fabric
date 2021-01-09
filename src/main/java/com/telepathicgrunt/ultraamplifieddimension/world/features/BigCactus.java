@@ -60,10 +60,10 @@ public class BigCactus extends Feature<HeightConfig> {
 
                     //finds what the center should be
                     if (frontSideHeight == backSideHeight) {
-                        cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.get().getDefaultState().with(BigCactusBodyBlock.FACING, cactusFacing), false);
+                        cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.getDefaultState().with(BigCactusBodyBlock.FACING, cactusFacing), false);
                     }
                     else {
-                        cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_CORNER_BLOCK.get().getDefaultState().with(BigCactusCornerBlock.FACING, currentHeight == frontSideHeight ? cactusFacing.getOpposite() : cactusFacing), false);
+                        cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_CORNER_BLOCK.getDefaultState().with(BigCactusCornerBlock.FACING, currentHeight == frontSideHeight ? cactusFacing.getOpposite() : cactusFacing), false);
                     }
 
                     //create the branches off of cactus
@@ -77,7 +77,7 @@ public class BigCactus extends Feature<HeightConfig> {
                 }
                 else {
                     //places normal vertical cactus
-                    cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.get().getDefaultState().with(BigCactusMainBlock.FACING, Direction.UP), false);
+                    cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.getDefaultState().with(BigCactusMainBlock.FACING, Direction.UP), false);
                 }
 
                 blockpos.move(Direction.UP);
@@ -101,7 +101,7 @@ public class BigCactus extends Feature<HeightConfig> {
         //horizontal part of branch first
         BlockPos.Mutable blockpos = new BlockPos.Mutable().set(position).move(branchDirection);
         if (world.isAir(blockpos)) {
-            world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.get().getDefaultState().with(BigCactusMainBlock.FACING, branchDirection), 3);
+            world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.getDefaultState().with(BigCactusMainBlock.FACING, branchDirection), 3);
         }
         else {
             return;
@@ -110,7 +110,7 @@ public class BigCactus extends Feature<HeightConfig> {
         //corner
         blockpos.move(branchDirection);
         if (world.isAir(blockpos)) {
-            world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_CORNER_BLOCK.get().getDefaultState().with(BigCactusCornerBlock.FACING, branchDirection), 3);
+            world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_CORNER_BLOCK.getDefaultState().with(BigCactusCornerBlock.FACING, branchDirection), 3);
         }
         else {
             return;
@@ -121,7 +121,7 @@ public class BigCactus extends Feature<HeightConfig> {
         Chunk cachedChunk = world.getChunk(blockpos);
         for (int currentHeight = 1; currentHeight < maxHeightUp && blockpos.getY() <= chunkGenerator.getWorldHeight(); currentHeight++) {
             if (cachedChunk.getBlockState(blockpos).isAir()) {
-                cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.get().getDefaultState().with(BigCactusMainBlock.FACING, Direction.UP), false);
+                cachedChunk.setBlockState(blockpos, UADBlocks.BIG_CACTUS_MAIN_BLOCK.getDefaultState().with(BigCactusMainBlock.FACING, Direction.UP), false);
 
             }
             else {

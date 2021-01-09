@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class UADWorldSavedData extends PersistentState {
-// fabric version: https://hatebin.com/qtictvpncw
 
     public static final String DATA_KEY = UltraAmplifiedDimension.MODID + ":delayed_teleportation";
     private List<TeleportEntry> entries = new ArrayList<>();

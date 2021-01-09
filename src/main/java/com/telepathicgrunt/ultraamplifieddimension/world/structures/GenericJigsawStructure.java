@@ -61,7 +61,7 @@ public class GenericJigsawStructure extends AbstractBaseStructure {
     }
 
     @Override
-    protected boolean func_230363_a_(ChunkGenerator chunkGenerator, BiomeSource biomeSource, long seed, ChunkRandom chunkRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPos, DefaultFeatureConfig NoFeatureConfig) {
+    protected boolean shouldStartAt(ChunkGenerator chunkGenerator, BiomeSource biomeSource, long seed, ChunkRandom chunkRandom, int chunkX, int chunkZ, Biome biome, ChunkPos chunkPos, DefaultFeatureConfig NoFeatureConfig) {
         for (int curChunkX = chunkX - BIOME_RANGE; curChunkX <= chunkX + BIOME_RANGE; curChunkX++) {
             for (int curChunkZ = chunkZ - BIOME_RANGE; curChunkZ <= chunkZ + BIOME_RANGE; curChunkZ++) {
                 if (curChunkX != chunkX &&
@@ -123,7 +123,7 @@ public class GenericJigsawStructure extends AbstractBaseStructure {
             super(structureIn, chunkX, chunkZ, mutableBoundingBox, referenceIn, seedIn);
         }
 
-        public void func_230364_a_(DynamicRegistryManager dynamicRegistryManager, ChunkGenerator chunkGenerator, StructureManager structureManager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig NoFeatureConfig) {
+        public void init(DynamicRegistryManager dynamicRegistryManager, ChunkGenerator chunkGenerator, StructureManager structureManager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig NoFeatureConfig) {
 
             BlockPos blockpos = new BlockPos(chunkX * 16, FIXED_HEIGHT, chunkZ * 16);
             StructurePoolBasedGenerator.method_30419(

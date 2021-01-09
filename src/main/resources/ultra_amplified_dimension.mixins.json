@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "blocks.AbstractFireBlockMixin",
+    "blocks.BlockTagsAccessor",
     "blocks.SpreadableSnowyDirtBlockAccessor",
     "dimension.BiomeContainerAccessor",
     "dimension.ChunkGeneratorAccessor",
@@ -17,6 +18,7 @@
     "features.TemplateInvoker",
     "features.TreeFeatureMixin",
     "features.ZombifiedPiglinSpawnerMixin",
+    "items.ItemsTagsAccessor",
     "structures.DesertPyramidPieceMixin",
     "structures.EndCityStructureStartMixin",
     "structures.FortressStructureStartMixin",

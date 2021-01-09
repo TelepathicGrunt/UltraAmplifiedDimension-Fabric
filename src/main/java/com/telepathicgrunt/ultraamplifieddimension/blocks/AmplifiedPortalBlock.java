@@ -2,22 +2,16 @@ package com.telepathicgrunt.ultraamplifieddimension.blocks;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
-import com.telepathicgrunt.ultraamplifieddimension.capabilities.IPlayerPosAndDim;
-import com.telepathicgrunt.ultraamplifieddimension.capabilities.PlayerPositionAndDimension;
+import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.IPlayerPosAndDim;
+import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.PlayerPositionAndDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.AmplifiedPortalCreation;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADWorldSavedData;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
@@ -32,20 +26,12 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 
 public class AmplifiedPortalBlock extends Block
 {
-	@CapabilityInject(IPlayerPosAndDim.class)
-	public static Capability<IPlayerPosAndDim> PAST_POS_AND_DIM = null;
-	
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
 
@@ -54,14 +40,12 @@ public class AmplifiedPortalBlock extends Block
 		super(Settings.of(Material.GLASS, MaterialColor.BLACK).luminance((blockState) -> 15).strength(5.0F, 3600000.0F));
 	}
 
-	@Nonnull
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
 	{
 		return SHAPE;
 	}
 
-	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
 	public ActionResult onUse(BlockState thisBlockState, World world, BlockPos position, PlayerEntity playerEntity, Hand playerHand, BlockHitResult raytraceResult)
@@ -152,7 +136,7 @@ public class AmplifiedPortalBlock extends Block
 
 				//finds where portal block is
 				while (portalY > 0) {
-					if (destinationWorld.getBlockState(worldOriginBlockPos.up(portalY)) == UADBlocks.AMPLIFIED_PORTAL.get().getDefaultState()) {
+					if (destinationWorld.getBlockState(worldOriginBlockPos.up(portalY)) == UADBlocks.AMPLIFIED_PORTAL.getDefaultState()) {
 						break;
 					}
 					portalY--;
@@ -209,7 +193,7 @@ public class AmplifiedPortalBlock extends Block
 							blockState = destinationWorld.getBlockState(playerBlockPos);
 						}
 
-						destinationWorld.setBlockState(playerBlockPos, UADBlocks.AMPLIFIED_PORTAL.get().getDefaultState());
+						destinationWorld.setBlockState(playerBlockPos, UADBlocks.AMPLIFIED_PORTAL.getDefaultState());
 
 						playerVec3Pos = Vec3d.ofCenter(playerBlockPos).add(0, 0.5D, 0);
 					}
@@ -233,70 +217,70 @@ public class AmplifiedPortalBlock extends Block
 	}
 
 
-	/**
-	 * mining portal block in ultra amplified dimension will be denied if it is the highest Amplified Portal Block at x=8,
-	 * z=8
-	 *
-	 * :Forge notes: Called when a player removes a block. This is responsible for actually destroying the block, and the
-	 * block is intact at time of call. This is called regardless of whether the player can harvest the block or not.
-	 *
-	 * Return true if the block is actually destroyed.
-	 *
-	 * Note: When used in multiplayer, this is called on both client and server sides!
-	 *
-	 * @param state       The current state.
-	 * @param world       The current world
-	 * @param player      The player damaging the block, may be null
-	 * @param pos         Block position in world
-	 * @param willHarvest True if Block.harvestBlock will be called after this, if the return in true. Can be useful to
-	 *                    delay the destruction of tile entities till after harvestBlock
-	 * @param fluid       The current fluid state at current position
-	 * @return True if the block is actually destroyed.
-	 */
-	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
-	{
-
-		// if player is in creative mode, just remove block completely
-		if (player != null && player.isCreative()) {
-			getBlock().onBreak(world, pos, state, player);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return true;
-		}
-
-		// otherwise, check to see if we are mining the highest portal block at world
-		// origin in UA dimension
-		else {
-			// if we are in UA dimension
-			if (world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
-
-				// if we are at default portal coordinate
-				if (pos.getX() == 8 && pos.getZ() == 8) {
-
-					// finds the highest portal at world origin
-					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getDimensionHeight(), pos.getZ());
-					while (posOfHighestPortal.getY() >= 0) {
-						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
-						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL.get()) {
-							break;
-						}
-
-						posOfHighestPortal = posOfHighestPortal.down();
-					}
-
-					// if this block being broken is the highest portal, return false to end method
-					// and not break the portal block
-					if (posOfHighestPortal.getY() == pos.getY()) {
-						return false;
-					}
-				}
-			}
-		}
-
-		// otherwise, allow the block to break
-		getBlock().onBreak(world, pos, state, player);
-		return world.removeBlock(pos, false);
-	}
+//	/**
+//	 * mining portal block in ultra amplified dimension will be denied if it is the highest Amplified Portal Block at x=8,
+//	 * z=8
+//	 *
+//	 * :Forge notes: Called when a player removes a block. This is responsible for actually destroying the block, and the
+//	 * block is intact at time of call. This is called regardless of whether the player can harvest the block or not.
+//	 *
+//	 * Return true if the block is actually destroyed.
+//	 *
+//	 * Note: When used in multiplayer, this is called on both client and server sides!
+//	 *
+//	 * @param state       The current state.
+//	 * @param world       The current world
+//	 * @param player      The player damaging the block, may be null
+//	 * @param pos         Block position in world
+//	 * @param willHarvest True if Block.harvestBlock will be called after this, if the return in true. Can be useful to
+//	 *                    delay the destruction of tile entities till after harvestBlock
+//	 * @param fluid       The current fluid state at current position
+//	 * @return True if the block is actually destroyed.
+//	 */
+//	@Override
+//	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
+//	{
+//
+//		// if player is in creative mode, just remove block completely
+//		if (player != null && player.isCreative()) {
+//			this.onBreak(world, pos, state, player);
+//			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+//			return true;
+//		}
+//
+//		// otherwise, check to see if we are mining the highest portal block at world
+//		// origin in UA dimension
+//		else {
+//			// if we are in UA dimension
+//			if (world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
+//
+//				// if we are at default portal coordinate
+//				if (pos.getX() == 8 && pos.getZ() == 8) {
+//
+//					// finds the highest portal at world origin
+//					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getDimensionHeight(), pos.getZ());
+//					while (posOfHighestPortal.getY() >= 0) {
+//						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
+//						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL) {
+//							break;
+//						}
+//
+//						posOfHighestPortal = posOfHighestPortal.down();
+//					}
+//
+//					// if this block being broken is the highest portal, return false to end method
+//					// and not break the portal block
+//					if (posOfHighestPortal.getY() == pos.getY()) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//
+//		// otherwise, allow the block to break
+//		this.onBreak(world, pos, state, player);
+//		return world.removeBlock(pos, false);
+//	}
 
 	// has no item form
 	@Override

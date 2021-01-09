@@ -3,36 +3,29 @@ package com.telepathicgrunt.ultraamplifieddimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADSkyProperty;
 import com.telepathicgrunt.ultraamplifieddimension.mixin.dimension.SkyPropertiesAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-public class UltraAmplifiedDimensionClient {
-	public static void subscribeClientEvents()
+@Environment(EnvType.CLIENT)
+public class UltraAmplifiedDimensionClient implements ClientModInitializer {
+
+	@Override
+	public void onInitializeClient() {
 	{
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		modEventBus.addListener(UltraAmplifiedDimensionClient::onClientSetup);
-	}
+		SkyPropertiesAccessor.getfield_239208_a_().put(new Identifier(UltraAmplifiedDimension.MODID, "sky_property"), new UADSkyProperty());
 
-
-	public static void onClientSetup(FMLClientSetupEvent event)
-	{
-		event.enqueueWork(() ->
-		{
-			SkyPropertiesAccessor.getfield_239208_a_().put(new Identifier(UltraAmplifiedDimension.MODID, "sky_property"), new UADSkyProperty());
-
-			RenderLayers.setRenderLayer(UADBlocks.GLOWSTONE_ORE.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.GLOWGRASS_BLOCK.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.GLOWMYCELIUM.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.GLOWPODZOL.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.GLOWDIRT.get(), RenderLayer.getCutout());
-			RenderLayers.setRenderLayer(UADBlocks.COARSE_GLOWDIRT.get(), RenderLayer.getCutout());
-			RenderLayers.setRenderLayer(UADBlocks.GLOWSAND.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.RED_GLOWSAND.get(), RenderLayer.getTranslucent());
-			RenderLayers.setRenderLayer(UADBlocks.AMPLIFIED_PORTAL.get(), RenderLayer.getTranslucent());
-		});
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWSTONE_ORE, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWGRASS_BLOCK, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWMYCELIUM, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWPODZOL, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWDIRT, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.COARSE_GLOWDIRT, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWSAND, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.RED_GLOWSAND, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.AMPLIFIED_PORTAL, RenderLayer.getTranslucent());
 	}
 }

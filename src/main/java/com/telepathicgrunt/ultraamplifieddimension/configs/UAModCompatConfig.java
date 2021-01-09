@@ -1,4 +1,4 @@
-package com.telepathicgrunt.ultraamplifieddimension.config;
+package com.telepathicgrunt.ultraamplifieddimension.configs;
 
 import com.telepathicgrunt.ultraamplifieddimension.utils.ConfigHelper;
 import com.telepathicgrunt.ultraamplifieddimension.utils.ConfigHelper.ConfigValueListener;

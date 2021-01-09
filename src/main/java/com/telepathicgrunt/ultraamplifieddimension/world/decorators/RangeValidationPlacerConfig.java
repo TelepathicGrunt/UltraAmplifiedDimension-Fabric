@@ -3,8 +3,9 @@ package com.telepathicgrunt.ultraamplifieddimension.world.decorators;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.function.Function;
 import net.minecraft.world.gen.decorator.DecoratorConfig;
+
+import java.util.function.Function;
 
 
 public class RangeValidationPlacerConfig implements DecoratorConfig {

@@ -19,7 +19,7 @@ public class GrassyEndSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig
 
 
     @Override
-    public void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
         int xpos = x & 15;
         int zpos = z & 15;
         BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();

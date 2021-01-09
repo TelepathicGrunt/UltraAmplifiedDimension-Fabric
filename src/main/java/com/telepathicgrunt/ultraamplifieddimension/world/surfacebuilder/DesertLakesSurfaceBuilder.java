@@ -17,10 +17,10 @@ public class DesertLakesSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConf
 
 
     @Override
-    public void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
 
         if (noise > 1.0D) {
-            UADSurfaceBuilders.SAND_SURFACE_BUILDER.get().generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, UADSurfaceBuilders.SAND_SANDSTONE_SANDSTONE_SURFACE);
+            UADSurfaceBuilders.SAND_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, UADSurfaceBuilders.SAND_SANDSTONE_SANDSTONE_SURFACE);
         }
         else {
             SurfaceBuilder.DEFAULT.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);

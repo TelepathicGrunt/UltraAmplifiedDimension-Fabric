@@ -11,7 +11,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorContext;
-import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +24,7 @@ public class LedgeSurfacePlacer extends Decorator<LedgeSurfacePlacerConfig> {
         super(codec);
     }
 
-    @Nonnull
+
     @Override
     public Stream<BlockPos> getPositions(DecoratorContext context, Random rand, LedgeSurfacePlacerConfig config, BlockPos pos) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();

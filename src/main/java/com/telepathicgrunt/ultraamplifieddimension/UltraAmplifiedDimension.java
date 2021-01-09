@@ -1,37 +1,36 @@
 package com.telepathicgrunt.ultraamplifieddimension;
 
-import com.telepathicgrunt.ultraamplifieddimension.capabilities.CapabilityPlayerPosAndDim;
-import com.telepathicgrunt.ultraamplifieddimension.config.UADimensionConfig.UADimensionConfigValues;
+import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.IPlayerComponent;
+import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.PlayerComponent;
+import com.telepathicgrunt.ultraamplifieddimension.configs.UADimensionConfig.UADimensionConfigValues;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.AmplifiedPortalCreation;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.*;
-import com.telepathicgrunt.ultraamplifieddimension.utils.ConfigHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(UltraAmplifiedDimension.MODID)
-public class UltraAmplifiedDimension {
+public class UltraAmplifiedDimension implements ModInitializer, EntityComponentInitializer {
 	public static final String MODID = "ultra_amplified_dimension";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
+	public static final ComponentKey<IPlayerComponent> PLAYER_COMPONENT =
+			ComponentRegistry.getOrCreate(new Identifier(MODID, "player_component"), IPlayerComponent.class);
 
 	public static UADimensionConfigValues UADimensionConfig = null;
 	//public static UAModCompatConfigValues UAModCompatConfig = null;
 
-	public UltraAmplifiedDimension() {
+	//public static WBConfig WB_CONFIG;
+	//WB_CONFIG = AutoConfig.getConfigHolder(WBConfig.class).getConfig();
+	//UseBlockCallback.EVENT.register(WBPortalSpawning::blockRightClick);
 
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-
-		modEventBus.addListener(this::setup);
+	@Override
+	public void onInitialize() {
 		UADBlocks.ITEMS.register(modEventBus);
 		UADBlocks.BLOCKS.register(modEventBus);
 		UADFeatures.FEATURES.register(modEventBus);
@@ -44,20 +43,18 @@ public class UltraAmplifiedDimension {
 
 		forgeBus.addListener(EventPriority.NORMAL, UADDimension::worldTick);
 		forgeBus.addListener(EventPriority.NORMAL, AmplifiedPortalCreation::PortalCreationRightClick);
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> UltraAmplifiedDimensionClient::subscribeClientEvents);
 
 		//generates config
 		UADimensionConfig = ConfigHelper.register(ModConfig.Type.SERVER, UADimensionConfigValues::new, "ultra_amplified_dimension-dimension.toml");
 		//UAModCompatConfig = ConfigHelper.register(ModConfig.Type.SERVER, UAModCompatConfigValues::new, "ultra_amplified_dimension-mod_compat.toml");
+
+		UADDimension.setupDimension();
+		UADStructures.setupStructures();
 	}
 
-	public void setup(final FMLCommonSetupEvent event)
-	{
-		event.enqueueWork(() ->
-		{
-			UADDimension.setupDimension();
-			CapabilityPlayerPosAndDim.register();
-			UADStructures.setupStructures();
-		});
+	@Override
+	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		//attach component to player
+		registry.registerForPlayers(PLAYER_COMPONENT, p -> new PlayerComponent(), RespawnCopyStrategy.INVENTORY);
 	}
 }

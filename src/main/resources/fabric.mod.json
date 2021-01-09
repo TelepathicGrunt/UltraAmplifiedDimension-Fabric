@@ -1,34 +1,51 @@
 {
     "schemaVersion": 1,
-    "id": "blame",
+    "id": "ultra_amplified_dimension",
     "version": "${version}",
 
-    "name": "Blame",
-    "description": "Crashing due to a feature or structure from a mod? Don't worry!\nThis mod will find exactly which feature/structure and biome the crash is occurring from!\nTIME TO PLACE SOME BLAME!!!",
+    "name": "Ultra Amplified Dimension",
+    "description": "Chaotic terrain dimension!",
     "authors": [
         "TelepathicGrunt"
     ],
     "contact": {
-        "homepage": "https://www.curseforge.com/minecraft/mc-mods/blame-fabric",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/ultra-amplified-dimension-fabric",
+        "sources": "https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric"
     },
 
     "license": "LGPLv3",
-    "icon": "assets/blame/blame_icon.png",
+    "icon": "assets/ultra_amplified_dimension/ultraamplifiedlogo.png",
 
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.telepathicgrunt.blame.Blame"
+            "com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension"
+        ],
+        "client": [
+            "com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimensionClient"
+        ],
+        "modmenu": [
+            "com.telepathicgrunt.ultraamplifieddimension.configs.ModMenuConfig"
+        ],
+        "cardinal-components-entity": [
+            "com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension"
         ]
     },
     "mixins": [
-        "blame.mixins.json"
+        "ultra_amplified_dimension.mixins.json"
     ],
+    "custom": {
+        "cardinal-components": [
+            "ultra_amplified_dimension:player_component"
+        ]
+    },
 
     "depends": {
-        "fabricloader": ">=0.7.4",
-        "minecraft": "1.16.x"
+        "minecraft": ">=1.16.2",
+        "fabricloader": ">=0.10.6",
+        "fabric": ">=0.25.0",
+        "cardinal-components-base": ">=2.5.0",
+        "cardinal-components-entity": ">=2.5.0"
     },
     "suggests": {}
 }

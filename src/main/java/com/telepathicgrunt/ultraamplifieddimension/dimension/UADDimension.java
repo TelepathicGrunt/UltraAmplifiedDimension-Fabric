@@ -16,10 +16,4 @@ public class UADDimension {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier(UltraAmplifiedDimension.MODID, "terrain"), UADChunkGenerator.UAD_CHUNK_GENERATOR_CODEC);
         Registry.register(Registry.BIOME_SOURCE, new Identifier(UltraAmplifiedDimension.MODID, "biome_source"), UADBiomeProvider.CODEC);
     }
-
-    public static void worldTick(TickEvent.WorldTickEvent event){
-        if(event.phase == TickEvent.Phase.END && !event.world.isClient()){
-            UADWorldSavedData.tick((ServerWorld) event.world);
-        }
-    }
 }

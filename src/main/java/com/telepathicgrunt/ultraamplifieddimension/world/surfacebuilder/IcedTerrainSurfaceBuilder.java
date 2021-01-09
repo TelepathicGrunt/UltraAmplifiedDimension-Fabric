@@ -18,7 +18,7 @@ public class IcedTerrainSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConf
     }
 
     @Override
-    public void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
         BlockState iblockstate = config.getTopMaterial();
         BlockState iblockstate1 = config.getUnderMaterial();
         BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();

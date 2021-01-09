@@ -33,7 +33,7 @@ public class DiskGroundDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<?> getType() {
-        return UADTreeDecoratorTypes.DISK_GROUND_DECORATOR.get();
+        return UADTreeDecoratorTypes.DISK_GROUND_DECORATOR;
     }
 
     @Override

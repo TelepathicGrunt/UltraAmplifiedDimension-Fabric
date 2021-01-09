@@ -8,10 +8,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nonnull;
 
 @Environment(EnvType.CLIENT)
 public class UADSkyProperty extends SkyProperties {
@@ -25,7 +21,7 @@ public class UADSkyProperty extends SkyProperties {
         return UltraAmplifiedDimension.UADimensionConfig.heavyFog.get();
     }
 
-    @Nonnull
+
     @Override
     // sky/fog color
     public Vec3d adjustFogColor(Vec3d color, float sunHeight) {

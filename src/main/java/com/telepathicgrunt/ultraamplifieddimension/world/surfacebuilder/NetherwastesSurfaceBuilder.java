@@ -30,10 +30,8 @@ public class NetherwastesSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
         this.noiseSeed = seed;
     }
 
-
-    @SuppressWarnings("deprecation")
     @Override
-    public void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
         int sealevel = seaLevel + 1;
         int xInChunk = x & 15;
         int zInChunk = z & 15;

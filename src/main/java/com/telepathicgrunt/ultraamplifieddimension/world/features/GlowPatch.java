@@ -31,14 +31,14 @@ public class GlowPatch extends Feature<CountConfig> {
         if (GLOWBLOCK_MAP == null) {
             GLOWBLOCK_MAP = new HashMap<>();
 
-            GLOWBLOCK_MAP.put(Blocks.DIRT.getDefaultState(), UADBlocks.GLOWDIRT.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.COARSE_DIRT.getDefaultState(), UADBlocks.COARSE_GLOWDIRT.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.GRASS_BLOCK.getDefaultState(), UADBlocks.GLOWGRASS_BLOCK.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.MYCELIUM.getDefaultState(), UADBlocks.GLOWMYCELIUM.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.STONE.getDefaultState(), UADBlocks.GLOWSTONE_ORE.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.PODZOL.getDefaultState(), UADBlocks.GLOWPODZOL.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.SAND.getDefaultState(), UADBlocks.GLOWSAND.get().getDefaultState());
-            GLOWBLOCK_MAP.put(Blocks.RED_SAND.getDefaultState(), UADBlocks.RED_GLOWSAND.get().getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.DIRT.getDefaultState(), UADBlocks.GLOWDIRT.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.COARSE_DIRT.getDefaultState(), UADBlocks.COARSE_GLOWDIRT.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.GRASS_BLOCK.getDefaultState(), UADBlocks.GLOWGRASS_BLOCK.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.MYCELIUM.getDefaultState(), UADBlocks.GLOWMYCELIUM.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.STONE.getDefaultState(), UADBlocks.GLOWSTONE_ORE.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.PODZOL.getDefaultState(), UADBlocks.GLOWPODZOL.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.SAND.getDefaultState(), UADBlocks.GLOWSAND.getDefaultState());
+            GLOWBLOCK_MAP.put(Blocks.RED_SAND.getDefaultState(), UADBlocks.RED_GLOWSAND.getDefaultState());
         }
     }
 

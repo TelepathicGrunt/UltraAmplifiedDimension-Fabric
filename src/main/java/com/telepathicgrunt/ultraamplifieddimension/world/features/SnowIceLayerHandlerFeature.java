@@ -34,13 +34,13 @@ public class SnowIceLayerHandlerFeature extends Feature<DefaultFeatureConfig>
 				blockpos$Mutable.set(position).move(xOffset, 0, zOffset);
 				Biome biome = world.getBiome(blockpos$Mutable);
 				if (BiomeSetsHelper.FROZEN_BIOMES.contains(biome)) {
-					UADFeatures.SNOW_ICE_ALL_LAYERS.get().generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_ICE_ALL_LAYERS.generate(world, generator, random, blockpos$Mutable, config);
 				}
 				else if (BiomeSetsHelper.COLD_OCEAN_BIOMES.contains(biome)) {
-					UADFeatures.SNOW_LAYER_WITHOUT_ICE.get().generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_LAYER_WITHOUT_ICE.generate(world, generator, random, blockpos$Mutable, config);
 				}
 				else {
-					UADFeatures.SNOW_ICE_TOP_LAYER.get().generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_ICE_TOP_LAYER.generate(world, generator, random, blockpos$Mutable, config);
 				}
 			}
 		}

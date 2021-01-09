@@ -35,7 +35,7 @@ public class BlockColorManager
 			blockColors.registerColorProvider((unknown1, lightReader, pos, unknown2) ->
 			{
 				return lightReader != null && pos != null ? BiomeColors.getGrassColor(lightReader, pos) : GrassColors.getColor(0.5D, 1.0D);
-			}, UADBlocks.GLOWGRASS_BLOCK.get());
+			}, UADBlocks.GLOWGRASS_BLOCK);
 		}
 
 

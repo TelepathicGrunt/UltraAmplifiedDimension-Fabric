@@ -116,7 +116,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
 
     public static final Codec<NoiseChunkGenerator> UAD_CHUNK_GENERATOR_CODEC = RecordCodecBuilder.create((noiseChunkGeneratorInstance) -> noiseChunkGeneratorInstance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((noiseChunkGenerator) -> ((ChunkGeneratorAccessor)noiseChunkGenerator).getbiomeProvider()),
-                    Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getWorldSeed).forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).getfield_236084_w_()),
+                    Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).getfield_236084_w_()),
                     UAD_DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).getfield_236080_h_().get()))
                         .apply(noiseChunkGeneratorInstance, noiseChunkGeneratorInstance.stable(UADChunkGenerator::new)));
 
@@ -139,16 +139,12 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
 
     public UADChunkGenerator(BiomeSource biomeProvider, long seed, ChunkGeneratorSettings dimensionSettings) {
         super(biomeProvider, seed, () -> dimensionSettings);
-        sealevel = this.settings.get().getSeaLevel();
-        if (this.seed != seed || this.noiseGen == null) {
-            this.noiseGen = new OpenSimplexNoise(seed);
-            this.seed = seed;
-        }
+        this.seed = seed;
 
+        sealevel = this.settings.get().getSeaLevel();
         landTerraformingStructures = new ArrayList<>(StructureFeature.JIGSAW_STRUCTURES);
         landTerraformingStructures.add(StructureFeature.MONUMENT);
     }
-
 
     private void sampleNoiseColumn(double[] noiseColumn, int noiseX, int noiseZ) {
         GenerationShapeConfig noisesettings = this.settings.get().getGenerationShapeConfig();

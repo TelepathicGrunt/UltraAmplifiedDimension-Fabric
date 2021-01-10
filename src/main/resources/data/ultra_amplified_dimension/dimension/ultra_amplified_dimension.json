@@ -141,7 +141,7 @@
             },
             {
                 "main_biome": "ultra_amplified_dimension:swamp",
-                "weight": 12,
+                "weight": 10,
                 "mutated_biome": "ultra_amplified_dimension:swamp_spooky"
             },
             {

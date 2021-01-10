@@ -7,6 +7,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -57,4 +58,11 @@ public interface NoiseChunkGeneratorAccessor {
 
     @Invoker
     void callBuildBedrock(Chunk chunkIn, Random rand);
+
+    @Accessor
+    long getSeed();
+
+    @Mutable
+    @Accessor
+    void setSeed(long seed);
 }

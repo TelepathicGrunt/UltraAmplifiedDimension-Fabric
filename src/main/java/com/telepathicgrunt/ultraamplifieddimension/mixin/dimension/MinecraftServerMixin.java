@@ -34,12 +34,10 @@ public class MinecraftServerMixin {
 	@Inject(method = "createWorlds(Lnet/minecraft/server/WorldGenerationProgressListener;)V",
 			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/biome/source/BiomeAccess;hashSeed(J)J"),
 		locals = LocalCapture.CAPTURE_FAILHARD)
-	private void seedCarvers(WorldGenerationProgressListener chunkStatusListener, CallbackInfo ci, ServerWorldProperties iserverworldinfo,
+	private void worldSetup(WorldGenerationProgressListener chunkStatusListener, CallbackInfo ci, ServerWorldProperties iserverworldinfo,
 									GeneratorOptions dimensiongeneratorsettings, boolean isDebugWorld, long seed, long hashedSeed)
 	{
-		WorldSeedHolder.setWorldSeed(hashedSeed);
-		MutableRegistry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
 		CaveCavityCarver.setSeed(hashedSeed);
-		BiomeSetsHelper.generateBiomeSets(biomeRegistry);
+		BiomeSetsHelper.generateBiomeSets(registryManager.get(Registry.BIOME_KEY));
 	}
 }

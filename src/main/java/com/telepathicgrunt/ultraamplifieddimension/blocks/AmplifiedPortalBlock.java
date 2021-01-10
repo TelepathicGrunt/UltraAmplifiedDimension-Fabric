@@ -56,7 +56,8 @@ public class AmplifiedPortalBlock extends Block
 			!playerEntity.hasVehicle() &&
 			!playerEntity.hasPassengers() &&
 			playerEntity.canUsePortals() &&
-			!playerEntity.isInSneakingPose())
+			!playerEntity.isInSneakingPose() &&
+			playerEntity.getActiveHand() == playerHand)
 		{
 			MinecraftServer minecraftserver = playerEntity.getServer();
 

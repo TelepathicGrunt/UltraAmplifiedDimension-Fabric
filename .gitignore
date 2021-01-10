@@ -19,8 +19,7 @@ build
 
 # other
 eclipse
-run/*
-!run/saves
+run
 classes
 deps
 

@@ -13,6 +13,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -32,21 +33,22 @@ public class UltraAmplifiedDimension implements ModInitializer, EntityComponentI
 
 	@Override
 	public void onInitialize() {
+		AutoConfig.register(UADConfig.class, JanksonConfigSerializer::new);
+		UAD_CONFIG = AutoConfig.getConfigHolder(UADConfig.class).getConfig();
+
 		UADTags.tagInit();
 
 		UADBlocks.init();
+		UADCarvers.init();
+		UADTreeDecoratorTypes.init();
 		UADFeatures.init();
 		UADStructures.init();
 		UADPlacements.init();
-		UADCarvers.init();
 		UADSurfaceBuilders.init();
-		UADTreeDecoratorTypes.init();
 
 		PlayerBlockBreakEvents.BEFORE.register(AmplifiedPortalBlock::removedByPlayer);
 		UseBlockCallback.EVENT.register(AmplifiedPortalCreation::PortalCreationRightClick);
 		ServerTickEvents.END_WORLD_TICK.register(UADWorldSavedData::tick);
-
-		UAD_CONFIG = AutoConfig.getConfigHolder(UADConfig.class).getConfig();
 
 		UADDimension.setupDimension();
 		UADStructures.setupStructures();

@@ -1,7 +1,6 @@
 package com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;

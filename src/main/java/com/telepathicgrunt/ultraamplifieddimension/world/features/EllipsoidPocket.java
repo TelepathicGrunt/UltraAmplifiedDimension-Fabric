@@ -12,7 +12,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraftforge.common.Tags;
 
 import java.util.Map;
 import java.util.Random;
@@ -74,7 +73,7 @@ public class EllipsoidPocket extends Feature<OreFeatureConfig>
 						cachedChunk = getCachedChunk(world, blockposMutable);
 
 						blockToReplace = cachedChunk.getBlockState(blockposMutable);
-						if(config.target.test(blockToReplace, rand) || Tags.Blocks.ORES.contains(blockToReplace.getBlock())) {
+						if(config.target.test(blockToReplace, rand)) {
 							if(solidState){
 								cachedChunk.setBlockState(blockposMutable, config.state, false);
 							}

@@ -1,6 +1,5 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.items;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;

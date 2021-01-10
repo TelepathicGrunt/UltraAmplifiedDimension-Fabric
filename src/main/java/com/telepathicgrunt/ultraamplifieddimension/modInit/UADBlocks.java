@@ -2,8 +2,7 @@ package com.telepathicgrunt.ultraamplifieddimension.modInit;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.blocks.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -32,18 +31,15 @@ public class UADBlocks {
     public static final Block BIG_CACTUS_MAIN_BLOCK = createBlock("big_cactus_main_block", BigCactusMainBlock::new);
 
     //creative tab to hold our block items
-    public static final ItemGroup ULTRAMAPLIFIED = new ItemGroup(ItemGroup.GROUPS.length, UltraAmplifiedDimension.MODID) {
-        @Override
-        @Environment(EnvType.CLIENT)
-        public ItemStack createIcon() {
-            return new ItemStack(AMPLIFIED_PORTAL);
-        }
-    };
-    
+    public static final ItemGroup ULTRA_AMPLIFIED_TAB = FabricItemGroupBuilder.build(
+            new Identifier(UltraAmplifiedDimension.MODID, "main_tab"),
+            () -> new ItemStack(AMPLIFIED_PORTAL)
+    );
+
     public static Block createBlock(String name, Supplier<Block> blockSupplier) {
         Block block = blockSupplier.get();
         Registry.register(Registry.BLOCK, new Identifier(UltraAmplifiedDimension.MODID, name), block);
-        Registry.register(Registry.ITEM, new Identifier(UltraAmplifiedDimension.MODID, name), new BlockItem(block, new Item.Settings().group(ULTRAMAPLIFIED)));
+        Registry.register(Registry.ITEM, new Identifier(UltraAmplifiedDimension.MODID, name), new BlockItem(block, new Item.Settings().group(ULTRA_AMPLIFIED_TAB)));
         return block;
     }
 }

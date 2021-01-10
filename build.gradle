@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = "${project.minecraft_version}-${project.mod_version}"
 group = project.maven_group
 
 minecraft {
@@ -38,34 +38,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
-	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
-
 	modImplementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-	include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-
 	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
-	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
-
 	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
-	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
-
 	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 
 	modImplementation 'com.github.modmuss50:Voyager:1.0.0'
 	include 'com.github.modmuss50:Voyager:1.0.0'
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
-		expand "version": project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
-	}
 }
 
 tasks.withType(JavaCompile) {
@@ -79,4 +58,46 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
 	from "LICENSE"
+}
+
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+processResources {
+	inputs.property "version", project.version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include "fabric.mod.json"
+		expand "version": project.version
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "fabric.mod.json"
+	}
+
+	// Minifies all .json files when building the mod.
+	// Source files are not minified, only the jar copies.
+	doLast {
+
+		def jsonMinifyStart = System.currentTimeMillis()
+		def jsonMinified = 0
+		def jsonBytesSaved = 0
+
+		fileTree(dir: outputs.files.asPath, include: '**/*.json').each {
+
+			File file = it
+			jsonMinified++
+			def oldLength = file.length()
+			try{
+				file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+			}
+			catch(Exception e){
+				System.out.println("Parsing JSON error in " + file.name)
+				throw e
+			}
+			jsonBytesSaved += oldLength - file.length()
+		}
+
+		println('Minified ' + jsonMinified + ' json files. Saved ' + jsonBytesSaved + ' bytes. Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
+	}
 }

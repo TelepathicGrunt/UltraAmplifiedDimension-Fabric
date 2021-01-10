@@ -2,6 +2,7 @@ package com.telepathicgrunt.ultraamplifieddimension.dimension;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
+import com.telepathicgrunt.ultraamplifieddimension.blocks.AmplifiedPortalBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
@@ -22,6 +23,7 @@ public class UADWorldSavedData extends PersistentState {
 
     public static final String DATA_KEY = UltraAmplifiedDimension.MODID + ":delayed_teleportation";
     private List<TeleportEntry> entries = new ArrayList<>();
+    private List<SpawnParticles> particles = new ArrayList<>();
 
     public UADWorldSavedData() {
         super(DATA_KEY);
@@ -39,8 +41,21 @@ public class UADWorldSavedData extends PersistentState {
     public static void tick(ServerWorld world) {
         MinecraftServer server = world.getServer();
         UADWorldSavedData data = get(world);
+
         List<TeleportEntry> list = data.entries;
         data.entries = new ArrayList<>();
+
+        List<SpawnParticles> particleList = data.particles;
+        data.particles = new ArrayList<>();
+
+        // Delay particle spawning by one tick after teleportation so the player can see their particles
+        for (SpawnParticles entry : particleList) {
+            ServerWorld targetWorld = server.getWorld(entry.targetWorld);
+            if (targetWorld != null) {
+                AmplifiedPortalBlock.createLotsOfParticles(targetWorld, entry.targetVec, targetWorld.random);
+            }
+        }
+
         for (TeleportEntry entry : list) {
             ServerPlayerEntity player = server.getPlayerManager().getPlayer(entry.playerUUID);
             ServerWorld targetWorld = server.getWorld(entry.targetWorld);
@@ -57,12 +72,19 @@ public class UADWorldSavedData extends PersistentState {
                         entry.targetVec.getZ(),
                         entry.targetLook.getFirst(),
                         entry.targetLook.getSecond());
+
+                // -0.5 on x and z to counter the builtin 0.5 offset in AmplifiedPortalBlock.createLotsOfParticles
+                data.addParticle(entry.targetWorld, new Vec3d(entry.targetVec.x - 0.5d, entry.targetVec.y, entry.targetVec.z - 0.5d));
             }
         }
     }
 
     public void addPlayer(PlayerEntity player, RegistryKey<World> destination, Vec3d targetVec, Pair<Float, Float> targetLook) {
         this.entries.add(new TeleportEntry(PlayerEntity.getUuidFromProfile(player.getGameProfile()), destination, targetVec, targetLook));
+    }
+
+    public void addParticle(RegistryKey<World> destination, Vec3d targetVec) {
+        this.particles.add(new SpawnParticles(destination, targetVec));
     }
 
     @Override
@@ -85,6 +107,16 @@ public class UADWorldSavedData extends PersistentState {
             this.targetWorld = targetWorld;
             this.targetVec = targetVec;
             this.targetLook = targetLook;
+        }
+    }
+
+    static class SpawnParticles {
+        final RegistryKey<World> targetWorld;
+        final Vec3d targetVec;
+
+        public SpawnParticles(RegistryKey<World> targetWorld, Vec3d targetVec) {
+            this.targetWorld = targetWorld;
+            this.targetVec = targetVec;
         }
     }
 }

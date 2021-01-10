@@ -207,6 +207,8 @@ public class AmplifiedPortalBlock extends Block
 			}
 
 			UADWorldSavedData.get((ServerWorld) world).addPlayer(playerEntity, destinationKey, playerVec3Pos, new Pair<>(yaw, pitch));
+			//particles for other players to see when a player is leaving
+			createLotsOfParticles((ServerWorld)world, playerEntity.getPos(), world.random);
 			return ActionResult.SUCCESS;
 		}
 		
@@ -275,19 +277,21 @@ public class AmplifiedPortalBlock extends Block
 	@Deprecated
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
-		createLotsOfParticles((ServerWorld)world, pos, world.random);
+		createLotsOfParticles((ServerWorld)world, new Vec3d(pos.getX(), pos.getY(), pos.getZ()), world.random);
 	}
 
-	public void createLotsOfParticles(ServerWorld world, BlockPos position, Random random) {
-		double xPos = (double) position.getX() + 0.5D;
-		double yPos = (double) position.getY() + 0.5D;
-		double zPos = (double) position.getZ() + 0.5D;
+	/**
+	 * Safe to call serverside as it sends particle packets to clients
+	 */
+	public static void createLotsOfParticles(ServerWorld world, Vec3d position, Random random) {
+		double xPos = position.getX() + 0.5D;
+		double yPos = position.getY() + 0.5D;
+		double zPos = position.getZ() + 0.5D;
 		double xOffset = (random.nextFloat() - 0.4D) * 0.8D;
 		double zOffset = (random.nextFloat() - 0.4D) * 0.8D;
 
 		world.spawnParticles(ParticleTypes.FLAME, xPos, yPos, zPos, 50, xOffset, 0, zOffset, random.nextFloat() * 0.1D + 0.05D);
 	}
-
 
 	/**
 	 * more frequent particles than normal EndPortal block

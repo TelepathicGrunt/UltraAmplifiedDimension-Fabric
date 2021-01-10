@@ -1,6 +1,5 @@
 package com.telepathicgrunt.ultraamplifieddimension.dimension;
 
-import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADTags;
 import com.telepathicgrunt.ultraamplifieddimension.world.features.AmplifiedPortalFrame;
@@ -13,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
@@ -29,7 +27,10 @@ public class AmplifiedPortalCreation {
 
         if (!world.isClient() && !player.isInSneakingPose()) {
             if (player.getStackInHand(hand).getItem().isIn(UADTags.PORTAL_ACTIVATION_ITEMS)) {
-                trySpawnPortal(world, hitResult.getBlockPos());
+                if(trySpawnPortal(world, hitResult.getBlockPos())){
+                    player.swingHand(player.getActiveHand(), true);
+                    return ActionResult.SUCCESS;
+                }
             }
         }
 
@@ -41,9 +42,6 @@ public class AmplifiedPortalCreation {
     // Portal creation and validation check
 
     private static final Block POLISHED_DIORITE = Blocks.POLISHED_DIORITE;
-    private static final Identifier PORTAL_CORNER_TAG = new Identifier(UltraAmplifiedDimension.MODID, "portal_corner_blocks");
-    private static final Identifier PORTAL_NON_CORNER_TAG = new Identifier(UltraAmplifiedDimension.MODID, "portal_non_corner_blocks");
-
 
     public static boolean checkForGeneratedPortal(WorldAccess worldUA) {
         BlockPos pos = new BlockPos(8, worldUA.getDimensionHeight(), 8);
@@ -129,11 +127,12 @@ public class AmplifiedPortalCreation {
         return true;
     }
 
-    public static void trySpawnPortal(WorldAccess world, BlockPos pos) {
+    public static boolean trySpawnPortal(WorldAccess world, BlockPos pos) {
         boolean canMakePortal = isValid(world, pos);
         if (canMakePortal) {
             //place portal at pos in the portal frame.
             world.setBlockState(pos, UADBlocks.AMPLIFIED_PORTAL.getDefaultState(), 18);
         }
+        return canMakePortal;
     }
 }

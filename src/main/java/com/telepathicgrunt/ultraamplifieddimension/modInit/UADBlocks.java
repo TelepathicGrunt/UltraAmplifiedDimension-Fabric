@@ -38,8 +38,11 @@ public class UADBlocks {
 
     public static Block createBlock(String name, Supplier<Block> blockSupplier) {
         Block block = blockSupplier.get();
-        Registry.register(Registry.BLOCK, new Identifier(UltraAmplifiedDimension.MODID, name), block);
-        Registry.register(Registry.ITEM, new Identifier(UltraAmplifiedDimension.MODID, name), new BlockItem(block, new Item.Settings().group(ULTRA_AMPLIFIED_TAB)));
+        Identifier blockID = new Identifier(UltraAmplifiedDimension.MODID, name);
+
+        Registry.register(Registry.BLOCK, blockID, block);
+        Registry.register(Registry.ITEM, blockID, new BlockItem(block, new Item.Settings().group(ULTRA_AMPLIFIED_TAB)));
+
         return block;
     }
 }

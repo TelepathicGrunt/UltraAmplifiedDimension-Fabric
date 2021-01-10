@@ -1,21 +1,12 @@
 package com.telepathicgrunt.ultraamplifieddimension.dimension.biomeprovider.layer;
 
+import com.telepathicgrunt.ultraamplifieddimension.dimension.biomeprovider.UADBiomeProvider;
 import net.minecraft.world.biome.layer.type.InitLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
 
 public class BaseRegionLayer implements InitLayer {
 
-    /*
-     * LAYER KEY FOR MYSELF:
-     * 0 = ocean region
-     * 1 = end region
-     * 2 = nether region
-     * 3 = hot region
-     * 4 = warm region
-     * 5 = cool region
-     * 6 = icy region
-     */
     public int sample(LayerRandomnessSource noise, int x, int z) {
         double regionNoise = (noise.getNoiseSampler().sample(
                         (double)x / 4.0D,
@@ -27,21 +18,21 @@ public class BaseRegionLayer implements InitLayer {
 
         if(regionNoise < 0.3D){
             if(noise.nextInt(25) == 0){
-                return 2;
+                return UADBiomeProvider.REGIONS.NETHER.ordinal();
             }
-            return 3;
+            return UADBiomeProvider.REGIONS.HOT.ordinal();
         }
         else if(regionNoise < 0.5D){
-            return 4;
+            return UADBiomeProvider.REGIONS.WARM.ordinal();
         }
         else if(regionNoise < 0.7D){
             if(noise.nextInt(30) == 0){
-                return 1;
+                return UADBiomeProvider.REGIONS.END.ordinal();
             }
-            return 5;
+            return UADBiomeProvider.REGIONS.COOL.ordinal();
         }
         else{
-            return 6;
+            return UADBiomeProvider.REGIONS.ICY.ordinal();
         }
     }
 }

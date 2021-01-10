@@ -15,20 +15,19 @@ import java.util.function.Supplier;
 
 
 public class UADBlocks {
-    public static void init(){}
 
-    public static final Block AMPLIFIED_PORTAL = createBlock("amplified_portal", AmplifiedPortalBlock::new);
-    public static final Block GLOWSTONE_ORE = createBlock("glowstone_ore", GlowstoneOreBlock::new);
-    public static final Block COARSE_GLOWDIRT = createBlock("coarse_glowdirt", CoarseGlowdirtBlock::new);
-    public static final Block GLOWDIRT = createBlock("glowdirt", GlowdirtBlock::new);
-    public static final Block GLOWGRASS_BLOCK = createBlock("glowgrass_block", GlowgrassBlock::new);
-    public static final Block GLOWMYCELIUM = createBlock("glowmycelium", GlowmyceliumBlock::new);
-    public static final Block GLOWPODZOL = createBlock("glowpodzol", GlowpodzolBlock::new);
-    public static final Block GLOWSAND = createBlock("glowsand", GlowsandBlock::new);
-    public static final Block RED_GLOWSAND = createBlock("red_glowsand", RedGlowsandBlock::new);
-    public static final Block BIG_CACTUS_BODY_BLOCK = createBlock("big_cactus_body_block", BigCactusBodyBlock::new);
-    public static final Block BIG_CACTUS_CORNER_BLOCK = createBlock("big_cactus_corner_block", BigCactusCornerBlock::new);
-    public static final Block BIG_CACTUS_MAIN_BLOCK = createBlock("big_cactus_main_block", BigCactusMainBlock::new);
+    public static Block AMPLIFIED_PORTAL = null;
+    public static Block GLOWSTONE_ORE = null;
+    public static Block COARSE_GLOWDIRT = null;
+    public static Block GLOWDIRT = null;
+    public static Block GLOWGRASS_BLOCK = null;
+    public static Block GLOWMYCELIUM = null;
+    public static Block GLOWPODZOL = null;
+    public static Block GLOWSAND = null;
+    public static Block RED_GLOWSAND = null;
+    public static Block BIG_CACTUS_BODY_BLOCK = null;
+    public static Block BIG_CACTUS_CORNER_BLOCK = null;
+    public static Block BIG_CACTUS_MAIN_BLOCK = null;
 
     //creative tab to hold our block items
     public static final ItemGroup ULTRA_AMPLIFIED_TAB = FabricItemGroupBuilder.build(
@@ -44,5 +43,20 @@ public class UADBlocks {
         Registry.register(Registry.ITEM, blockID, new BlockItem(block, new Item.Settings().group(ULTRA_AMPLIFIED_TAB)));
 
         return block;
+    }
+
+    public static void init(){
+        AMPLIFIED_PORTAL = createBlock("amplified_portal", AmplifiedPortalBlock::new);
+        GLOWSTONE_ORE = createBlock("glowstone_ore", GlowstoneOreBlock::new);
+        COARSE_GLOWDIRT = createBlock("coarse_glowdirt", CoarseGlowdirtBlock::new);
+        GLOWDIRT = createBlock("glowdirt", GlowdirtBlock::new);
+        GLOWGRASS_BLOCK = createBlock("glowgrass_block", GlowgrassBlock::new);
+        GLOWMYCELIUM = createBlock("glowmycelium", GlowmyceliumBlock::new);
+        GLOWPODZOL = createBlock("glowpodzol", GlowpodzolBlock::new);
+        GLOWSAND = createBlock("glowsand", GlowsandBlock::new);
+        RED_GLOWSAND = createBlock("red_glowsand", RedGlowsandBlock::new);
+        BIG_CACTUS_BODY_BLOCK = createBlock("big_cactus_body_block", BigCactusBodyBlock::new);
+        BIG_CACTUS_CORNER_BLOCK = createBlock("big_cactus_corner_block", BigCactusCornerBlock::new);
+        BIG_CACTUS_MAIN_BLOCK = createBlock("big_cactus_main_block", BigCactusMainBlock::new);
     }
 }

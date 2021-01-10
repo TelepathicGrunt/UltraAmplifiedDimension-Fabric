@@ -17,67 +17,15 @@ public class UADStructures {
     // Random seed
     // https://www.google.com/search?q=random+number
     // 2147483647
-
-    public static void init(){}
     public static Set<StructureFeature<?>> REGISTERED_UAD_STRUCTURES = new HashSet<>();
 
-    public static final StructureFeature<DefaultFeatureConfig> SUN_SHRINE = registerStructure("sun_shrine", () -> (
-            new GenericJigsawStructure(
-                    DefaultFeatureConfig.CODEC,
-                    new Identifier(UltraAmplifiedDimension.MODID, "sun_shrine_start"),
-                    10,
-                    0,
-                    0,
-                    0
-            )
-    ));
-
-    public static final StructureFeature<DefaultFeatureConfig> STONEHENGE = registerStructure("stonehenge", () -> (
-            new GenericJigsawStructure(
-                    DefaultFeatureConfig.CODEC,
-                    new Identifier(UltraAmplifiedDimension.MODID, "stonehenge/center_start"),
-                    10,
-                    -2,
-                    0,
-                    0
-            )
-    ));
-
-    public static final StructureFeature<DefaultFeatureConfig> ICE_SPIKE_TEMPLE = registerStructure("ice_spike_temple", () -> (
-            new GenericJigsawStructure(
-                    DefaultFeatureConfig.CODEC,
-                    new Identifier(UltraAmplifiedDimension.MODID, "ice_spike_temple/body_start"),
-                    10,
-                    -7,
-                    7,
-                    1
-            )
-    ));
-
-    public static final StructureFeature<DefaultFeatureConfig> MUSHROOM_TEMPLE = registerStructure("mushroom_temple", () -> (
-            new GenericJigsawStructure(
-                    DefaultFeatureConfig.CODEC,
-                    new Identifier(UltraAmplifiedDimension.MODID, "mushroom_temple/body_start"),
-                    10,
-                    -2,
-                    0,
-                    1
-            )
-    ));
+    public static StructureFeature<DefaultFeatureConfig> SUN_SHRINE = null;
+    public static StructureFeature<DefaultFeatureConfig> STONEHENGE = null;
+    public static StructureFeature<DefaultFeatureConfig> ICE_SPIKE_TEMPLE = null;
+    public static StructureFeature<DefaultFeatureConfig> MUSHROOM_TEMPLE = null;
 
     private static <T extends StructureFeature<?>> T registerStructure(String name, Supplier<T> structure) {
         return Registry.register(Registry.STRUCTURE_FEATURE, new Identifier(UltraAmplifiedDimension.MODID, name), structure.get());
-    }
-
-    /**
-     * This is where we set the rarity of your structures and determine if land conforms to it.
-     * See the comments in below for more details.
-     */
-    public static void setupStructures() {
-        setupMapSpacingAndLand(SUN_SHRINE, true);
-        setupMapSpacingAndLand(STONEHENGE, true);
-        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE, true);
-        setupMapSpacingAndLand(MUSHROOM_TEMPLE, false);
     }
 
     /**
@@ -100,5 +48,65 @@ public class UADStructures {
                         .build()
             );
         }
+    }
+
+    /**
+     * This is where we set the rarity of your structures and determine if land conforms to it.
+     * See the comments in below for more details.
+     */
+    public static void setupStructures() {
+        setupMapSpacingAndLand(SUN_SHRINE, true);
+        setupMapSpacingAndLand(STONEHENGE, true);
+        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE, true);
+        setupMapSpacingAndLand(MUSHROOM_TEMPLE, false);
+    }
+
+    /**
+     * Creates the structures
+     */
+    public static void init(){
+        SUN_SHRINE = registerStructure("sun_shrine", () -> (
+                new GenericJigsawStructure(
+                        DefaultFeatureConfig.CODEC,
+                        new Identifier(UltraAmplifiedDimension.MODID, "sun_shrine_start"),
+                        10,
+                        0,
+                        0,
+                        0
+                )
+        ));
+
+        STONEHENGE = registerStructure("stonehenge", () -> (
+                new GenericJigsawStructure(
+                        DefaultFeatureConfig.CODEC,
+                        new Identifier(UltraAmplifiedDimension.MODID, "stonehenge/center_start"),
+                        10,
+                        -2,
+                        0,
+                        0
+                )
+        ));
+
+        ICE_SPIKE_TEMPLE = registerStructure("ice_spike_temple", () -> (
+                new GenericJigsawStructure(
+                        DefaultFeatureConfig.CODEC,
+                        new Identifier(UltraAmplifiedDimension.MODID, "ice_spike_temple/body_start"),
+                        10,
+                        -7,
+                        7,
+                        1
+                )
+        ));
+
+        MUSHROOM_TEMPLE = registerStructure("mushroom_temple", () -> (
+                new GenericJigsawStructure(
+                        DefaultFeatureConfig.CODEC,
+                        new Identifier(UltraAmplifiedDimension.MODID, "mushroom_temple/body_start"),
+                        10,
+                        -2,
+                        0,
+                        1
+                )
+        ));
     }
 }

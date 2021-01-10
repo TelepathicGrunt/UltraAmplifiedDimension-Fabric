@@ -17,14 +17,20 @@ import java.util.function.Supplier;
 
 public class UADCarvers
 {
-	public static void init(){}
 
-	public static final Carver<?> RAVINE_CARVER = createCarver("ravine", () -> new RavineCarver(RavineConfig.CODEC));
-	public static final Carver<?> LONG_RAVINE_CARVER = createCarver("long_ravine", () -> new SuperLongRavineCarver(RavineConfig.CODEC));
-	public static final Carver<?> CAVE_CAVITY_CARVER = createCarver("cave_cavity", () -> new CaveCavityCarver(CaveConfig.CODEC));
-	public static final Carver<?> UNDERWATER_CAVE_CARVER = createCarver("underwater_cave", () -> new UnderwaterCaveCarver(ProbabilityConfig.CODEC));
+	public static Carver<?> RAVINE_CARVER = null;
+	public static Carver<?> LONG_RAVINE_CARVER = null;
+	public static Carver<?> CAVE_CAVITY_CARVER = null;
+	public static Carver<?> UNDERWATER_CAVE_CARVER = null;
 
 	public static Carver<?> createCarver(String name, Supplier<Carver<?>> carver) {
 		return Registry.register(Registry.CARVER, new Identifier(UltraAmplifiedDimension.MODID, name), carver.get());
+	}
+
+	public static void init(){
+		RAVINE_CARVER = createCarver("ravine", () -> new RavineCarver(RavineConfig.CODEC));
+		LONG_RAVINE_CARVER = createCarver("long_ravine", () -> new SuperLongRavineCarver(RavineConfig.CODEC));
+		CAVE_CAVITY_CARVER = createCarver("cave_cavity", () -> new CaveCavityCarver(CaveConfig.CODEC));
+		UNDERWATER_CAVE_CARVER = createCarver("underwater_cave", () -> new UnderwaterCaveCarver(ProbabilityConfig.CODEC));
 	}
 }

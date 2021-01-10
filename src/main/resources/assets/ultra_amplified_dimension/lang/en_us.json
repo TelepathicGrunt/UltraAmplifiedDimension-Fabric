@@ -13,7 +13,20 @@
   "block.ultra_amplified_dimension.glowsand": "Glowsand",
   "block.ultra_amplified_dimension.glowstone_ore": "Glowstone Ore",
   "block.ultra_amplified_dimension.red_glowsand": "Red Glowsand",
-  
+
+  "ultra_amplified_dimension.amplified_portal.jei_description": " A portal block to enter and exit Ultra Amplified Dimension!\n\n Right click the block without crouching to teleport.\n\n\n\n\n To make this portal, you need to make a portal frame in the following pattern:\n\nTop Layer\nCTC\nTTT\nCTC\n\nMiddle Layer:\nAAA\nADA\nAAA\n\nBottom Layer:\nCBC\nBBB\nCBC\n\nD = Polished Diorite\nA = air space\nC = Polished Granite\nT = Top Polished Andesite Slab\nB = Bottom Polished Andesite Slab\n\nNOTE: C, T, and B may be different blocks if the UA config for them was changed.",
+  "ultra_amplified_dimension.big_cactus_body_block.jei_description": "This plant block can be found in UA's desert and badlands biomes. When broken, they drop vanilla cactus and so, this block is unobtainable in Survival.",
+  "ultra_amplified_dimension.big_cactus_corner_block.jei_description": "This plant block can be found in UA's desert and badlands biomes. When broken, they drop vanilla cactus and so, this block is unobtainable in Survival.",
+  "ultra_amplified_dimension.big_cactus_main_block.jei_description": "This plant block can be found in UA's desert and badlands biomes. When broken, they drop vanilla cactus and so, this block is unobtainable in Survival.",
+  "ultra_amplified_dimension.coarse_glowdirt.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowdirt.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowgrass_block.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowmycelium.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowpodzol.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowsand.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.glowstone_ore.jei_description": "A non-renewable Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+  "ultra_amplified_dimension.red_glowsand.jei_description": "A decorative Glowstone variant block. Can be mined with Fortune for more Glowstone drops or mined with Silk Touch to keep the block intact.",
+
   "biome.ultra_amplified_dimension.badlands": "UAD Badlands",
   "biome.ultra_amplified_dimension.badlands_densed_woods": "UAD Densed Wooded Badlands",
   "biome.ultra_amplified_dimension.badlands_dissected_plateau": "UAD Dissected Plateau Badlands",
@@ -82,5 +95,15 @@
   "biome.ultra_amplified_dimension.taiga_rocky": "UAD Rocky Taiga",
   "biome.ultra_amplified_dimension.tall_birch_forest": "UAD Tall Birch Forest",
   "biome.ultra_amplified_dimension.tall_birch_forest_relic": "UAD Relic Tall Birch Forest",
-  "biome.ultra_amplified_dimension.warped_forest": "UAD Warped Forest"
+  "biome.ultra_amplified_dimension.warped_forest": "UAD Warped Forest",
+
+  "text.autoconfig.ultra_amplified_dimension.title": "Ultra Amplified Dimension Configs",
+  "text.autoconfig.ultra_amplified_dimension.option.heavyFog": "Heavy Fog",
+  "text.autoconfig.ultra_amplified_dimension.option.heavyFog.@PrefixText": "\n\nAdds very heavy fog to make the world look more spooky and limit visibility. This is not the same as distance fog which only applies weakly to chunks in the far distance.",
+  "text.autoconfig.ultra_amplified_dimension.option.cloudHeight": "Cloud Height",
+  "text.autoconfig.ultra_amplified_dimension.option.cloudHeight.@PrefixText": "\n\nMaximum height for clouds to be at. Default is 245.",
+  "text.autoconfig.ultra_amplified_dimension.option.allowNetherPortal": "Allow Nether Portals",
+  "text.autoconfig.ultra_amplified_dimension.option.allowNetherPortal.@PrefixText": "\n\nLets Nether Portals be able to be created in Ultra Amplified Dimension. Using the portal in this dimension will take you to the Nether but Nether Portals in the Nether will take you to the Overworld instead. So this option is good if you want a second way of escaping the Ultra Amplified Dimension.",
+  "text.autoconfig.ultra_amplified_dimension.option.forceExitToOverworld": "Force Exit To Overworld",
+  "text.autoconfig.ultra_amplified_dimension.option.forceExitToOverworld.@PrefixText": "\n\nMakes leaving the Ultra Amplified Dimension by Amplified Portal Block always places you back in the Overworld regardless of which dimension you originally came from. Use this option if this dimension becomes locked in with another dimension so you are stuck teleporting between the two and cannot get back to the Overworld"
 }

@@ -5,13 +5,20 @@ import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
 public class PlayerComponent implements IPlayerComponent {
     private boolean teleporting = false;
-    private Identifier nonBZDimensionType = World.OVERWORLD.getValue();
-    public Vec3d nonBZPosition = null;
+    private RegistryKey<World> nonBZDimension = World.OVERWORLD;
+    public Vec3d nonUADPosition = null;
+    public float nonUADPitch = 0;
+    public float nonUADYaw = 0;
+    public Vec3d UADPosition = null;
+    public float UADPitch = 0;
+    public float UADYaw = 0;
 
     @Override
     public boolean getIsTeleporting() {
@@ -22,45 +29,101 @@ public class PlayerComponent implements IPlayerComponent {
         this.teleporting = isTeleporting;
     }
 
-
     @Override
-    public void setNonBZPos(Vec3d incomingPos)
+    public void setNonUAPos(Vec3d incomingPos)
     {
-        nonBZPosition = incomingPos;
+        nonUADPosition = incomingPos;
     }
     @Override
-    public Vec3d getNonBZPos()
+    public Vec3d getNonUAPos()
     {
-        return nonBZPosition;
+        return nonUADPosition;
     }
 
+    @Override
+    public RegistryKey<World> getNonUADimension() {
+        return this.nonBZDimension;
+    }
 
     @Override
-    public Identifier getNonBZDimension() {
-        return this.nonBZDimensionType;
-    }
-    @Override
-    public void setNonBZDimension(Identifier nonBZDimension) {
-        if (nonBZDimension.equals(UADDimension.UAD_WORLD_KEY.getValue())) {
-            this.nonBZDimensionType = World.OVERWORLD.getValue();
-            UltraAmplifiedDimension.LOGGER.log(Level.ERROR, "Error: The non-bz dimension passed in to be stored was bz dimension. Please contact mod creator to let them know of this issue.");
+    public void setNonUADimension(RegistryKey<World> nonUADimension) {
+        if (nonUADimension.equals(UADDimension.UAD_WORLD_KEY)) {
+            this.nonBZDimension = World.OVERWORLD;
+            UltraAmplifiedDimension.LOGGER.log(Level.ERROR, "Error: The non-UA dimension passed in to be stored was UA dimension. Please contact mod creator to let them know of this issue.");
         } else {
-            this.nonBZDimensionType = nonBZDimension;
+            this.nonBZDimension = nonUADimension;
         }
 
+    }
+
+    @Override
+    public void setNonUAPitch(float incomingPitch){
+        nonUADPitch = incomingPitch;
+    }
+
+    @Override
+    public float getNonUAPitch() {
+        return nonUADPitch;
+    }
+
+
+    @Override
+    public void setNonUAYaw(float incomingYaw){
+        nonUADYaw = incomingYaw;
+    }
+
+    @Override
+    public float getNonUAYaw(){
+        return nonUADYaw;
+    }
+
+
+    @Override
+    public void setUAPos(Vec3d incomingPos)
+    {
+        UADPosition = incomingPos;
+    }
+    @Override
+    public Vec3d getUAPos()
+    {
+        return UADPosition;
+    }
+
+    @Override
+    public void setUAPitch(float incomingPitch){
+        UADPitch = incomingPitch;
+    }
+
+    @Override
+    public float getUAPitch() {
+        return UADPitch;
+    }
+
+    @Override
+    public void setUAYaw(float incomingYaw){
+        UADYaw = incomingYaw;
+    }
+
+    @Override
+    public float getUAYaw(){
+        return UADYaw;
     }
 
 
     @Override
     public void readFromNbt(CompoundTag tag) {
         this.teleporting = tag.getBoolean("teleporting");
-        this.nonBZDimensionType = new Identifier(tag.getString("non_bz_dimensiontype_namespace"), tag.getString("non_bz_dmensiontype_path"));
+        this.nonBZDimension = RegistryKey.of(Registry.DIMENSION, new Identifier(tag.getString("non_ua_dimension_namespace"), tag.getString("non_ua_dmension_path")));
+        this.nonUADPitch = tag.getFloat("pitch");
+        this.nonUADYaw = tag.getFloat("yaw");
     }
     @Override
     public void writeToNbt(CompoundTag tag) {
         tag.putBoolean("teleporting", this.teleporting);
-        tag.putString("non_bz_dimensiontype_namespace", nonBZDimensionType.getNamespace());
-        tag.putString("non_bz_dmensiontype_path", nonBZDimensionType.getPath());
+        tag.putString("non_ua_dimension_namespace", nonBZDimension.getValue().getNamespace());
+        tag.putString("non_ua_dmension_path", nonBZDimension.getValue().getPath());
+        tag.putFloat("pitch", this.nonUADPitch);
+        tag.putFloat("yaw", this.nonUADYaw);
     }
 
 }

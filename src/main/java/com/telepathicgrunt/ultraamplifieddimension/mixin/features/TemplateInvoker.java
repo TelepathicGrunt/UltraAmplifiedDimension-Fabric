@@ -1,7 +1,6 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.features;
 
 import net.minecraft.structure.Structure;
-import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockBox;

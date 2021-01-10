@@ -47,12 +47,4 @@ public class MinecraftServerMixin {
 		CaveCavityCarver.setSeed(hashedSeed);
 		BiomeSetsHelper.generateBiomeSets(biomeRegistry);
 	}
-
-
-	@Inject(method = "tickWorlds(Ljava/util/function/BooleanSupplier;)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;tick(Ljava/util/function/BooleanSupplier;)V"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void worldTick(BooleanSupplier shouldKeepTicking, CallbackInfo ci, Iterator<ServerWorld> serverWorldIterator, ServerWorld serverWorld) {
-		UADWorldSavedData.tick(serverWorld);
-	}
 }

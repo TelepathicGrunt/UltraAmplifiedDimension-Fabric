@@ -3,6 +3,7 @@ package com.telepathicgrunt.ultraamplifieddimension.world.features;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import com.telepathicgrunt.ultraamplifieddimension.modInit.UADTags;
 import net.minecraft.block.*;
 import net.minecraft.structure.Structure;
 import net.minecraft.tag.BlockTags;
@@ -299,7 +300,7 @@ public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
     private static boolean isDirtOrGrass(TestableWorld world, BlockPos pos) {
         return world.testBlockState(pos, (state) -> {
             Block block = state.getBlock();
-            return isSoil(block) || block == Blocks.FARMLAND;
+            return isSoil(block) || block == Blocks.FARMLAND || state.isIn(UADTags.COMMON_DIRT_BLOCKS);
         });
     }
 

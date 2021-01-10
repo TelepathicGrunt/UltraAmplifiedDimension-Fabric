@@ -5,6 +5,7 @@
   "refmap": "ultra_amplified_dimension.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "features.TreeDecoratorTypeAccessor",
     "blocks.AbstractFireBlockMixin",
     "blocks.BlockTagsAccessor",
     "blocks.SpreadableSnowyDirtBlockAccessor",
@@ -31,6 +32,7 @@
     "structures.OceanRuinPiecesPieceMixin",
     "structures.ShipwreckPiecesPieceAccessor",
     "structures.ShipwreckPiecesPieceMixin",
+    "structures.StructureFeatureAccessor",
     "structures.StructurePieceAccessor",
     "structures.StructureStartAccessor",
     "structures.SwampHutPieceMixin",

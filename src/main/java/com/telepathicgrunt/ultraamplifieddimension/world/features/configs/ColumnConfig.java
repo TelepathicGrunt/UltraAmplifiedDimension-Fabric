@@ -5,6 +5,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.gen.feature.FeatureConfig;
+
 import java.util.function.Function;
 
 public class ColumnConfig implements FeatureConfig {

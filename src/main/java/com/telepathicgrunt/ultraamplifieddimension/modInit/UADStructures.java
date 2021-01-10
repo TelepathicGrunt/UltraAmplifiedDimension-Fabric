@@ -2,13 +2,12 @@ package com.telepathicgrunt.ultraamplifieddimension.modInit;
 
 import com.google.common.collect.ImmutableList;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
+import com.telepathicgrunt.ultraamplifieddimension.mixin.structures.StructureFeatureAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.world.structures.GenericJigsawStructure;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,10 +18,10 @@ public class UADStructures {
     // https://www.google.com/search?q=random+number
     // 2147483647
 
+    public static void init(){}
     public static Set<StructureFeature<?>> REGISTERED_UAD_STRUCTURES = new HashSet<>();
-    public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, UltraAmplifiedDimension.MODID);
 
-    public static final RegistryObject<StructureFeature<DefaultFeatureConfig>> SUN_SHRINE = registerStructure("sun_shrine", () -> (
+    public static final StructureFeature<DefaultFeatureConfig> SUN_SHRINE = registerStructure("sun_shrine", () -> (
             new GenericJigsawStructure(
                     DefaultFeatureConfig.CODEC,
                     new Identifier(UltraAmplifiedDimension.MODID, "sun_shrine_start"),
@@ -33,7 +32,7 @@ public class UADStructures {
             )
     ));
 
-    public static final RegistryObject<StructureFeature<DefaultFeatureConfig>> STONEHENGE = registerStructure("stonehenge", () -> (
+    public static final StructureFeature<DefaultFeatureConfig> STONEHENGE = registerStructure("stonehenge", () -> (
             new GenericJigsawStructure(
                     DefaultFeatureConfig.CODEC,
                     new Identifier(UltraAmplifiedDimension.MODID, "stonehenge/center_start"),
@@ -44,7 +43,7 @@ public class UADStructures {
             )
     ));
 
-    public static final RegistryObject<StructureFeature<DefaultFeatureConfig>> ICE_SPIKE_TEMPLE = registerStructure("ice_spike_temple", () -> (
+    public static final StructureFeature<DefaultFeatureConfig> ICE_SPIKE_TEMPLE = registerStructure("ice_spike_temple", () -> (
             new GenericJigsawStructure(
                     DefaultFeatureConfig.CODEC,
                     new Identifier(UltraAmplifiedDimension.MODID, "ice_spike_temple/body_start"),
@@ -55,7 +54,7 @@ public class UADStructures {
             )
     ));
 
-    public static final RegistryObject<StructureFeature<DefaultFeatureConfig>> MUSHROOM_TEMPLE = registerStructure("mushroom_temple", () -> (
+    public static final StructureFeature<DefaultFeatureConfig> MUSHROOM_TEMPLE = registerStructure("mushroom_temple", () -> (
             new GenericJigsawStructure(
                     DefaultFeatureConfig.CODEC,
                     new Identifier(UltraAmplifiedDimension.MODID, "mushroom_temple/body_start"),
@@ -66,8 +65,8 @@ public class UADStructures {
             )
     ));
 
-    private static <T extends StructureFeature<?>> RegistryObject<T> registerStructure(String name, Supplier<T> structure) {
-        return STRUCTURES.register(name, structure);
+    private static <T extends StructureFeature<?>> T registerStructure(String name, Supplier<T> structure) {
+        return Registry.register(Registry.STRUCTURE_FEATURE, new Identifier(UltraAmplifiedDimension.MODID, name), structure.get());
     }
 
     /**
@@ -75,10 +74,10 @@ public class UADStructures {
      * See the comments in below for more details.
      */
     public static void setupStructures() {
-        setupMapSpacingAndLand(SUN_SHRINE.get(), true);
-        setupMapSpacingAndLand(STONEHENGE.get(), true);
-        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE.get(), true);
-        setupMapSpacingAndLand(MUSHROOM_TEMPLE.get(), false);
+        setupMapSpacingAndLand(SUN_SHRINE, true);
+        setupMapSpacingAndLand(STONEHENGE, true);
+        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE, true);
+        setupMapSpacingAndLand(MUSHROOM_TEMPLE, false);
     }
 
     /**
@@ -90,14 +89,16 @@ public class UADStructures {
             F structure,
             boolean transformSurroundingLand)
     {
-        StructureFeature.STRUCTURES.put(structure.getRegistryName().toString(), structure);
+        StructureFeature.STRUCTURES.put(Registry.STRUCTURE_FEATURE.getId(structure).toString(), structure);
         REGISTERED_UAD_STRUCTURES.add(structure);
+
         if(transformSurroundingLand){
-            StructureFeature.JIGSAW_STRUCTURES =
+            StructureFeatureAccessor.setJIGSAW_STRUCTURES(
                     ImmutableList.<StructureFeature<?>>builder()
-                            .addAll(StructureFeature.JIGSAW_STRUCTURES)
-                            .add(structure)
-                            .build();
+                        .addAll(StructureFeature.JIGSAW_STRUCTURES)
+                        .add(structure)
+                        .build()
+            );
         }
     }
 }

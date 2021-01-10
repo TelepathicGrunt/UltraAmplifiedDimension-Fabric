@@ -1,17 +1,23 @@
 package com.telepathicgrunt.ultraamplifieddimension;
 
+import com.telepathicgrunt.ultraamplifieddimension.blocks.AmplifiedPortalBlock;
 import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.IPlayerComponent;
 import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.PlayerComponent;
-import com.telepathicgrunt.ultraamplifieddimension.configs.UADimensionConfig.UADimensionConfigValues;
+import com.telepathicgrunt.ultraamplifieddimension.configs.UADConfig;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.AmplifiedPortalCreation;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
+import com.telepathicgrunt.ultraamplifieddimension.dimension.UADWorldSavedData;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.*;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,31 +28,25 @@ public class UltraAmplifiedDimension implements ModInitializer, EntityComponentI
 	public static final ComponentKey<IPlayerComponent> PLAYER_COMPONENT =
 			ComponentRegistry.getOrCreate(new Identifier(MODID, "player_component"), IPlayerComponent.class);
 
-	public static UADimensionConfigValues UADimensionConfig = null;
-	//public static UAModCompatConfigValues UAModCompatConfig = null;
-
-	//public static WBConfig WB_CONFIG;
-	//WB_CONFIG = AutoConfig.getConfigHolder(WBConfig.class).getConfig();
-	//UseBlockCallback.EVENT.register(WBPortalSpawning::blockRightClick);
+	public static UADConfig UAD_CONFIG = null;
 
 	@Override
 	public void onInitialize() {
-		UADBlocks.ITEMS.register(modEventBus);
-		UADBlocks.BLOCKS.register(modEventBus);
-		UADFeatures.FEATURES.register(modEventBus);
-		UADStructures.STRUCTURES.register(modEventBus);
-		UADPlacements.DECORATORS.register(modEventBus);
-		UADCarvers.WORLD_CARVERS.register(modEventBus);
-		UADSurfaceBuilders.SURFACE_BUILDERS.register(modEventBus);
-		UADTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
 		UADTags.tagInit();
 
-		forgeBus.addListener(EventPriority.NORMAL, UADDimension::worldTick);
-		forgeBus.addListener(EventPriority.NORMAL, AmplifiedPortalCreation::PortalCreationRightClick);
+		UADBlocks.init();
+		UADFeatures.init();
+		UADStructures.init();
+		UADPlacements.init();
+		UADCarvers.init();
+		UADSurfaceBuilders.init();
+		UADTreeDecoratorTypes.init();
 
-		//generates config
-		UADimensionConfig = ConfigHelper.register(ModConfig.Type.SERVER, UADimensionConfigValues::new, "ultra_amplified_dimension-dimension.toml");
-		//UAModCompatConfig = ConfigHelper.register(ModConfig.Type.SERVER, UAModCompatConfigValues::new, "ultra_amplified_dimension-mod_compat.toml");
+		PlayerBlockBreakEvents.BEFORE.register(AmplifiedPortalBlock::removedByPlayer);
+		UseBlockCallback.EVENT.register(AmplifiedPortalCreation::PortalCreationRightClick);
+		ServerTickEvents.END_WORLD_TICK.register(UADWorldSavedData::tick);
+
+		UAD_CONFIG = AutoConfig.getConfigHolder(UADConfig.class).getConfig();
 
 		UADDimension.setupDimension();
 		UADStructures.setupStructures();

@@ -21,9 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.minecraftforge.common.PlantType;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 

@@ -22,7 +22,7 @@
             "com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension"
         ],
         "client": [
-            "com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimensionClient"
+            "com.telepathicgrunt.ultraamplifieddimension.client.UltraAmplifiedDimensionClient"
         ],
         "modmenu": [
             "com.telepathicgrunt.ultraamplifieddimension.configs.ModMenuConfig"
@@ -39,6 +39,7 @@
             "ultra_amplified_dimension:player_component"
         ]
     },
+    "accessWidener" : "ultra_amplified_dimension.accesswidener",
 
     "depends": {
         "minecraft": ">=1.16.2",

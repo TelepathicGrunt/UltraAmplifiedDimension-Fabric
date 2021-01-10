@@ -1,7 +1,6 @@
 package com.telepathicgrunt.ultraamplifieddimension.world.carver;
 
 import com.mojang.serialization.Codec;
-import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.mixin.dimension.BiomeContainerAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.utils.GeneralUtils;
 import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.RavineConfig;
@@ -16,6 +15,7 @@ import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.carver.Carver;
+
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Random;

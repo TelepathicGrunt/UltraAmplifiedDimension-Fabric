@@ -3,6 +3,7 @@ package com.telepathicgrunt.ultraamplifieddimension.world.features;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import com.telepathicgrunt.ultraamplifieddimension.modInit.UADTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
@@ -23,6 +24,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+
 import java.util.*;
 
 
@@ -60,8 +62,6 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 	// generate the spooky horned swamp m trees
 	private boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, Set<BlockPos> logPositions, Set<BlockPos> leavesPositions, TreeFeatureConfig config) {
 		int height = config.trunkPlacer.getHeight(random);
-		BlockState currentPos = world.getBlockState(position);
-		BlockState belowPos = world.getBlockState(position.down());
 
 		// checks to see if there is room to generate tree
 		if (!this.isSpaceAt(world, chunkGenerator, position, height)) {
@@ -226,7 +226,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 
 
 	private static boolean isDirtOrGrass(TestableWorld world, BlockPos pos) {
-		return world.testBlockState(pos, (state) -> isSoil(state.getBlock()) || state.isOf(Blocks.FARMLAND));
+		return world.testBlockState(pos, (state) -> isSoil(state.getBlock()) || state.isOf(Blocks.FARMLAND) || state.isIn(UADTags.COMMON_DIRT_BLOCKS));
 	}
 
 

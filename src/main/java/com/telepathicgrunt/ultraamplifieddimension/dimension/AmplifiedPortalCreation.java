@@ -1,7 +1,6 @@
 package com.telepathicgrunt.ultraamplifieddimension.dimension;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
-import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlockTags;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADTags;
 import com.telepathicgrunt.ultraamplifieddimension.world.features.AmplifiedPortalFrame;
@@ -10,29 +9,31 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.enums.SlabType;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * Handles creating the Amplified Portal block and holds the code to make the portal frame too.
  */
 public class AmplifiedPortalCreation {
 
-    public static void PortalCreationRightClick(PlayerInteractEvent.RightClickBlock event) {
-        World world = event.getWorld();
-        Entity entity = event.getEntity();
+    public static ActionResult PortalCreationRightClick(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
 
-        if (!world.isClient() && !entity.isInSneakingPose()) {
-            if (event.getItemStack().getItem().isIn(UADTags.PORTAL_ACTIVATION_ITEMS)) {
-                trySpawnPortal(world, event.getPos());
+        if (!world.isClient() && !player.isInSneakingPose()) {
+            if (player.getStackInHand(hand).getItem().isIn(UADTags.PORTAL_ACTIVATION_ITEMS)) {
+                trySpawnPortal(world, hitResult.getBlockPos());
             }
         }
+
+        return ActionResult.PASS;
     }
 
 

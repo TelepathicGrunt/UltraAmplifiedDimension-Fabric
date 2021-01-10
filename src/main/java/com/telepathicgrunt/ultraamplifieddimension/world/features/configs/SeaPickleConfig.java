@@ -3,8 +3,9 @@ package com.telepathicgrunt.ultraamplifieddimension.world.features.configs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.function.Function;
 import net.minecraft.world.gen.feature.FeatureConfig;
+
+import java.util.function.Function;
 
 public class SeaPickleConfig implements FeatureConfig {
     public static final Codec<SeaPickleConfig> CODEC = RecordCodecBuilder.<SeaPickleConfig>create((configInstance) -> configInstance.group(

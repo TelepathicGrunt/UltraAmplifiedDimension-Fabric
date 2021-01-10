@@ -12,6 +12,7 @@ import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.FeatureConfig;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;

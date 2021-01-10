@@ -5,6 +5,7 @@ import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
+
 import java.util.Random;
 
 public class MarkerPiece extends SimpleStructurePiece {

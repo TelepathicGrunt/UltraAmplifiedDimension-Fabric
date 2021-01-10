@@ -1,20 +1,20 @@
 package com.telepathicgrunt.ultraamplifieddimension.modInit;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
+import com.telepathicgrunt.ultraamplifieddimension.mixin.features.TreeDecoratorTypeAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.world.features.treedecorators.DiskGroundDecorator;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.tree.TreeDecoratorType;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
 public class UADTreeDecoratorTypes {
-    public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, UltraAmplifiedDimension.MODID);
+    public static void init(){}
 
-    public static final RegistryObject<TreeDecoratorType<DiskGroundDecorator>> DISK_GROUND_DECORATOR = createTreeDecoratorType("disk_ground_decorator", () -> new TreeDecoratorType<>(DiskGroundDecorator.CODEC));
+    public static final TreeDecoratorType<DiskGroundDecorator> DISK_GROUND_DECORATOR = createTreeDecoratorType("disk_ground_decorator", () -> TreeDecoratorTypeAccessor.createTreeDecoratorType(DiskGroundDecorator.CODEC));
 
-    public static <B extends TreeDecoratorType<?>> RegistryObject<B> createTreeDecoratorType(String name, Supplier<B> type) {
-        return TREE_DECORATOR_TYPES.register(name, type);
+    public static <B extends TreeDecoratorType<?>> B createTreeDecoratorType(String name, Supplier<B> type) {
+        return Registry.register(Registry.TREE_DECORATOR_TYPE, new Identifier(UltraAmplifiedDimension.MODID, name), type.get());
     }
 }

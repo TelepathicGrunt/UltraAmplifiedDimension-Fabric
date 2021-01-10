@@ -21,9 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.minecraftforge.common.PlantType;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 
@@ -55,7 +53,7 @@ public class BigCactusCornerBlock extends HorizontalFacingBlock
 
 				int j = state.get(AGE);
 				if (j == 15) {
-					world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.get().getDefaultState());
+					world.setBlockState(blockpos, UADBlocks.BIG_CACTUS_BODY_BLOCK.getDefaultState());
 					BlockState blockstate = state.with(AGE, 0);
 					world.setBlockState(pos, blockstate, 4);
 					blockstate.neighborUpdate(world, blockpos, this, pos, false);

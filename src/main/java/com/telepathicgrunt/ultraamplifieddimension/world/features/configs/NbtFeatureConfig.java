@@ -3,13 +3,14 @@ package com.telepathicgrunt.ultraamplifieddimension.world.features.configs;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.FeatureConfig;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class NbtFeatureConfig implements FeatureConfig {
     public static final Codec<NbtFeatureConfig> CODEC = RecordCodecBuilder.create((configInstance) -> configInstance.group(

@@ -2,7 +2,6 @@ package com.telepathicgrunt.ultraamplifieddimension.dimension;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
-import com.telepathicgrunt.ultraamplifieddimension.dimension.UADWorldSavedData.TeleportEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

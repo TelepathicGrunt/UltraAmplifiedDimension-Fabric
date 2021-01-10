@@ -2,12 +2,10 @@ package com.telepathicgrunt.ultraamplifieddimension.dimension;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.biomeprovider.UADBiomeProvider;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraftforge.event.TickEvent;
 
 public class UADDimension {
     public static final RegistryKey<World> UAD_WORLD_KEY = RegistryKey.of(Registry.DIMENSION, new Identifier(UltraAmplifiedDimension.MODID, UltraAmplifiedDimension.MODID));

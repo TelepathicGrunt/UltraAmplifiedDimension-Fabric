@@ -12,13 +12,13 @@ import net.minecraft.util.math.Vec3d;
 @Environment(EnvType.CLIENT)
 public class UADSkyProperty extends SkyProperties {
     public UADSkyProperty() {
-        super(UltraAmplifiedDimension.UADimensionConfig.cloudHeight.get(), true, SkyType.NORMAL, false, false);
+        super(UltraAmplifiedDimension.UAD_CONFIG.cloudHeight, true, SkyType.NORMAL, false, false);
     }
 
     @Override
     // thick fog or no
     public boolean useThickFog(int camX, int camY) {
-        return UltraAmplifiedDimension.UADimensionConfig.heavyFog.get();
+        return UltraAmplifiedDimension.UAD_CONFIG.heavyFog;
     }
 
 

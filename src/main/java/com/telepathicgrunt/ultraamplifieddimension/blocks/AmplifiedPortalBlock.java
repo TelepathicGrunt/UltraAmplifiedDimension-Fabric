@@ -2,8 +2,6 @@ package com.telepathicgrunt.ultraamplifieddimension.blocks;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
-import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.IPlayerPosAndDim;
-import com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents.PlayerPositionAndDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.AmplifiedPortalCreation;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADWorldSavedData;
@@ -11,6 +9,7 @@ import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -61,8 +60,6 @@ public class AmplifiedPortalBlock extends Block
 		{
 			MinecraftServer minecraftserver = playerEntity.getServer();
 
-			//grabs the capability attached to player for dimension hopping
-			PlayerPositionAndDimension cap = (PlayerPositionAndDimension) playerEntity.getCapability(PAST_POS_AND_DIM).orElseThrow(RuntimeException::new);
 
 			// Gets previous dimension
 			RegistryKey<World> destinationKey;
@@ -72,14 +69,14 @@ public class AmplifiedPortalBlock extends Block
 
 			// Player is leaving Ultra Amplified dimension
 			if (playerEntity.world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
-				if (UltraAmplifiedDimension.UADimensionConfig.forceExitToOverworld.get())
+				if (UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld)
 				{
 					// Go to Overworld directly because of config option.
 					destinationKey = World.OVERWORLD;
 				}
 				else {
 					// Gets stored dimension
-					destinationKey = cap.getNonUADim();
+					destinationKey = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUADimension();
 
 					// Impressive if this is reached...........
 					if (destinationKey == null) {
@@ -88,27 +85,27 @@ public class AmplifiedPortalBlock extends Block
 				}
 
 				// Get direction to face for Non-UA dimension
-				pitch = cap.getNonUAPitch();
-				yaw = cap.getNonUAYaw();
+				pitch = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAPitch();
+				yaw = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAYaw();
 
 				// Set current UA position and rotations
-				cap.setUAPos(playerEntity.getPos());
-				cap.setUAPitch(playerEntity.pitch);
-				cap.setUAYaw(playerEntity.yaw);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAPos(playerEntity.getPos());
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAPitch(playerEntity.pitch);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAYaw(playerEntity.yaw);
 			}
 
 			// Otherwise, take us to Ultra Amplified Dimension.
 			else {
 				destinationKey = UADDimension.UAD_WORLD_KEY;
-				pitch = cap.getUAPitch();
-				yaw = cap.getUAYaw();
+				pitch = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getUAPitch();
+				yaw = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getUAYaw();
 				enteringUA = true;
 
 				// Set current nonUA position, rotations, and dimension before teleporting
-				cap.setNonUAPos(playerEntity.getPos());
-				cap.setNonUADim(playerEntity.world.getRegistryKey());
-				cap.setNonUAPitch(playerEntity.pitch);
-				cap.setNonUAYaw(playerEntity.yaw);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAPos(playerEntity.getPos());
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUADimension(playerEntity.world.getRegistryKey());
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAPitch(playerEntity.pitch);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAYaw(playerEntity.yaw);
 			}
 
 			//Get the world itself. If the world doesn't exist, get Overworld instead.
@@ -128,7 +125,7 @@ public class AmplifiedPortalBlock extends Block
 
 			// Gets top block in other world or original location
 			Vec3d playerVec3Pos;
-			if (enteringUA && cap.getUAPos() == null) {
+			if (enteringUA && UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getUAPos() == null) {
 				// If it is player's first time teleporting to UA dimension, 
 				// find top block at world origin closest to portal
 				BlockPos worldOriginBlockPos = new BlockPos(10, 0, 8);
@@ -178,11 +175,11 @@ public class AmplifiedPortalBlock extends Block
 				// Otherwise, just go to where our stored location is
 				if (enteringUA) {
 					// Will never be null because we did check above for null already.
-					playerVec3Pos = cap.getUAPos();
+					playerVec3Pos = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getUAPos();
 				}
 				else {
 					// Check for null which would be impressive if it occurs
-					if (cap.getNonUAPos() == null || UltraAmplifiedDimension.UADimensionConfig.forceExitToOverworld.get())
+					if (destinationWorld != null && (UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAPos() == null || UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld))
 					{
 						// Set player at world spawn then with Amplified Portal at feet
 						// The portal will try to not replace any block and be at the next air block above non-air blocks.
@@ -199,7 +196,7 @@ public class AmplifiedPortalBlock extends Block
 					}
 					else {
 						// Get position in non UA dimension as it isn't null
-						playerVec3Pos = cap.getNonUAPos();
+						playerVec3Pos = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAPos();
 					}
 				}
 			}
@@ -217,70 +214,53 @@ public class AmplifiedPortalBlock extends Block
 	}
 
 
-//	/**
-//	 * mining portal block in ultra amplified dimension will be denied if it is the highest Amplified Portal Block at x=8,
-//	 * z=8
-//	 *
-//	 * :Forge notes: Called when a player removes a block. This is responsible for actually destroying the block, and the
-//	 * block is intact at time of call. This is called regardless of whether the player can harvest the block or not.
-//	 *
-//	 * Return true if the block is actually destroyed.
-//	 *
-//	 * Note: When used in multiplayer, this is called on both client and server sides!
-//	 *
-//	 * @param state       The current state.
-//	 * @param world       The current world
-//	 * @param player      The player damaging the block, may be null
-//	 * @param pos         Block position in world
-//	 * @param willHarvest True if Block.harvestBlock will be called after this, if the return in true. Can be useful to
-//	 *                    delay the destruction of tile entities till after harvestBlock
-//	 * @param fluid       The current fluid state at current position
-//	 * @return True if the block is actually destroyed.
-//	 */
-//	@Override
-//	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid)
-//	{
-//
-//		// if player is in creative mode, just remove block completely
-//		if (player != null && player.isCreative()) {
-//			this.onBreak(world, pos, state, player);
-//			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-//			return true;
-//		}
-//
-//		// otherwise, check to see if we are mining the highest portal block at world
-//		// origin in UA dimension
-//		else {
-//			// if we are in UA dimension
-//			if (world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
-//
-//				// if we are at default portal coordinate
-//				if (pos.getX() == 8 && pos.getZ() == 8) {
-//
-//					// finds the highest portal at world origin
-//					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getDimensionHeight(), pos.getZ());
-//					while (posOfHighestPortal.getY() >= 0) {
-//						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
-//						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL) {
-//							break;
-//						}
-//
-//						posOfHighestPortal = posOfHighestPortal.down();
-//					}
-//
-//					// if this block being broken is the highest portal, return false to end method
-//					// and not break the portal block
-//					if (posOfHighestPortal.getY() == pos.getY()) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//
-//		// otherwise, allow the block to break
-//		this.onBreak(world, pos, state, player);
-//		return world.removeBlock(pos, false);
-//	}
+	/**
+	 * mining portal block in ultra amplified dimension will be denied if it is the highest Amplified Portal Block at x=8,
+	 * z=8
+	 */
+	public static boolean removedByPlayer(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity)
+		{
+
+		// if player is in creative mode, just remove block completely
+		if (player != null && player.isCreative()) {
+			state.getBlock().onBreak(world, pos, state, player);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			return true;
+		}
+
+		// otherwise, check to see if we are mining the highest portal block at world
+		// origin in UA dimension
+		else {
+			// if we are in UA dimension
+			if (world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
+
+				// if we are at default portal coordinate
+				if (pos.getX() == 8 && pos.getZ() == 8) {
+
+					// finds the highest portal at world origin
+					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getDimensionHeight(), pos.getZ());
+					while (posOfHighestPortal.getY() >= 0) {
+						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
+						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL) {
+							break;
+						}
+
+						posOfHighestPortal = posOfHighestPortal.down();
+					}
+
+					// if this block being broken is the highest portal, return false to end method
+					// and not break the portal block
+					if (posOfHighestPortal.getY() == pos.getY()) {
+						return false;
+					}
+				}
+			}
+		}
+
+		// otherwise, allow the block to break
+		state.getBlock().onBreak(world, pos, state, player);
+		return world.removeBlock(pos, false);
+	}
 
 	// has no item form
 	@Override

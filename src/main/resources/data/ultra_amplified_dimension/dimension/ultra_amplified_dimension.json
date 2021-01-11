@@ -28,19 +28,20 @@
                 "main_biome": "ultra_amplified_dimension:ocean_frozen",
                 "weight": 10,
                 "border_biome": "ultra_amplified_dimension:ocean_frozen",
-                "sub_biome": "ultra_amplified_dimension:ocean_frozen_deep"
+                "sub_biome": "ultra_amplified_dimension:ocean_frozen_deep",
+                "mutated_biome": "ultra_amplified_dimension:ocean_frozen_deep"
             },
             {
                 "main_biome": "ultra_amplified_dimension:ocean_lukewarm",
                 "weight": 10,
-                "border_biome": "ultra_amplified_dimension:ocean_lukewarm",
-                "sub_biome": "ultra_amplified_dimension:ocean_lukewarm_deep"
+                "border_biome": "ultra_amplified_dimension:ocean_lukewarm"
             },
             {
                 "main_biome": "ultra_amplified_dimension:ocean_warm",
                 "weight": 10,
                 "border_biome": "ultra_amplified_dimension:ocean_warm",
-                "sub_biome": "ultra_amplified_dimension:ocean_warm_deep"
+                "sub_biome": "ultra_amplified_dimension:ocean_warm_deep",
+                "mutated_biome": "ultra_amplified_dimension:ocean_warm_deep"
             }
         ],
         "end_biomes": [

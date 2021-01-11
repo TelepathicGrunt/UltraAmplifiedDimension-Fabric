@@ -12,6 +12,16 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 # | Ultra Amplified Dimension changelog |
 
 
+## (V.9.0.1 Changes) (1.16.4 Minecraft)
+
+##### Biomes:
+-Fixed sky/fog color for nether biomes.
+
+-Made deep warm/frozen oceans more common.
+
+-Fixed mutated biomes not spawning.
+
+
 ## (V.9.0.0 Changes) (1.16.4 Minecraft)
 
 ##### MAJOR:

@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface DimensionSettingsInvoker {
 
     @Invoker("<init>")
-    static ChunkGeneratorSettings invokeinit(StructuresConfig structures, GenerationShapeConfig noise, BlockState defaultBlock, BlockState defaultFluid, int p_i231905_5_, int p_i231905_6_, int p_i231905_7_, boolean p_i231905_8_) {
+    static ChunkGeneratorSettings uad_invokeinit(StructuresConfig structures, GenerationShapeConfig noise, BlockState defaultBlock, BlockState defaultFluid, int p_i231905_5_, int p_i231905_6_, int p_i231905_7_, boolean p_i231905_8_) {
         throw new UnsupportedOperationException();
     }
 
     @Invoker("isMobGenerationDisabled")
-    boolean invokefunc_236120_h_();
+    boolean uad_invokefunc_236120_h_();
 }

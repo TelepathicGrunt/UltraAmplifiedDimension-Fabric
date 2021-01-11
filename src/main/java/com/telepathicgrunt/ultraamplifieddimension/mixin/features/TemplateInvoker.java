@@ -16,14 +16,14 @@ import java.util.List;
 public interface TemplateInvoker {
 
     @Accessor("blockInfoLists")
-    List<Structure.PalettedBlockInfoList> getBlocks();
+    List<Structure.PalettedBlockInfoList> uad_getBlocks();
 
     @Accessor("entities")
-    List<Structure.StructureEntityInfo> getEntities();
+    List<Structure.StructureEntityInfo> uad_getEntities();
 
     @Accessor("size")
-    BlockPos getSize();
+    BlockPos uad_getSize();
 
     @Invoker("spawnEntities")
-    void invokeSpawnEntities(ServerWorldAccess serverWorldAccess, BlockPos pos, BlockMirror blockMirror, BlockRotation blockRotation, BlockPos pivot, BlockBox area, boolean bl);
+    void uad_invokeSpawnEntities(ServerWorldAccess serverWorldAccess, BlockPos pos, BlockMirror blockMirror, BlockRotation blockRotation, BlockPos pivot, BlockBox area, boolean bl);
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 @Mixin(MineshaftGenerator.MineshaftRoom.class)
 public interface MineshaftRoomAccessor {
-    @Accessor
-    List<BlockBox> getEntrances();
+    @Accessor("entrances")
+    List<BlockBox> uad_getEntrances();
 }

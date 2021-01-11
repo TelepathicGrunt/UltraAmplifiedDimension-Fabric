@@ -17,6 +17,6 @@ public class UADTreeDecoratorTypes {
     }
 
     public static void init(){
-        DISK_GROUND_DECORATOR = createTreeDecoratorType("disk_ground_decorator", () -> TreeDecoratorTypeAccessor.createTreeDecoratorType(DiskGroundDecorator.CODEC));
+        DISK_GROUND_DECORATOR = createTreeDecoratorType("disk_ground_decorator", () -> TreeDecoratorTypeAccessor.uad_createTreeDecoratorType(DiskGroundDecorator.CODEC));
     }
 }

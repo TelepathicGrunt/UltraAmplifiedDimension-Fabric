@@ -110,19 +110,18 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                     Codec.INT.fieldOf("bedrock_roof_position").forGetter(ChunkGeneratorSettings::getBedrockCeilingY),
                     Codec.INT.fieldOf("bedrock_floor_position").forGetter(ChunkGeneratorSettings::getBedrockFloorY),
                     Codec.INT.fieldOf("sea_level").forGetter(ChunkGeneratorSettings::getSeaLevel),
-                    Codec.BOOL.fieldOf("disable_mob_generation").forGetter(dimensionSettings -> ((DimensionSettingsInvoker)(Object)dimensionSettings).invokefunc_236120_h_()))
-                        .apply(dimensionSettingsInstance, DimensionSettingsInvoker::invokeinit));
+                    Codec.BOOL.fieldOf("disable_mob_generation").forGetter(dimensionSettings -> ((DimensionSettingsInvoker)(Object)dimensionSettings).uad_invokefunc_236120_h_()))
+                        .apply(dimensionSettingsInstance, DimensionSettingsInvoker::uad_invokeinit));
 
 
     public static final Codec<NoiseChunkGenerator> UAD_CHUNK_GENERATOR_CODEC = RecordCodecBuilder.create((noiseChunkGeneratorInstance) -> noiseChunkGeneratorInstance.group(
-                    BiomeSource.CODEC.fieldOf("biome_source").forGetter((noiseChunkGenerator) -> ((ChunkGeneratorAccessor)noiseChunkGenerator).getbiomeProvider()),
-                    Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).getfield_236084_w_()),
-                    UAD_DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).getfield_236080_h_().get()))
+                    BiomeSource.CODEC.fieldOf("biome_source").forGetter((noiseChunkGenerator) -> ((ChunkGeneratorAccessor)noiseChunkGenerator).uad_getbiomeProvider()),
+                    Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).uad_getfield_236084_w_()),
+                    UAD_DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter((noiseChunkGenerator) -> ((NoiseChunkGeneratorAccessor)noiseChunkGenerator).uad_getfield_236080_h_().get()))
                         .apply(noiseChunkGeneratorInstance, noiseChunkGeneratorInstance.stable(UADChunkGenerator::new)));
 
     // Cache the sealevel
     private final int sealevel;
-    protected OpenSimplexNoise noiseGen;
     protected long seed;
     protected List<StructureFeature<?>> landTerraformingStructures;
 
@@ -195,9 +194,9 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
         double d5 = noisesettings.getDensityFactor();
         double d6 = noisesettings.getDensityOffset();
 
-        for(int i1 = 0; i1 <= ((NoiseChunkGeneratorAccessor)this).getNoiseSizeY(); ++i1) {
+        for(int i1 = 0; i1 <= ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY(); ++i1) {
             double d7 = this.sampleNoise(noiseX, i1, noiseZ, d12, d13, d14, d15);
-            double d8 = 1.0D - (double)i1 * 2.0D / (double)((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() + d4;
+            double d8 = 1.0D - (double)i1 * 2.0D / (double)((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() + d4;
             double d9 = d8 * d5 + d6;
             double d10 = (d9 + d0) * d1;
             if (d10 > 0.0D) {
@@ -207,7 +206,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             }
 
             if (d19 > 0.0D) {
-                double d11 = ((double)(((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() - i1) - d20) / d19;
+                double d11 = ((double)(((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() - i1) - d20) / d19;
                 d7 = MathHelper.clampedLerp(d17, d7, d11);
             }
 
@@ -245,7 +244,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             double scaledVerticalScale = verticalStretch * frequency;
             double scaledY = y * scaledVerticalScale;
 
-            interpolationValue += sampleOctave(((NoiseChunkGeneratorAccessor)this).getInterpolationNoise().getOctave(octave),
+            interpolationValue += sampleOctave(((NoiseChunkGeneratorAccessor)this).uad_getInterpolationNoise().getOctave(octave),
                     OctavePerlinNoiseSampler.maintainPrecision(x * horizontalStretch * frequency),
                     OctavePerlinNoiseSampler.maintainPrecision(scaledY),
                     OctavePerlinNoiseSampler.maintainPrecision(z * horizontalStretch * frequency), scaledVerticalScale, scaledY, frequency);
@@ -263,7 +262,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                 double scaledVerticalScale = verticalScale * frequency;
                 double scaledY = y * scaledVerticalScale;
 
-                noise += sampleOctave(((NoiseChunkGeneratorAccessor)this).getUpperInterpolatedNoise().getOctave(octave),
+                noise += sampleOctave(((NoiseChunkGeneratorAccessor)this).uad_getUpperInterpolatedNoise().getOctave(octave),
                         OctavePerlinNoiseSampler.maintainPrecision(x * horizontalScale * frequency),
                         OctavePerlinNoiseSampler.maintainPrecision(scaledY),
                         OctavePerlinNoiseSampler.maintainPrecision(z * horizontalScale * frequency), scaledVerticalScale, scaledY, frequency);
@@ -280,7 +279,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             for (int octave = 0; octave < 16; octave++) {
                 double scaledVerticalScale = verticalScale * frequency;
                 double scaledY = y * scaledVerticalScale;
-                noise += sampleOctave(((NoiseChunkGeneratorAccessor)this).getLowerInterpolatedNoise().getOctave(octave),
+                noise += sampleOctave(((NoiseChunkGeneratorAccessor)this).uad_getLowerInterpolatedNoise().getOctave(octave),
                         OctavePerlinNoiseSampler.maintainPrecision(x * horizontalScale * frequency),
                         OctavePerlinNoiseSampler.maintainPrecision(scaledY),
                         OctavePerlinNoiseSampler.maintainPrecision(z * horizontalScale * frequency), scaledVerticalScale, scaledY, frequency);
@@ -306,8 +305,8 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                 double yVal = OctavePerlinNoiseSampler.maintainPrecision(scaledY);
                 double zVal = OctavePerlinNoiseSampler.maintainPrecision(z * horizontalScale * frequency);
 
-                upperNoise += sampleOctave(((NoiseChunkGeneratorAccessor)this).getUpperInterpolatedNoise().getOctave(octave), xVal, yVal, zVal, scaledVerticalScale, scaledY, frequency);
-                lowerNoise += sampleOctave(((NoiseChunkGeneratorAccessor)this).getLowerInterpolatedNoise().getOctave(octave), xVal, yVal, zVal, scaledVerticalScale, scaledY, frequency);
+                upperNoise += sampleOctave(((NoiseChunkGeneratorAccessor)this).uad_getUpperInterpolatedNoise().getOctave(octave), xVal, yVal, zVal, scaledVerticalScale, scaledY, frequency);
+                lowerNoise += sampleOctave(((NoiseChunkGeneratorAccessor)this).uad_getLowerInterpolatedNoise().getOctave(octave), xVal, yVal, zVal, scaledVerticalScale, scaledY, frequency);
 
                 frequency /= 2.0;
             }
@@ -326,13 +325,13 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
 
 
     private double[] sampleNoiseColumn(int p_222547_1_, int p_222547_2_) {
-        double[] adouble = new double[((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() + 1];
+        double[] adouble = new double[((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() + 1];
         this.sampleNoiseColumn(adouble, p_222547_1_, p_222547_2_);
         return adouble;
     }
 
     private double getRandomDensityAt(int x, int z) {
-        double d0 = ((NoiseChunkGeneratorAccessor)this).getDensityNoise().sample(
+        double d0 = ((NoiseChunkGeneratorAccessor)this).uad_getDensityNoise().sample(
                 x * 200,
                 10.0D,
                 z * 200,
@@ -355,22 +354,22 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
 
     @Override
     public BlockView getColumnSample(int x, int z) {
-        BlockState[] ablockstate = new BlockState[((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() * ((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution()];
+        BlockState[] ablockstate = new BlockState[((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() * ((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution()];
         this.sampleHeightmap(x, z, ablockstate, null);
         return new VerticalBlockSample(ablockstate);
     }
 
     private int sampleHeightmap(int x, int z, BlockState[] p_236087_3_, Predicate<BlockState> p_236087_4_) {
-        int i = Math.floorDiv(x, ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution());
-        int j = Math.floorDiv(z, ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution());
-        int k = Math.floorMod(x, ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution());
-        int l = Math.floorMod(z, ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution());
-        double d0 = (double)k / (double)((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution();
-        double d1 = (double)l / (double)((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution();
+        int i = Math.floorDiv(x, ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution());
+        int j = Math.floorDiv(z, ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution());
+        int k = Math.floorMod(x, ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution());
+        int l = Math.floorMod(z, ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution());
+        double d0 = (double)k / (double)((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution();
+        double d1 = (double)l / (double)((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution();
         double[][] adouble = new double[][]{this.sampleNoiseColumn(i, j), this.sampleNoiseColumn(i, j + 1), this.sampleNoiseColumn(i + 1, j), this.sampleNoiseColumn(i + 1, j + 1)};
 
         Biome biome = getCachedBiome(null, new BlockPos(x, 0, z));
-        for(int ySection = ((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() - 1; ySection >= 0; --ySection) {
+        for(int ySection = ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() - 1; ySection >= 0; --ySection) {
             double d2 = adouble[0][ySection];
             double d3 = adouble[1][ySection];
             double d4 = adouble[2][ySection];
@@ -380,10 +379,10 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             double d8 = adouble[2][ySection + 1];
             double d9 = adouble[3][ySection + 1];
 
-            for(int j1 = ((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution() - 1; j1 >= 0; --j1) {
-                double d10 = (double)j1 / (double)((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution();
+            for(int j1 = ((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution() - 1; j1 >= 0; --j1) {
+                double d10 = (double)j1 / (double)((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution();
                 double noiseValue = MathHelper.lerp3(d10, d0, d1, d2, d6, d4, d8, d3, d7, d5, d9);
-                int y = ySection * ((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution() + j1;
+                int y = ySection * ((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution() + j1;
                 BlockState blockstate = this.getTerrainBlock(null, noiseValue, biome, x, y, z);
                 if (p_236087_3_ != null) {
                     p_236087_3_[y] = blockstate;
@@ -437,12 +436,12 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             });
         }
 
-        double[][][] adouble = new double[2][((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ() + 1][((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() + 1];
+        double[][][] adouble = new double[2][((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ() + 1][((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() + 1];
 
-        for(int i5 = 0; i5 < ((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ() + 1; ++i5) {
-            adouble[0][i5] = new double[((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() + 1];
-            this.sampleNoiseColumn(adouble[0][i5], xChunkPos * ((NoiseChunkGeneratorAccessor)this).getNoiseSizeX(), zChunkPos * ((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ() + i5);
-            adouble[1][i5] = new double[((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() + 1];
+        for(int i5 = 0; i5 < ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ() + 1; ++i5) {
+            adouble[0][i5] = new double[((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() + 1];
+            this.sampleNoiseColumn(adouble[0][i5], xChunkPos * ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeX(), zChunkPos * ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ() + i5);
+            adouble[1][i5] = new double[((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() + 1];
         }
 
         ProtoChunk chunkprimer = (ProtoChunk)chunk;
@@ -452,16 +451,16 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
         ObjectListIterator<StructurePiece> objectlistiterator = objectlist.iterator();
         ObjectListIterator<JigsawJunction> objectlistiterator1 = objectlist1.iterator();
 
-        for(int xNoiseSize = 0; xNoiseSize < ((NoiseChunkGeneratorAccessor)this).getNoiseSizeX(); ++xNoiseSize) {
-            for(int zNoiseSize = 0; zNoiseSize < ((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ() + 1; ++zNoiseSize) {
-                this.sampleNoiseColumn(adouble[1][zNoiseSize], xChunkPos * ((NoiseChunkGeneratorAccessor)this).getNoiseSizeX() + xNoiseSize + 1, zChunkPos * ((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ() + zNoiseSize);
+        for(int xNoiseSize = 0; xNoiseSize < ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeX(); ++xNoiseSize) {
+            for(int zNoiseSize = 0; zNoiseSize < ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ() + 1; ++zNoiseSize) {
+                this.sampleNoiseColumn(adouble[1][zNoiseSize], xChunkPos * ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeX() + xNoiseSize + 1, zChunkPos * ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ() + zNoiseSize);
             }
 
-            for(int j5 = 0; j5 < ((NoiseChunkGeneratorAccessor)this).getNoiseSizeZ(); ++j5) {
+            for(int j5 = 0; j5 < ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeZ(); ++j5) {
                 ChunkSection chunksection = chunkprimer.getSection(15);
                 chunksection.lock();
 
-                for(int k1 = ((NoiseChunkGeneratorAccessor)this).getNoiseSizeY() - 1; k1 >= 0; --k1) {
+                for(int k1 = ((NoiseChunkGeneratorAccessor)this).uad_getNoiseSizeY() - 1; k1 >= 0; --k1) {
                     double d0 = adouble[0][j5][k1];
                     double d1 = adouble[0][j5 + 1][k1];
                     double d2 = adouble[1][j5][k1];
@@ -471,21 +470,21 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                     double d6 = adouble[1][j5][k1 + 1];
                     double d7 = adouble[1][j5 + 1][k1 + 1];
 
-                    for(int xSection = 0; xSection < ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution(); ++xSection) {
-                        int x = xPos + xNoiseSize * ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution() + xSection;
+                    for(int xSection = 0; xSection < ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution(); ++xSection) {
+                        int x = xPos + xNoiseSize * ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution() + xSection;
                         int xInChunk = x & 15;
-                        double d13 = (double)xSection / (double)((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution();
+                        double d13 = (double)xSection / (double)((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution();
 
-                        for(int zSection = 0; zSection < ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution(); ++zSection) {
-                            int z = zPos + j5 * ((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution() + zSection;
+                        for(int zSection = 0; zSection < ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution(); ++zSection) {
+                            int z = zPos + j5 * ((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution() + zSection;
                             int zInChunk = z & 15;
-                            double d16 = (double)zSection / (double)((NoiseChunkGeneratorAccessor)this).getHorizontalNoiseResolution();
+                            double d16 = (double)zSection / (double)((NoiseChunkGeneratorAccessor)this).uad_getHorizontalNoiseResolution();
 
                             // Do it here instead of in getTerrainBlock as the biome is the same for the entire y height.
                             Biome biome = getCachedBiome(world, new BlockPos(x, 0, z));
 
-                            for(int ySection = ((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution() - 1; ySection >= 0; --ySection) {
-                                int y = k1 * ((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution() + ySection;
+                            for(int ySection = ((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution() - 1; ySection >= 0; --ySection) {
+                                int y = k1 * ((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution() + ySection;
                                 int yInChunk = y & 15;
                                 int yChunk = y >> 4;
                                 if (chunksection.getYOffset() >> 4 != yChunk) {
@@ -494,7 +493,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                                     chunksection.lock();
                                 }
 
-                                double d8 = (double)ySection / (double)((NoiseChunkGeneratorAccessor)this).getVerticalNoiseResolution();
+                                double d8 = (double)ySection / (double)((NoiseChunkGeneratorAccessor)this).uad_getVerticalNoiseResolution();
                                 double d9 = MathHelper.lerp(d8, d0, d4);
                                 double d10 = MathHelper.lerp(d8, d2, d6);
                                 double d11 = MathHelper.lerp(d8, d1, d5);
@@ -654,7 +653,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                 int xPos = xStart + xInChunk;
                 int zPos = zStart + zInChunk;
                 int maxY = chunk.sampleHeightmap(Heightmap.Type.WORLD_SURFACE_WG, xInChunk, zInChunk) + 1;
-                double noise = ((NoiseChunkGeneratorAccessor)this).getSurfaceDepthNoise().sample((double)xPos * 0.0625D, (double)zPos * 0.0625D, 0.0625D, (double)xInChunk * 0.0625D) * 15.0D;
+                double noise = ((NoiseChunkGeneratorAccessor)this).uad_getSurfaceDepthNoise().sample((double)xPos * 0.0625D, (double)zPos * 0.0625D, 0.0625D, (double)xInChunk * 0.0625D) * 15.0D;
                 Biome biome = getCachedBiome(worldGenRegion, blockpos$mutable.set(xPos, 0, zPos));
                 BlockState defaultBlockForSurface = Blocks.STONE.getDefaultState();
                 if(biome.getCategory() == Biome.Category.NETHER){
@@ -668,7 +667,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
             }
         }
 
-        ((NoiseChunkGeneratorAccessor)this).callBuildBedrock(chunk, sharedseedrandom);
+        ((NoiseChunkGeneratorAccessor)this).uad_callBuildBedrock(chunk, sharedseedrandom);
     }
 
     private static double terraformNoise(int x, int y, int z) {

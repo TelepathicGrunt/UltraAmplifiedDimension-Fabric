@@ -33,7 +33,7 @@ public class GlowgrassBlock extends GrassBlock {
                 }
             }
 
-            if (!SpreadableSnowyDirtBlockAccessor.callCanSurvive(state, world, pos)) {
+            if (!SpreadableSnowyDirtBlockAccessor.uad_callCanSurvive(state, world, pos)) {
                 //block is covered and so will turn into glowdirt
                 world.setBlockState(pos, UADBlocks.GLOWDIRT.getDefaultState());
             }
@@ -44,7 +44,7 @@ public class GlowgrassBlock extends GrassBlock {
 
                     for (int i = 0; i < 4; ++i) {
                         BlockPos blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.callCanSpread(replacementBlock, world, blockpos)) {
+                        if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.uad_callCanSpread(replacementBlock, world, blockpos)) {
                             world.setBlockState(blockpos, replacementBlock.with(SNOWY, world.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW));
                         }
                     }

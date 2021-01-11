@@ -20,7 +20,7 @@ public class UltraAmplifiedDimensionClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient()
 	{
-		SkyPropertiesAccessor.getfield_239208_a_().put(new Identifier(UltraAmplifiedDimension.MODID, "sky_property"), new UADSkyProperty());
+		SkyPropertiesAccessor.uad_getfield_239208_a_().put(new Identifier(UltraAmplifiedDimension.MODID, "sky_property"), new UADSkyProperty());
 
 		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWSTONE_ORE, RenderLayer.getTranslucent());
 		BlockRenderLayerMap.INSTANCE.putBlock(UADBlocks.GLOWGRASS_BLOCK, RenderLayer.getTranslucent());

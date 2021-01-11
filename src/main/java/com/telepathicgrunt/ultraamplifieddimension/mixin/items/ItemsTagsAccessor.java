@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ItemTags.class)
 public interface ItemsTagsAccessor {
-    @Invoker
-    static Tag.Identified<Item> callRegister(String id) {
+    @Invoker("register")
+    static Tag.Identified<Item> uad_callRegister(String id) {
         throw new UnsupportedOperationException();
     }
 }

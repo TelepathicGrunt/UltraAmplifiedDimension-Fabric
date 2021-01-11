@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface TreeDecoratorTypeAccessor {
 
     @Invoker("<init>")
-    static <P extends TreeDecorator> TreeDecoratorType<P> createTreeDecoratorType(Codec<P> codec) {
+    static <P extends TreeDecorator> TreeDecoratorType<P> uad_createTreeDecoratorType(Codec<P> codec) {
         throw new UnsupportedOperationException();
     }
 }

@@ -41,7 +41,7 @@ public class UADStructures {
         REGISTERED_UAD_STRUCTURES.add(structure);
 
         if(transformSurroundingLand){
-            StructureFeatureAccessor.setJIGSAW_STRUCTURES(
+            StructureFeatureAccessor.uad_setJIGSAW_STRUCTURES(
                     ImmutableList.<StructureFeature<?>>builder()
                         .addAll(StructureFeature.JIGSAW_STRUCTURES)
                         .add(structure)

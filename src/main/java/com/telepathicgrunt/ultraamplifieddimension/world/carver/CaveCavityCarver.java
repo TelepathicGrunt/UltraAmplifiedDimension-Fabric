@@ -62,9 +62,9 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 
 	@Override
 	public boolean carve(Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int chunkX, int chunkZ, int originalX, int originalZ, BitSet mask, CaveConfig config) {
-		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).getField_25831() : null;
+		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831() : null;
 		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
-			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).getField_25831();
+			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831();
 		}
 
 		int maxIterations = (this.getBranchFactor() * 2 - 1) * 16;

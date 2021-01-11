@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ShipwreckGenerator.Piece.class)
 public interface ShipwreckPiecesPieceAccessor {
-    @Accessor
-    BlockRotation getRotation();
+    @Accessor("rotation")
+    BlockRotation uad_getRotation();
 }

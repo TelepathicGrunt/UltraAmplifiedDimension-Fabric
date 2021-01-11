@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface LayerAccessor {
 
     @Accessor("sampler")
-    CachingLayerSampler getSampler();
+    CachingLayerSampler uad_getSampler();
 }

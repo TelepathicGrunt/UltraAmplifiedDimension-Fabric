@@ -10,24 +10,24 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(StructurePiece.class)
 public interface StructurePieceAccessor {
-    @Invoker
-    BlockState callGetBlockAt(BlockView worldIn, int x, int y, int z, BlockBox boundingboxIn);
+    @Invoker("getBlockAt")
+    BlockState uad_callGetBlockAt(BlockView worldIn, int x, int y, int z, BlockBox boundingboxIn);
 
-    @Invoker
-    int callApplyXTransform(int x, int z);
+    @Invoker("applyXTransform")
+    int uad_callApplyXTransform(int x, int z);
 
-    @Invoker
-    int callApplyYTransform(int y);
+    @Invoker("applyYTransform")
+    int uad_callApplyYTransform(int y);
 
-    @Invoker
-    int callApplyZTransform(int x, int z);
+    @Invoker("applyZTransform")
+    int uad_callApplyZTransform(int x, int z);
 
-    @Invoker
-    void callFillHalfEllipsoid(StructureWorldAccess worldIn, BlockBox boundingboxIn, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstateIn, boolean excludeAir);
+    @Invoker("fillHalfEllipsoid")
+    void uad_callFillHalfEllipsoid(StructureWorldAccess worldIn, BlockBox boundingboxIn, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstateIn, boolean excludeAir);
 
-    @Invoker
-    void callFillWithOutline(StructureWorldAccess worldIn, BlockBox boundingboxIn, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState boundaryBlockState, BlockState insideBlockState, boolean existingOnly);
+    @Invoker("fillWithOutline")
+    void uad_callFillWithOutline(StructureWorldAccess worldIn, BlockBox boundingboxIn, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState boundaryBlockState, BlockState insideBlockState, boolean existingOnly);
 
-    @Invoker
-    void callAddBlock(StructureWorldAccess worldIn, BlockState blockstateIn, int x, int y, int z, BlockBox boundingboxIn);
+    @Invoker("addBlock")
+    void uad_callAddBlock(StructureWorldAccess worldIn, BlockState blockstateIn, int x, int y, int z, BlockBox boundingboxIn);
 }

@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(BiomeArray.class)
 public interface BiomeContainerAccessor {
-    @Accessor
-    IndexedIterable<Biome> getField_25831();
+    @Accessor("field_25831")
+    IndexedIterable<Biome> uad_getField_25831();
 }

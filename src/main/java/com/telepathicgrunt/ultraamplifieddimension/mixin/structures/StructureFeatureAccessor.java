@@ -10,8 +10,8 @@ import java.util.List;
 @Mixin(StructureFeature.class)
 public interface StructureFeatureAccessor {
     @Mutable
-    @Accessor
-    static void setJIGSAW_STRUCTURES(List<StructureFeature<?>> JIGSAW_STRUCTURES) {
+    @Accessor("JIGSAW_STRUCTURES")
+    static void uad_setJIGSAW_STRUCTURES(List<StructureFeature<?>> JIGSAW_STRUCTURES) {
         throw new UnsupportedOperationException();
     }
 }

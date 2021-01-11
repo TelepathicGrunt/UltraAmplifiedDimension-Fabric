@@ -243,9 +243,9 @@ public class NbtDungeon extends Feature<NbtDungeonConfig>{
         TemplateInvoker structureAccessor = ((TemplateInvoker) structure);
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-        if (!structureAccessor.getBlocks().isEmpty()) {
-            List<Structure.StructureBlockInfo> list = placementIn.getRandomBlockInfos(structureAccessor.getBlocks(), pos).getAll();
-            if ((!list.isEmpty() || !placementIn.shouldIgnoreEntities() && !structureAccessor.getEntities().isEmpty()) && structureAccessor.getSize().getX() >= 1 && structureAccessor.getSize().getY() >= 1 && structureAccessor.getSize().getZ() >= 1) {
+        if (!structureAccessor.uad_getBlocks().isEmpty()) {
+            List<Structure.StructureBlockInfo> list = placementIn.getRandomBlockInfos(structureAccessor.uad_getBlocks(), pos).getAll();
+            if ((!list.isEmpty() || !placementIn.shouldIgnoreEntities() && !structureAccessor.uad_getEntities().isEmpty()) && structureAccessor.uad_getSize().getX() >= 1 && structureAccessor.uad_getSize().getY() >= 1 && structureAccessor.uad_getSize().getZ() >= 1) {
                 BlockBox mutableboundingbox = placementIn.getBoundingBox();
                 List<BlockPos> list1 = Lists.newArrayListWithCapacity(placementIn.shouldPlaceFluids() ? list.size() : 0);
                 List<Pair<BlockPos, CompoundTag>> list2 = Lists.newArrayListWithCapacity(list.size());
@@ -338,7 +338,7 @@ public class NbtDungeon extends Feature<NbtDungeonConfig>{
                 }
 
                 if (!placementIn.shouldIgnoreEntities()) {
-                    structureAccessor.invokeSpawnEntities(world, pos, placementIn.getMirror(), placementIn.getRotation(), placementIn.getPosition(), placementIn.getBoundingBox(), placementIn.method_27265());
+                    structureAccessor.uad_invokeSpawnEntities(world, pos, placementIn.getMirror(), placementIn.getRotation(), placementIn.getPosition(), placementIn.getBoundingBox(), placementIn.method_27265());
                 }
             }
         }

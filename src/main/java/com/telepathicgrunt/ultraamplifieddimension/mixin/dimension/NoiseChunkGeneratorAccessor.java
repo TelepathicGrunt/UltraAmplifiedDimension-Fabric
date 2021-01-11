@@ -17,52 +17,45 @@ import java.util.function.Supplier;
 @Mixin(NoiseChunkGenerator.class)
 public interface NoiseChunkGeneratorAccessor {
 
-    @Accessor
-    int getVerticalNoiseResolution();
+    @Accessor("verticalNoiseResolution")
+    int uad_getVerticalNoiseResolution();
 
-    @Accessor
-    int getHorizontalNoiseResolution();
+    @Accessor("horizontalNoiseResolution")
+    int uad_getHorizontalNoiseResolution();
 
-    @Accessor
-    int getNoiseSizeX();
+    @Accessor("noiseSizeX")
+    int uad_getNoiseSizeX();
 
-    @Accessor
-    int getNoiseSizeY();
+    @Accessor("noiseSizeY")
+    int uad_getNoiseSizeY();
 
-    @Accessor
-    int getNoiseSizeZ();
+    @Accessor("noiseSizeZ")
+    int uad_getNoiseSizeZ();
 
-    @Accessor
-    OctavePerlinNoiseSampler getLowerInterpolatedNoise();
+    @Accessor("lowerInterpolatedNoise")
+    OctavePerlinNoiseSampler uad_getLowerInterpolatedNoise();
 
-    @Accessor
-    OctavePerlinNoiseSampler getUpperInterpolatedNoise();
+    @Accessor("upperInterpolatedNoise")
+    OctavePerlinNoiseSampler uad_getUpperInterpolatedNoise();
 
-    @Accessor
-    OctavePerlinNoiseSampler getInterpolationNoise();
+    @Accessor("interpolationNoise")
+    OctavePerlinNoiseSampler uad_getInterpolationNoise();
 
-    @Accessor
-    OctavePerlinNoiseSampler getDensityNoise();
+    @Accessor("densityNoise")
+    OctavePerlinNoiseSampler uad_getDensityNoise();
 
     @Accessor("seed")
-    long getfield_236084_w_();
+    long uad_getfield_236084_w_();
 
     @Accessor("settings")
-    Supplier<ChunkGeneratorSettings> getfield_236080_h_();
+    Supplier<ChunkGeneratorSettings> uad_getfield_236080_h_();
 
-    @Accessor
-    BlockState getDefaultFluid();
+    @Accessor("defaultFluid")
+    BlockState uad_getDefaultFluid();
 
-    @Accessor
-    NoiseSampler getSurfaceDepthNoise();
+    @Accessor("surfaceDepthNoise")
+    NoiseSampler uad_getSurfaceDepthNoise();
 
-    @Invoker
-    void callBuildBedrock(Chunk chunkIn, Random rand);
-
-    @Accessor
-    long getSeed();
-
-    @Mutable
-    @Accessor
-    void setSeed(long seed);
+    @Invoker("buildBedrock")
+    void uad_callBuildBedrock(Chunk chunkIn, Random rand);
 }

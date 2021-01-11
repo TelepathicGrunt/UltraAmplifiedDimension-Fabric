@@ -9,13 +9,13 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(SpreadableBlock.class)
 public interface SpreadableSnowyDirtBlockAccessor {
-    @Invoker
-    static boolean callCanSpread(BlockState state, WorldView worldReader, BlockPos pos) {
+    @Invoker("canSpread")
+    static boolean uad_callCanSpread(BlockState state, WorldView worldReader, BlockPos pos) {
         throw new UnsupportedOperationException();
     }
 
-    @Invoker
-    static boolean callCanSurvive(BlockState state, WorldView worldReader, BlockPos pos) {
+    @Invoker("canSurvive")
+    static boolean uad_callCanSurvive(BlockState state, WorldView worldReader, BlockPos pos) {
         throw new UnsupportedOperationException();
     }
 }

@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(OceanRuinGenerator.Piece.class)
 public interface OceanRuinPiecesPieceAccessor {
-    @Accessor
-    BlockRotation getRotation();
+    @Accessor("rotation")
+    BlockRotation uad_getRotation();
 }

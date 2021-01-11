@@ -14,7 +14,7 @@ public class MineshaftPiecesUtils {
     // called in structures/MineshaftPiecesMixin
     public static void generateFloorRoom(StructureWorldAccess world, MineshaftGenerator.MineshaftRoom room, BlockBox mutableBoundingBox){
         BlockBox box = room.getBoundingBox();
-        ((StructurePieceAccessor)room).callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
     }
 
     // called in structures/MineshaftPiecesMixin
@@ -29,15 +29,15 @@ public class MineshaftPiecesUtils {
                 mutableBoundingBox.maxZ));
 
         // floor
-        ((StructurePieceAccessor)room).callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX + 8, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
-        ((StructurePieceAccessor)room).callFillWithOutline(world, mutableBoundingBox, box.minX + 3, box.minY + 1, box.minZ + 3, box.maxX - 1, box.minY + 4, box.maxZ - 1, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX + 8, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX + 3, box.minY + 1, box.minZ + 3, box.maxX - 1, box.minY + 4, box.maxZ - 1, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
 
-        for (BlockBox MutableBoundingBox : ((MineshaftRoomAccessor)room).getEntrances()) {
-            ((StructurePieceAccessor)room).callFillWithOutline(world, mutableBoundingBox, MutableBoundingBox.minX, MutableBoundingBox.maxY - 2, MutableBoundingBox.minZ, MutableBoundingBox.maxX, MutableBoundingBox.maxY, MutableBoundingBox.maxZ, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        for (BlockBox MutableBoundingBox : ((MineshaftRoomAccessor)room).uad_getEntrances()) {
+            ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, MutableBoundingBox.minX, MutableBoundingBox.maxY - 2, MutableBoundingBox.minZ, MutableBoundingBox.maxX, MutableBoundingBox.maxY, MutableBoundingBox.maxZ, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
         }
 
         // wall
-        ((StructurePieceAccessor)room).callFillHalfEllipsoid(world, mutableBoundingBox, box.minX + 3, box.minY + 4, box.minZ + 3, box.maxX - 3, box.maxY, box.maxZ - 3, Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillHalfEllipsoid(world, mutableBoundingBox, box.minX + 3, box.minY + 4, box.minZ + 3, box.maxX - 3, box.maxY, box.maxZ - 3, Blocks.CAVE_AIR.getDefaultState(), false);
         MineshaftPiecesUtils.updateLiquidBlocks(room, world, box, box.minX - 1, box.minY + 4, box.minZ - 1, box.maxX + 1, box.maxY, box.maxZ + 1);
     }
 
@@ -58,10 +58,10 @@ public class MineshaftPiecesUtils {
 
                 for (int z = minZ; z <= maxZ; ++z) {
                     float zModifier = (z - f4) / (f2 * 0.5F);
-                    if (!((StructurePieceAccessor) room).callGetBlockAt(world, x, y, z, boundingboxIn).getFluidState().isEmpty()) {
+                    if (!((StructurePieceAccessor) room).uad_callGetBlockAt(world, x, y, z, boundingboxIn).getFluidState().isEmpty()) {
                         float threshold = (xModifier * xModifier) + (yModifier * yModifier) + (zModifier * zModifier);
                         if (threshold <= 1.05F) {
-                            mutable.set(((StructurePieceAccessor) room).callApplyXTransform(x, z), ((StructurePieceAccessor) room).callApplyYTransform(y), ((StructurePieceAccessor) room).callApplyZTransform(x, z));
+                            mutable.set(((StructurePieceAccessor) room).uad_callApplyXTransform(x, z), ((StructurePieceAccessor) room).uad_callApplyYTransform(y), ((StructurePieceAccessor) room).uad_callApplyZTransform(x, z));
 
                             FluidState ifluidstate = world.getFluidState(mutable);
                             if (!ifluidstate.isEmpty()) {

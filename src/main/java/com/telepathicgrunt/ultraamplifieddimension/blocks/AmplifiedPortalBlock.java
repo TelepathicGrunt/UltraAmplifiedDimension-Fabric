@@ -222,12 +222,10 @@ public class AmplifiedPortalBlock extends Block
 	 * z=8
 	 */
 	public static boolean removedByPlayer(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity)
-		{
+	{
 
 		// if player is in creative mode, just remove block completely
 		if (player != null && player.isCreative()) {
-			state.getBlock().onBreak(world, pos, state, player);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return true;
 		}
 
@@ -251,18 +249,14 @@ public class AmplifiedPortalBlock extends Block
 						posOfHighestPortal = posOfHighestPortal.down();
 					}
 
-					// if this block being broken is the highest portal, return false to end method
-					// and not break the portal block
-					if (posOfHighestPortal.getY() == pos.getY()) {
-						return false;
-					}
+					// if this block being broken is the highest portal, return false to end method and not break the portal block
+					return posOfHighestPortal.getY() != pos.getY();
 				}
 			}
 		}
 
 		// otherwise, allow the block to break
-		state.getBlock().onBreak(world, pos, state, player);
-		return world.removeBlock(pos, false);
+		return true;
 	}
 
 	// has no item form

@@ -11,6 +11,11 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 ---------------------------------------
 # | Ultra Amplified Dimension changelog |
 
+## (V.9.0.2 Changes) (1.16.4 Minecraft)
+
+##### Blocks:
+-Fixed bug where blocks will not drop anything due to me screwing up a Fabric API event lmao.
+
 
 ## (V.9.0.1 Changes) (1.16.4 Minecraft)
 

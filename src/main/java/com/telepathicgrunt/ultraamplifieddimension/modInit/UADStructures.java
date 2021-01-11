@@ -57,7 +57,7 @@ public class UADStructures {
     public static void setupStructures() {
         setupMapSpacingAndLand(SUN_SHRINE, true);
         setupMapSpacingAndLand(STONEHENGE, true);
-        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE, true);
+        setupMapSpacingAndLand(ICE_SPIKE_TEMPLE, false);
         setupMapSpacingAndLand(MUSHROOM_TEMPLE, false);
     }
 
@@ -93,7 +93,7 @@ public class UADStructures {
                         new Identifier(UltraAmplifiedDimension.MODID, "ice_spike_temple/body_start"),
                         10,
                         -7,
-                        7,
+                        0,
                         1
                 )
         ));

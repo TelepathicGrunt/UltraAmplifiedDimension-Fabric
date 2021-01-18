@@ -1,12 +1,10 @@
 package com.telepathicgrunt.ultraamplifieddimension.world.features;
 
 import com.mojang.serialization.Codec;
-import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.RegistryKey;
@@ -17,7 +15,6 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 
-import java.util.Map;
 import java.util.Random;
 
 

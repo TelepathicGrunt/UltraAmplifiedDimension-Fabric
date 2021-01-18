@@ -1,12 +1,15 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.dimension;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.telepathicgrunt.ultraamplifieddimension.utils.WorldSeedHolder;
+import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.gen.GeneratorOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Optional;
 
 @Mixin(GeneratorOptions.class)
 public class GeneratorOptionsMixin {
@@ -15,10 +18,15 @@ public class GeneratorOptionsMixin {
 	 * World seed for worldgen when not specified by JSON by Haven King
 	 * https://github.com/Hephaestus-Dev/seedy-behavior/blob/master/src/main/java/dev/hephaestus/seedy/mixin/world/gen/GeneratorOptionsMixin.java
 	 */
-	@Redirect(method = "method_28606(Lcom/mojang/serialization/codecs/RecordCodecBuilder$Instance;)Lcom/mojang/datafixers/kinds/App;",
-		at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/codecs/PrimitiveCodec;fieldOf(Ljava/lang/String;)Lcom/mojang/serialization/MapCodec;", ordinal = 0),
-		remap = false)
-	private static MapCodec<Long> giveUsRandomSeeds(PrimitiveCodec<Long> codec, final String name) {
-		return codec.fieldOf(name).xmap(WorldSeedHolder::setSeed, seed -> seed);
+	@Inject(method = "<init>(JZZLnet/minecraft/util/registry/SimpleRegistry;)V",
+		at = @At(value = "RETURN"))
+	private void giveUsRandomSeeds(long seed, boolean generateStructures, boolean bonusChest, SimpleRegistry<DimensionOptions> simpleRegistry, CallbackInfo ci) {
+		WorldSeedHolder.setSeed(seed);
+	}
+
+	@Inject(method = "<init>(JZZLnet/minecraft/util/registry/SimpleRegistry;Ljava/util/Optional;)V",
+			at = @At(value = "RETURN"))
+	private void giveUsRandomSeeds2(long seed, boolean generateStructures, boolean bonusChest, SimpleRegistry<DimensionOptions> simpleRegistry, Optional<String> legacyCustomOptions, CallbackInfo ci) {
+		WorldSeedHolder.setSeed(seed);
 	}
 }

@@ -3,7 +3,6 @@ package com.telepathicgrunt.ultraamplifieddimension.modInit;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.world.surfacebuilder.*;
 import com.telepathicgrunt.ultraamplifieddimension.world.surfacebuilder.configs.QuadrarySurfaceBuilderConfig;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;

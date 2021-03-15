@@ -12,17 +12,21 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 # | Ultra Amplified Dimension changelog |
 
 
+## (V.9.0.5 Changes) (1.16.4 Minecraft)
+
+##### Dungeons:
+-Reduced chance of Blue Ice in Snowy Dungeons.
+
+
 ## (V.9.0.4 Changes) (1.16.4 Minecraft)
 
 ##### Dimension:
-
 -Switched to a safer mixin to get the world's seed if no seed is specified in the JSON.
 
 
 ## (V.9.0.3 Changes) (1.16.4 Minecraft)
 
 ##### Mixins:
-
 -Prefixed all my accessor and invoker mixins due to this bug in mixins that causes a crash for same named mixins.
  https://github.com/SpongePowered/Mixin/issues/430
  

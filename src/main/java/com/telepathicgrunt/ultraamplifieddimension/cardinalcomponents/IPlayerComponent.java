@@ -6,8 +6,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public interface IPlayerComponent extends Component {
-    boolean getIsTeleporting();
-    void setIsTeleporting(boolean isTeleporting);
 
     RegistryKey<World> getNonUADimension();
     void setNonUADimension(RegistryKey<World>  nonBZDimension);

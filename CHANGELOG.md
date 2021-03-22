@@ -15,7 +15,9 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 ## (V.9.0.5 Changes) (1.16.4 Minecraft)
 
 ##### Dungeons:
--Reduced chance of Blue Ice in Snowy Dungeons.
+- Reduced chance of Blue Ice in Snowy Dungeons.
+
+- Fixed Nether Dungeons having Nether Bricks placed in mid-air due to broken processor file.
 
 
 ## (V.9.0.4 Changes) (1.16.4 Minecraft)

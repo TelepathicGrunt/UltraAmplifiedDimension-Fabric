@@ -19,6 +19,11 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 
 - Fixed Nether Dungeons having Nether Bricks placed in mid-air due to broken processor file.
 
+- Fixed ceiling of Desert Dungeons looking weird when it meets the wall.
+
+##### Misc:
+- Made my modifyConstant mixins to the surfacebuilders no longer crash if someone else also modifyConstant the same spot.
+
 
 ## (V.9.0.4 Changes) (1.16.4 Minecraft)
 

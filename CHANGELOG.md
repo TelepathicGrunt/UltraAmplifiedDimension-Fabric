@@ -24,6 +24,8 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 ##### Misc:
 - Made my modifyConstant mixins to the surfacebuilders no longer crash if someone else also modifyConstant the same spot.
 
+- Made Swamp Cross use correct method for setting its chest loottable.
+
 
 ## (V.9.0.4 Changes) (1.16.4 Minecraft)
 

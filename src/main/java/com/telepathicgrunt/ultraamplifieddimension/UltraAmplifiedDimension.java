@@ -45,6 +45,7 @@ public class UltraAmplifiedDimension implements ModInitializer, EntityComponentI
 		UADStructures.init();
 		UADPlacements.init();
 		UADSurfaceBuilders.init();
+		UADProcessors.registerProcessors();
 
 		PlayerBlockBreakEvents.BEFORE.register(AmplifiedPortalBlock::removedByPlayer);
 		UseBlockCallback.EVENT.register(AmplifiedPortalCreation::PortalCreationRightClick);

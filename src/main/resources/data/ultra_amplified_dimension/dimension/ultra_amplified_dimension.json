@@ -34,7 +34,8 @@
             {
                 "main_biome": "ultra_amplified_dimension:ocean_lukewarm",
                 "weight": 10,
-                "border_biome": "ultra_amplified_dimension:ocean_lukewarm"
+                "border_biome": "ultra_amplified_dimension:ocean_lukewarm",
+                "sub_biome": "ultra_amplified_dimension:ocean_lukewarm_deep"
             },
             {
                 "main_biome": "ultra_amplified_dimension:ocean_warm",
@@ -142,7 +143,7 @@
             },
             {
                 "main_biome": "ultra_amplified_dimension:swamp",
-                "weight": 10,
+                "weight": 12,
                 "mutated_biome": "ultra_amplified_dimension:swamp_spooky"
             },
             {

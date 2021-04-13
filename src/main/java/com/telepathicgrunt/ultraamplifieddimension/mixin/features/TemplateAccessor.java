@@ -13,17 +13,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import java.util.List;
 
 @Mixin(Structure.class)
-public interface TemplateInvoker {
+public interface TemplateAccessor {
 
     @Accessor("blockInfoLists")
     List<Structure.PalettedBlockInfoList> uad_getBlocks();
-
-    @Accessor("entities")
-    List<Structure.StructureEntityInfo> uad_getEntities();
-
-    @Accessor("size")
-    BlockPos uad_getSize();
-
-    @Invoker("spawnEntities")
-    void uad_invokeSpawnEntities(ServerWorldAccess serverWorldAccess, BlockPos pos, BlockMirror blockMirror, BlockRotation blockRotation, BlockPos pivot, BlockBox area, boolean bl);
 }

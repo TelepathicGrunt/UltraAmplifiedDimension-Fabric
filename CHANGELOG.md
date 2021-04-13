@@ -23,6 +23,10 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 
 - Dungeons will now log error if fed an invalid identifier to a non-existent nbt file.
 
+- Fixed Dungeon Chests being placed on walls instead of floor.
+
+- Dungeons now use Post Processor files to place Vines and other stuff.
+
 ##### Misc:
 - Made my modifyConstant mixins to the surfacebuilders no longer crash if someone else also modifyConstant the same spot.
 

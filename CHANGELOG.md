@@ -1,4 +1,4 @@
-# Made for Minecraft v.1.16.4
+# Made for Minecraft v.1.16.5
 
 ## Created by TelepathicGrunt
 
@@ -12,7 +12,7 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 # | Ultra Amplified Dimension changelog |
 
 
-## (V.9.1.0 Changes) (1.16.4 Minecraft)
+## (V.9.1.0 Changes) (1.16.5 Minecraft)
 
 ##### Dimension:
 - The UAD dimension json file now lets you put `"import_all_modded_biomes": true` into the biome_source section.

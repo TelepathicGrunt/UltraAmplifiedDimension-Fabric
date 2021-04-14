@@ -30,6 +30,18 @@ public class BiomeGroup implements Comparable<BiomeGroup> {
     private final Optional<Supplier<Biome>> mutatedSubBiome;
     private final Optional<Supplier<Biome>> mutatedBorderBiome;
 
+    BiomeGroup(Supplier<Biome> mainBiome, int weight)
+    {
+        this.mainBiome = mainBiome;
+        this.weight = weight;
+        this.shoreBiome = Optional.empty();
+        this.borderBiome = Optional.empty();
+        this.subBiome = Optional.empty();
+        this.mutatedBiome = Optional.empty();
+        this.mutatedSubBiome = Optional.empty();
+        this.mutatedBorderBiome = Optional.empty();
+    }
+
     BiomeGroup(Supplier<Biome> mainBiome, int weight, Optional<Supplier<Biome>> shoreBiome, Optional<Supplier<Biome>> borderBiome,
                Optional<Supplier<Biome>> subBiome, Optional<Supplier<Biome>> mutatedBiome, Optional<Supplier<Biome>> mutatedSubBiome,
                Optional<Supplier<Biome>> mutatedBorderBiome)

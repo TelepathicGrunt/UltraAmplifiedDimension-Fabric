@@ -1,5 +1,7 @@
 package com.telepathicgrunt.ultraamplifieddimension.dimension.biomeprovider;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
@@ -8,6 +10,7 @@ import com.telepathicgrunt.ultraamplifieddimension.mixin.dimension.LayerAccessor
 import com.telepathicgrunt.ultraamplifieddimension.utils.WorldSeedHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
@@ -22,12 +25,10 @@ import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UADBiomeProvider extends BiomeSource {
 
@@ -38,7 +39,9 @@ public class UADBiomeProvider extends BiomeSource {
                     Codec.intRange(1, 20).fieldOf("biome_size").forGetter((biomeSource) -> biomeSource.biomeSize),
                     Codec.floatRange(0, 1).fieldOf("sub_biome_rate").forGetter((biomeSource) -> biomeSource.subBiomeRate),
                     Codec.floatRange(0, 1).fieldOf("mutated_biome_rate").forGetter((biomeSource) -> biomeSource.mutatedBiomeRate),
-                    RegionManager.CODEC.fieldOf("regions").forGetter((biomeSource) -> biomeSource.regionManager))
+                    RegionManager.CODEC.fieldOf("regions").forGetter((biomeSource) -> biomeSource.regionManager),
+                    Codec.BOOL.fieldOf("import_all_modded_biomes").orElse(false).forGetter((biomeSource) -> biomeSource.automaticallyImportModdedBiomes),
+                    Identifier.CODEC.listOf().xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("imported_biome_blacklist").orElse(new HashSet<>()).forGetter((biomeSource) -> biomeSource.blacklistedModdedBiomes))
             .apply(instance, instance.stable(UADBiomeProvider::new)));
 
     private final Registry<Biome> dynamicRegistry;
@@ -49,12 +52,15 @@ public class UADBiomeProvider extends BiomeSource {
     private final float mutatedBiomeRate;
     private final long seed;
     private final Set<Integer> printedMissingBiomes = new HashSet<>();
+    private final boolean automaticallyImportModdedBiomes;
+    private final HashSet<Identifier> blacklistedModdedBiomes;
 
-    public UADBiomeProvider(long seed, Registry<Biome> biomeRegistry, int biomeSize, float subBiomeRate, float mutatedBiomeRate, RegionManager regionManager) {
-        super(biomeRegistry.getEntries().stream()
+    public UADBiomeProvider(long seed, Registry<Biome> biomeRegistry, int biomeSize, float subBiomeRate, float mutatedBiomeRate, RegionManager regionManager, boolean automaticallyImportModdedBiomes, HashSet<Identifier> blacklistedModdedBiomes) {
+        super(Stream.concat(biomeRegistry.getEntries().stream()
                 .filter(entry -> entry.getKey().getValue().getNamespace().equals(UltraAmplifiedDimension.MODID))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList()));
+                .map(Map.Entry::getValue),
+                getAllModdedBiomes(biomeRegistry, regionManager, automaticallyImportModdedBiomes, blacklistedModdedBiomes))
+                    .collect(Collectors.toList()));
 
         this.seed = seed;
         this.biomeSize = biomeSize;
@@ -62,12 +68,27 @@ public class UADBiomeProvider extends BiomeSource {
         this.mutatedBiomeRate = mutatedBiomeRate;
         this.regionManager = regionManager;
         this.dynamicRegistry = biomeRegistry;
+        this.automaticallyImportModdedBiomes = automaticallyImportModdedBiomes;
+        this.blacklistedModdedBiomes = blacklistedModdedBiomes;
+
+        if(automaticallyImportModdedBiomes){
+            this.regionManager.importAllModdedBiomes(this.dynamicRegistry, this.blacklistedModdedBiomes);
+        }
 
         // Construct the biome layers last so all fields are ready
         this.biomeSampler = new BiomeLayerSampler(build((salt) -> new CachingLayerContext(25, this.seed, salt)));
 
         // Reset this as exiting and joining a different world could have completely different biomes in the dimension json
         this.printedMissingBiomes.clear();
+    }
+
+    private static Stream<Biome> getAllModdedBiomes(Registry<Biome> biomeRegistry, RegionManager regionManager, boolean automaticallyImportModdedBiomes, HashSet<Identifier> blacklistedModdedBiomes) {
+        if(automaticallyImportModdedBiomes){
+            return regionManager.importAllModdedBiomes(biomeRegistry, blacklistedModdedBiomes).stream();
+        }
+        else {
+            return Collections.EMPTY_LIST.stream();
+        }
     }
 
     /*
@@ -142,7 +163,7 @@ public class UADBiomeProvider extends BiomeSource {
     @Override
     @Environment(EnvType.CLIENT)
     public BiomeSource withSeed(long seed) {
-        return new UADBiomeProvider(seed, this.dynamicRegistry, this.biomeSize, this.subBiomeRate, this.mutatedBiomeRate, this.regionManager);
+        return new UADBiomeProvider(seed, this.dynamicRegistry, this.biomeSize, this.subBiomeRate, this.mutatedBiomeRate, this.regionManager, this.automaticallyImportModdedBiomes, this.blacklistedModdedBiomes);
     }
 
     /*

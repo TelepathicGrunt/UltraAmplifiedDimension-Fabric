@@ -14,6 +14,10 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 
 ## (V.9.1.0 Changes) (1.16.5 Minecraft)
 
+##### Dependencies:
+- Switch to requiring a newer version of Cloth Config that has Autoconfig merged inside. 
+  You can remove the Autoconfig mod and only use Cloth for UAD.
+
 ##### Dimension:
 - The UAD dimension json file now lets you put `"import_all_modded_biomes": true` into the biome_source section.
   This is a quick and dirty way to import all modded biomes into the dimension but those biomes will typically not look good.

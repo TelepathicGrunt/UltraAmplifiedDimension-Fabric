@@ -47,7 +47,6 @@
         "fabric": ">=0.25.0",
         "cardinal-components-base": ">=2.5.0",
         "cardinal-components-entity": ">=2.5.0",
-        "cloth-config2": ">=4.8.3",
-        "autoconfig1u": ">=3.3.1"
+        "cloth-config2": ">=4.11.0"
     }
 }

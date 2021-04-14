@@ -40,9 +40,6 @@ public class AmplifiedPortalCreation {
 
     // ------------------------------------------------------------------------------------//
     // Portal creation and validation check
-
-    private static final Block POLISHED_DIORITE = Blocks.POLISHED_DIORITE;
-
     public static boolean checkForGeneratedPortal(WorldAccess worldUA) {
         BlockPos pos = new BlockPos(8, worldUA.getDimensionHeight(), 8);
         worldUA.getChunk(pos);
@@ -99,7 +96,7 @@ public class AmplifiedPortalCreation {
         }
 
         // the center itself
-        if (world.getBlockState(pos.add(0, 0, 0)).getBlock() != POLISHED_DIORITE) {
+        if (!world.getBlockState(pos.add(0, 0, 0)).isIn(UADTags.PORTAL_CENTER_BLOCKS)) {
             return false;
         }
 

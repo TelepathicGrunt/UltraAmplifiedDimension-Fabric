@@ -12,7 +12,7 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 # | Ultra Amplified Dimension changelog |
 
 
-## (V.9.0.5 Changes) (1.16.4 Minecraft)
+## (V.9.1.0 Changes) (1.16.4 Minecraft)
 
 ##### Dimension:
 - The UAD dimension json file now lets you put `"import_all_modded_biomes": true` into the biome_source section.
@@ -24,7 +24,10 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 - `ultra_amplified_dimension:portal_center_blocks` block tag has been added that lets you change what block is required
   for the center of the portal. This has Polished Diorite by default. if you change this, you might want to change the
   Amplified Portal block's texture and loot table to match the new block you are using.
-  
+
+##### Biomes:
+- Fixed sea being covered in terrain blocks if lowered below y = 61. Looks amazing if you put UAD's nether biome into the vanilla nether now!
+
 ##### Dungeons:
 - Reduced chance of Blue Ice in Snowy Dungeons.
 

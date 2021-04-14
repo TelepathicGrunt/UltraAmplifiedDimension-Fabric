@@ -9,7 +9,6 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 
 import java.util.HashMap;

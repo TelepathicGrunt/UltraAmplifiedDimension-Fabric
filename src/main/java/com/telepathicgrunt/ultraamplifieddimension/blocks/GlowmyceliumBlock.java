@@ -34,19 +34,16 @@ public class GlowmyceliumBlock extends MyceliumBlock {
                 //block is covered and so will turn into glowdirt
                 world.setBlockState(pos, UADBlocks.GLOWDIRT.getDefaultState());
             }
-            else if (world.getLightLevel(pos.up()) >= 4) {
-                if (world.getLightLevel(pos.up()) >= 9) {
-                    //attempt to spread mycelium onto neighboring dirt (glowdirt handles its own conversion)
-                    BlockState replacementBlock = Blocks.MYCELIUM.getDefaultState();
+            else if (world.getLightLevel(pos.up()) >= 9) {
+                //attempt to spread mycelium onto neighboring dirt (glowdirt handles its own conversion)
+                BlockState replacementBlock = Blocks.MYCELIUM.getDefaultState();
 
-                    for (int i = 0; i < 4; ++i) {
-                        BlockPos blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.uad_callCanSpread(replacementBlock, world, blockpos)) {
-                            world.setBlockState(blockpos, replacementBlock.with(SNOWY, world.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW));
-                        }
+                for (int i = 0; i < 4; ++i) {
+                    BlockPos blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
+                    if (world.getBlockState(blockpos).getBlock() == Blocks.DIRT && SpreadableSnowyDirtBlockAccessor.uad_callCanSpread(replacementBlock, world, blockpos)) {
+                        world.setBlockState(blockpos, replacementBlock.with(SNOWY, world.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW));
                     }
                 }
-
             }
         }
     }

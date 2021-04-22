@@ -14,11 +14,18 @@ If you try to use the latest Minecraft version branch, you may run into bugs and
 
 ## (V.9.1.1 Changes) (1.16.5 Minecraft)
 
+##### Biomes:
+- Fixed Shattered Savanna Terrace biome and Desert Lakes biome from crashing.
+  
+- Upgraded /locatebiome command to now search much, much farther in any world with UAD's biome source.
+
 ##### Dungeons:
 - Fixed dungeons so their mob spawners are randomized properly. 
   Please redownload the new datapack of this mod if you were using that to customize this mod.
   That is because I had to change how dungeon processors are setup. 
   But if you weren't using the datapack, simply just update this mod and spawners will randomize again.
+
+- Fixed End Dungeons being able to remove each other's End Portal block
 
 
 ## (V.9.1.0 Changes) (1.16.5 Minecraft)

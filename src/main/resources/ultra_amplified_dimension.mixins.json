@@ -11,6 +11,7 @@
     "dimension.DimensionSettingsInvoker",
     "dimension.GeneratorOptionsMixin",
     "dimension.LayerAccessor",
+    "dimension.LocateBiomeCommandMixin",
     "dimension.MinecraftServerMixin",
     "dimension.NoiseChunkGeneratorAccessor",
     "features.EndermanSpawnerMixin",

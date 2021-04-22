@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADProcessors;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.processor.StructureProcessor;
@@ -42,7 +43,8 @@ public class ReplaceAirOnlyProcessor extends StructureProcessor {
 
             if (worldState.isAir() &&
                 !structureBlockInfoWorld.state.getBlock().hasBlockEntity() &&
-                !aboveWorldState.getBlock().hasBlockEntity())
+                !aboveWorldState.getBlock().hasBlockEntity() &&
+                !worldState.isOf(Blocks.END_PORTAL))
             {
                 structureBlockInfoWorld = new Structure.StructureBlockInfo(structureBlockInfoWorld.pos, worldState, null);
             }

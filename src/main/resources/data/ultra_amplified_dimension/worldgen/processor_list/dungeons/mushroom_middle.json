@@ -69,6 +69,23 @@
       "processor_type": "minecraft:rule"
     },
     {
+      "spawner_mob_entries": [
+        {
+          "resourcelocation": "minecraft:rabbit",
+          "weight": 80
+        },
+        {
+          "resourcelocation": "minecraft:bat",
+          "weight": 16
+        },
+        {
+          "resourcelocation": "minecraft:mooshroom",
+          "weight": 4
+        }
+      ],
+      "processor_type": "ultra_amplified_dimension:spawner_randomizing_processor"
+    },
+    {
       "processor_type": "ultra_amplified_dimension:replace_air_only_processor"
     },
     {

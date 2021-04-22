@@ -11,6 +11,7 @@ public class UADProcessors {
     public static StructureProcessorType<WaterloggingFixProcessor> WATER_FIX_PROCESSOR = () -> WaterloggingFixProcessor.CODEC;
     public static StructureProcessorType<ReplaceAirOnlyProcessor> REPLACE_AIR_ONLY_PROCESSOR = () -> ReplaceAirOnlyProcessor.CODEC;
     public static StructureProcessorType<ReplaceLiquidOnlyProcessor> REPLACE_LIQUIDS_ONLY_PROCESSOR = () -> ReplaceLiquidOnlyProcessor.CODEC;
+    public static StructureProcessorType<SpawnerRandomizingProcessor> SPAWNER_RANDOMIZING_PROCESSOR = () -> SpawnerRandomizingProcessor.CODEC;
     public static StructureProcessorType<RemoveFloatingBlocksProcessor> REMOVE_FLOATING_BLOCKS_PROCESSOR = () -> RemoveFloatingBlocksProcessor.CODEC;
 
     public static StructureProcessorType<WallVinePostProcessor> WALL_VINE_POST_PROCESSOR = () -> WallVinePostProcessor.CODEC;
@@ -20,6 +21,7 @@ public class UADProcessors {
         Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "water_fix_processor"), WATER_FIX_PROCESSOR);
         Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "replace_air_only_processor"), REPLACE_AIR_ONLY_PROCESSOR);
         Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "replace_liquids_only_processor"), REPLACE_LIQUIDS_ONLY_PROCESSOR);
+        Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "spawner_randomizing_processor"), SPAWNER_RANDOMIZING_PROCESSOR);
         Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "remove_floating_blocks_processor"), REMOVE_FLOATING_BLOCKS_PROCESSOR);
 
         Registry.register(Registry.STRUCTURE_PROCESSOR, new Identifier(UltraAmplifiedDimension.MODID, "wall_vine_post_processor"), WALL_VINE_POST_PROCESSOR);

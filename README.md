@@ -16,6 +16,8 @@ repositories {
 
 &nbsp;
 
+Don't forget to change 9.1.4 with the actual latest version of this mod.
+
 <blockquote>
 dependencies {
 
@@ -24,8 +26,6 @@ dependencies {
 &nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedMod-Fabric:1.16.5-9.1.4-fabric"
 
 }</blockquote>
-
-Don't forget to change 9.1.4 with the actual latest version of this mod.
 
 **____________________________________________________________________________**
 

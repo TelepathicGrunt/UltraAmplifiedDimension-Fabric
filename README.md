@@ -21,7 +21,7 @@ dependencies {
 
 ...
 
-&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedDimension-Fabric:1.16.5-9.1.4-fabric"
+&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedMod-Fabric:1.16.5-9.1.4-fabric"
 
 }</blockquote>
 
@@ -35,7 +35,7 @@ Don't forget to change 9.1.4 with the actual latest version of this mod.
 
 ## **CURRENTLY FOR 1.16.5 MC**
 
-**Forge version can be found here: https://modrinth.com/mod/ultra-amplified-dimension**
+###### **Forge version can be found here: https://www.curseforge.com/minecraft/mc-mods/ultra-amplified-mod**
 
 &nbsp;
 

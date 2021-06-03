@@ -16,8 +16,8 @@ publishing {
             }
 
             pom {
-                name = 'Repurposed Structures - Fabric'
-                description = 'Gotta find the broken mods!'
+                name = 'UltraAmplifiedDimension-Fabric'
+                description = 'Adds a dimension with insane world gen to provide a more challenging and epic world!'
                 url = 'https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric'
 
                 scm {

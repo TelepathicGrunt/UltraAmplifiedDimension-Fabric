@@ -110,7 +110,7 @@ public class UADBiomeProvider extends BiomeSource {
         layer = new MainBiomeLayer(this.dynamicRegistry, this.regionManager).create(contextFactory.apply(1567L), layer);
 
         for(int currentExtraZoom = 0; currentExtraZoom < this.biomeSize; currentExtraZoom++){
-            if(currentExtraZoom % 3 != 0){
+            if(currentExtraZoom % 3 != this.biomeSize / 2){
                 layer = ScaleLayer.NORMAL.create(contextFactory.apply(1503L + currentExtraZoom), layer);
             }
             else{

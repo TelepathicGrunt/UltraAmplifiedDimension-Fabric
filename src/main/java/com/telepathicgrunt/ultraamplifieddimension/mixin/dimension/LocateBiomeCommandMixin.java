@@ -23,7 +23,7 @@ public class LocateBiomeCommandMixin {
             at = @At(value = "INVOKE_ASSIGN",target = "Lnet/minecraft/server/world/ServerWorld;locateBiome(Lnet/minecraft/world/biome/Biome;Lnet/minecraft/util/math/BlockPos;II)Lnet/minecraft/util/math/BlockPos;"),
             ordinal = 1
     )
-    private static BlockPos expandSearch(BlockPos blockPos, ServerCommandSource source, Identifier biomeID) {
+    private static BlockPos uad_expandSearch(BlockPos blockPos, ServerCommandSource source, Identifier biomeID) {
         if(blockPos == null && source.getWorld().getChunkManager().getChunkGenerator().getBiomeSource() instanceof UADBiomeProvider){
             // Will never be null as the command already checked and validated that the biome exists
             Biome biome = source.getMinecraftServer().getRegistryManager().get(Registry.BIOME_KEY).get(biomeID);

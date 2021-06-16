@@ -20,7 +20,7 @@ public class ValleySurfaceBuilderMixin {
  	 */
 	@ModifyConstant(method = "generate(Ljava/util/Random;Lnet/minecraft/world/chunk/Chunk;Lnet/minecraft/world/biome/Biome;IIIDLnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;IJLnet/minecraft/world/gen/surfacebuilder/TernarySurfaceConfig;)V",
 			constant = @Constant(intValue = 127), require = 0)
-	private int buildSurfaceAnyHeight(int constant, Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight)
+	private int uad_buildSurfaceAnyHeight(int constant, Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight)
 	{
 		return startHeight;
 	}

@@ -27,7 +27,7 @@ public abstract class ShipwreckPiecesPieceMixin {
             method = "generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/structure/SimpleStructurePiece;generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z")
     )
-    private void fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPosX, BlockPos chunkPosZ, CallbackInfoReturnable<Boolean> cir) {
+    private void uad_fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPosX, BlockPos chunkPosZ, CallbackInfoReturnable<Boolean> cir) {
         if (chunkGenerator instanceof UADChunkGenerator) {
             ShipwreckGenerator.Piece piece = ((ShipwreckGenerator.Piece)(Object)this);
             int newHeight = OceanStructurePiecesUtils.getNewLedgeHeight(world, chunkGenerator, random, ((TemplateStructurePieceAccessor)piece).uad_getStructure(), ((ShipwreckPiecesPieceAccessor)piece).uad_getRotation(), ((TemplateStructurePieceAccessor)piece).uad_getPos());

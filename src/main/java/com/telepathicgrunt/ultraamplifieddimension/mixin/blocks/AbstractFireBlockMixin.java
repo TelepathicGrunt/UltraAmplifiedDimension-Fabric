@@ -19,7 +19,7 @@ public class AbstractFireBlockMixin {
 	@Inject(method = "method_30366(Lnet/minecraft/world/World;)Z",
 			at = @At(value = "RETURN"),
 			cancellable = true)
-	private static void allowUADNetherPortal(World world, CallbackInfoReturnable<Boolean> cir) {
+	private static void uad_allowNetherPortal(World world, CallbackInfoReturnable<Boolean> cir) {
 		if(!cir.getReturnValue() && world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY) && UltraAmplifiedDimension.UAD_CONFIG.allowNetherPortal) {
 			cir.setReturnValue(true);
 		}

@@ -16,7 +16,7 @@ public abstract class OceanMonumentPiecesPieceMixin {
             method = "setAirAndWater(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/util/math/BlockBox;IIIIII)V",
             at = @At(value = "HEAD"), cancellable = true
     )
-    private void noWater(StructureWorldAccess world, BlockBox boundingBoxIn, int x1, int y1, int z1, int x2, int y2, int z2, CallbackInfo ci) {
+    private void uad_noWater(StructureWorldAccess world, BlockBox boundingBoxIn, int x1, int y1, int z1, int x2, int y2, int z2, CallbackInfo ci) {
         if(world.toServerWorld().getChunkManager().getChunkGenerator() instanceof UADChunkGenerator){
             if(Math.abs(x1 - x2) > 6 || Math.abs(y1 - y2) > 6 || Math.abs(z1 - z2) > 6){
                 // prevent the terrain carving with liquids everywhere

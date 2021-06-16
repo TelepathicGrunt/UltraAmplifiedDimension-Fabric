@@ -23,7 +23,7 @@ public abstract class OceanRuinPiecesPieceMixin {
             method = "generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z",
             at = @At(value = "STORE", ordinal = 0), ordinal = 0
     )
-    private int fixedYHeightForUAD(int i, StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random) {
+    private int uad_fixedYHeightForUAD(int i, StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random) {
         if (chunkGenerator instanceof UADChunkGenerator) {
             if(i > 100 && random.nextFloat() > 0.25f){
                 OceanRuinGenerator.Piece piece = ((OceanRuinGenerator.Piece)(Object)this);

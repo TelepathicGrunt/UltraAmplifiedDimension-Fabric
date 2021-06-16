@@ -25,7 +25,7 @@ public abstract class OceanMonumentPiecesMonumentBuildingMixin {
             method = "generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z",
             at = @At(value = "STORE", ordinal = 0), ordinal = 0
     )
-    private int noWater(int i, StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox) {
+    private int uad_noWater(int i, StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox) {
         if(chunkGenerator instanceof UADChunkGenerator){
             // Places water correctly that conforms to the monument's shape
             OceanMonumentPiecesUtils.generateWaterBox(world, chunkGenerator, ((OceanMonumentGenerator.Base)(Object)this), mutableBoundingBox);

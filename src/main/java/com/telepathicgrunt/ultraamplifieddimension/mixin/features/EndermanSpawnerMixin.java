@@ -27,7 +27,7 @@ public abstract class EndermanSpawnerMixin extends MobEntity implements Angerabl
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/EndermanEntity;setCarriedBlock(Lnet/minecraft/block/BlockState;)V", shift = At.Shift.AFTER),
             cancellable = true
     )
-    private void worldCheckAngerFromTag(CompoundTag tag, CallbackInfo ci) {
+    private void uad_worldCheckAngerFromTag(CompoundTag tag, CallbackInfo ci) {
         if (!this.world.isClient) {
             this.angerFromTag((ServerWorld) world, tag);
         }

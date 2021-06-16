@@ -27,7 +27,7 @@ public abstract class DesertPyramidPieceMixin {
             method = "generate(Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z",
             at = @At(value = "HEAD")
     )
-    private void fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPos, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private void uad_fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPos, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if(chunkGenerator instanceof UADChunkGenerator){
             BlockBox box = ((DesertTempleGenerator)(Object)this).getBoundingBox();
             box.move(0, chunkGenerator.getHeight(box.minX + (box.getBlockCountX() / 2), box.minZ + (box.getBlockCountZ() / 2), Heightmap.Type.WORLD_SURFACE_WG) - box.minY, 0);

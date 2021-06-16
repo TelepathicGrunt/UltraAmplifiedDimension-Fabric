@@ -20,7 +20,7 @@ public class GeneratorOptionsMixin {
 	 */
 	@Inject(method = "<init>(JZZLnet/minecraft/util/registry/SimpleRegistry;Ljava/util/Optional;)V",
 			at = @At(value = "RETURN"))
-	private void giveUsRandomSeeds2(long seed, boolean generateStructures, boolean bonusChest, SimpleRegistry<DimensionOptions> simpleRegistry, Optional<String> legacyCustomOptions, CallbackInfo ci) {
+	private void uad_giveUsRandomSeeds(long seed, boolean generateStructures, boolean bonusChest, SimpleRegistry<DimensionOptions> simpleRegistry, Optional<String> legacyCustomOptions, CallbackInfo ci) {
 		WorldSeedHolder.setSeed(seed);
 	}
 }

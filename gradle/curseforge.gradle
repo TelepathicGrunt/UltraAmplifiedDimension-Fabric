@@ -13,6 +13,12 @@ curseforge {
         addGameVersion("1.16.5")
         addGameVersion("Fabric")
 
+        relations {
+            requiredDependency 'cloth-api'
+            requiredDependency 'cardinal-components'
+            requiredDependency 'fabric-api'
+        }
+
         mainArtifact(remapJar) {
             displayName = "Ultra Amplified Dimension v${project.mod_version} (${project.minecraft_version} MC)"
         }

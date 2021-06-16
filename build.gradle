@@ -60,8 +60,12 @@ dependencies {
 
 apply from: 'gradle/processresources.gradle'
 
-tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	def targetVersion = 8
+	if (JavaVersion.current().isJava9Compatible()) {
+		it.options.release = targetVersion
+	}
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

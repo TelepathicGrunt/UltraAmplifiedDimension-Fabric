@@ -1,5 +1,6 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.features;
 
+import com.telepathicgrunt.ultraamplifieddimension.dimension.UADChunkGenerator;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -34,11 +35,11 @@ public class TreeFeatureMixin {
 	 */
 	@Inject(method = "generate(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
 			at = @At(value = "HEAD"))
-	private void setUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
+	private void uad_setUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
 	{
 		if(!configIn.skipFluidCheck &&
 			generationReader instanceof ChunkRegion &&
-			((ChunkRegion)generationReader).toServerWorld().getRegistryKey().equals(UADDimension.UAD_WORLD_KEY))
+			((ChunkRegion)generationReader).toServerWorld().getChunkManager().getChunkGenerator() instanceof UADChunkGenerator)
 		{
 			configIn.skipFluidCheck = true;
 			modifiedConfig = true;
@@ -57,33 +58,11 @@ public class TreeFeatureMixin {
 	 */
 	@Inject(method = "generate(Lnet/minecraft/world/ModifiableTestableWorld;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/BlockBox;Lnet/minecraft/world/gen/feature/TreeFeatureConfig;)Z",
 			at = @At(value = "RETURN"))
-	private void undoUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
+	private void uad_undoUndergroundTreesInUAD1(ModifiableTestableWorld generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BlockBox boundingBoxIn, TreeFeatureConfig configIn, CallbackInfoReturnable<Boolean> cir)
 	{
 		if(modifiedConfig){
 			configIn.skipFluidCheck = false;
 			modifiedConfig = false;
 		}
 	}
-//
-//	/**
-//	 * If this tree feature is generating in Ultra Amplified Dimension, set the position to be
-//	 * the incoming pos instead of heightmap due to forcePlacement being almost always true and is
-//	 * not exposed in codec's JSON. By doing it this way, now vanilla and modded tree can spawn
-//	 * under Ultra Amplified Dimension's ledges. If a person wants only surface trees in the
-//	 * dimension, they can make a new configured feature with a decorator that only places on surfaces.
-//	 *
-//	 * The other alternatives over this mixin are ether hackier, more fragile, an insane amount of work, or lacks mod compat.
-//	 * @author TelepathicGrunt
-//	 */
-//	@ModifyVariable(method = "Lnet/minecraft/world/gen/feature/TreeFeature;place(Lnet/minecraft/world/gen/IWorldGenerationReader;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;Ljava/util/Set;Ljava/util/Set;Lnet/minecraft/util/math/MutableBoundingBox;Lnet/minecraft/world/gen/feature/BaseTreeFeatureConfig;)Z",
-//			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/BlockPos;getY()I", ordinal = 0))
-//	private int setUndergroundTreesInUAD1(int heightmapY, IWorldGenerationReader generationReader, Random rand, BlockPos positionIn)
-//	{
-//		if(generationReader instanceof WorldGenRegion && ((WorldGenRegion)generationReader).getWorld().getDimensionKey().equals(UADDimension.UAD_WORLD_KEY)){
-//			return positionIn.getY();
-//		}
-//		else{
-//			return heightmapY;
-//		}
-//	}
 }

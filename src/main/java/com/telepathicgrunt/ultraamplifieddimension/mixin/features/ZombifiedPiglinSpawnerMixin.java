@@ -27,7 +27,7 @@ public abstract class ZombifiedPiglinSpawnerMixin extends MobEntity implements A
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/ZombieEntity;readCustomDataFromTag(Lnet/minecraft/nbt/CompoundTag;)V", shift = At.Shift.AFTER),
             cancellable = true
     )
-    private void worldCheckAngerFromTag(CompoundTag tag, CallbackInfo ci) {
+    private void uad_worldCheckAngerFromTag(CompoundTag tag, CallbackInfo ci) {
         if (!this.world.isClient) {
             this.angerFromTag((ServerWorld) world, tag);
         }

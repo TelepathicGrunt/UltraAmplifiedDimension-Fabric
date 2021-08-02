@@ -3,8 +3,9 @@
     "probability": 0.25,
     "cutoff_height": 70,
     "tallness": {
-        "base": 25,
-        "spread": 20
+      "type": "minecraft:uniform",
+      "min_inclusive": { "absolute": 5 },
+      "max_inclusive": { "absolute": 45 }
     },
     "lava_level": {
       "above_bottom": 10
@@ -17,7 +18,7 @@
       "max_inclusive": {
         "absolute": 28
       },
-      "inner": 8,
+      "inner": 1,
       "type": "minecraft:biased_to_bottom"
     },
     "yScale": 0.5,

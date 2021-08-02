@@ -9,6 +9,7 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorContext;
@@ -46,7 +47,7 @@ public class LedgeSurfacePlacer extends Decorator<LedgeSurfacePlacerConfig> {
             BlockState prevBlockState = context.getBlockState(mutable.up());
 
             // If doing water pos, continue down until lava level instead of stopping at sealevel
-            int bottomYLimit = config.waterPosOnly ? 11 : ((ServerWorld)context.getWorld()).getChunkManager().getChunkGenerator().getSeaLevel();
+            int bottomYLimit = config.waterPosOnly ? 11 : context.getWorld().toServerWorld().getChunkManager().getChunkGenerator().getSeaLevel();
 
             // Move downward towards sealevel and get every surface along the way
             while (mutable.getY() >= bottomYLimit) {

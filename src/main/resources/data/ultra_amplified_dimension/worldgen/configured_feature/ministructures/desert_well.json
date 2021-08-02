@@ -13,7 +13,7 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": { "heightmap": "WORLD_SURFACE_WG" },
               "type": "minecraft:heightmap"
             }
           },

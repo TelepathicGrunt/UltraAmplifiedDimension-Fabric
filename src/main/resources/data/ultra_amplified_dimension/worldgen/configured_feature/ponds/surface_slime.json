@@ -32,7 +32,7 @@
         "decorator": {
           "config": {
             "outer": {
-              "config": {},
+              "config": { "heightmap": "WORLD_SURFACE_WG" },
               "type": "minecraft:heightmap"
             },
             "inner": {

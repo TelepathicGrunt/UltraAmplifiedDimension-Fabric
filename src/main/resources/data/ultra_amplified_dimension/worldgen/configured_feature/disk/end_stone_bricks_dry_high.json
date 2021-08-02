@@ -10,8 +10,11 @@
                   "Name": "minecraft:end_stone_bricks"
                 },
                 "radius": {
-                  "base": 7,
-                  "spread": 2
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": 5,
+                    "max_inclusive": 9
+                  }
                 },
                 "half_height": 2,
                 "targets": [

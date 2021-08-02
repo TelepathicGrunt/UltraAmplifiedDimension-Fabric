@@ -22,7 +22,7 @@ public abstract class EndCityStructureStartMixin {
      */
     @ModifyVariable(
             method = "init(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/world/biome/Biome;Lnet/minecraft/world/gen/feature/DefaultFeatureConfig;Lnet/minecraft/world/HeightLimitView;)V",
-            at = @At(value = "STORE", ordinal = 0), ordinal = 2
+            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/feature/EndCityFeature;getGenerationHeight(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/HeightLimitView;)I")
     )
     private int uad_fixedYHeightForUAD(int y, DynamicRegistryManager dynamicRegistries, ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, Biome biome, DefaultFeatureConfig defaultFeatureConfig, HeightLimitView heightLimitView) {
         if(chunkGenerator instanceof UADChunkGenerator){

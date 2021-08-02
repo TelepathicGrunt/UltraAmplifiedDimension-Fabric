@@ -8,8 +8,11 @@
               "Name": "minecraft:gravel"
             },
             "radius": {
-              "base": 3,
-              "spread": 2
+              "type": "minecraft:uniform",
+              "value": {
+                "min_inclusive": 1,
+                "max_inclusive": 5
+              }
             },
             "half_height": 2,
             "targets": [

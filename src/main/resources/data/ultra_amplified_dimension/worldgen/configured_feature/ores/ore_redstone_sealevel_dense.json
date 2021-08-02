@@ -22,10 +22,17 @@
             },
             "decorator": {
               "config": {
-                "baseline": 65,
-                "spread": 5
+                "height": {
+                  "min_inclusive": {
+                    "absolute": 60
+                  },
+                  "max_inclusive": {
+                    "absolute": 70
+                  },
+                  "type": "minecraft:trapezoid"
+                }
               },
-              "type": "minecraft:depth_average"
+              "type": "minecraft:range"
             }
           },
           "type": "minecraft:decorated"

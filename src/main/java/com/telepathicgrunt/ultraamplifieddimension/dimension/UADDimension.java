@@ -8,7 +8,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class UADDimension {
-    public static final RegistryKey<World> UAD_WORLD_KEY = RegistryKey.of(Registry.DIMENSION, new Identifier(UltraAmplifiedDimension.MODID, UltraAmplifiedDimension.MODID));
+    public static final RegistryKey<World> UAD_WORLD_KEY = RegistryKey.of(Registry.WORLD_KEY, new Identifier(UltraAmplifiedDimension.MODID, UltraAmplifiedDimension.MODID));
 
     public static void setupDimension() {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier(UltraAmplifiedDimension.MODID, "terrain"), UADChunkGenerator.UAD_CHUNK_GENERATOR_CODEC);

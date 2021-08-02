@@ -10,8 +10,11 @@
                   "Name": "minecraft:obsidian"
                 },
                 "radius": {
-                  "base": 10,
-                  "spread": 2
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": 8,
+                    "max_inclusive": 12
+                  }
                 },
                 "half_height": 3,
                 "targets": [

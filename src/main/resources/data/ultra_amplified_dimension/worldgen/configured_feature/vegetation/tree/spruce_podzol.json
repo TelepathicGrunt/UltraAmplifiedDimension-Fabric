@@ -1,5 +1,21 @@
 {
   "config": {
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "minecraft:spruce_sapling"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "max_water_depth": 0,
     "ignore_vines": true,
     "heightmap": "OCEAN_FLOOR",
@@ -32,7 +48,7 @@
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "foliage_provider": {
       "state": {
         "Properties": {
           "persistent": "false",
@@ -44,16 +60,25 @@
     },
     "foliage_placer": {
       "radius": {
-        "base": 2,
-        "spread": 1
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 1,
+          "max_inclusive": 3
+        }
       },
       "offset": {
-        "base": 0,
-        "spread": 2
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 0,
+          "max_inclusive": 2
+        }
       },
       "trunk_height": {
-        "base": 1,
-        "spread": 1
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 0,
+          "max_inclusive": 2
+        }
       },
       "type": "minecraft:spruce_foliage_placer"
     },

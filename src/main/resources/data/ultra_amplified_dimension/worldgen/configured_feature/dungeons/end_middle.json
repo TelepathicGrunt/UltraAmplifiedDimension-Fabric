@@ -53,8 +53,8 @@
               "config": {
                 "height": {
                   "type": "minecraft:uniform",
-                  "min_inclusive": { "absolute": 75 },
-                  "max_inclusive": { "absolute": 25 }
+                  "min_inclusive": { "absolute": 25 },
+                  "max_inclusive": { "absolute": 75 }
                 }
               },
               "type": "minecraft:range"

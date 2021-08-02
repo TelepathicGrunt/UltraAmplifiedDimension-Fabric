@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowyBlock;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
@@ -38,7 +39,8 @@ public class ColumnVertical extends Feature<ColumnConfig> {
     public boolean generate(FeatureContext<ColumnConfig> context) {
 
         setSeed(context.getWorld().getSeed());
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+        BlockPos centerPos = new ChunkPos(context.getOrigin()).getCenterAtY(context.getOrigin().getY());
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(centerPos);
         int minWidth = 3;
         int maxWidth = 10;
         int ceilingHeight;
@@ -58,7 +60,7 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         ceilingHeight = blockposMutable.getY();
 
         //find floor
-        blockposMutable.set(context.getOrigin()); // reset back to normal height
+        blockposMutable.set(centerPos); // reset back to normal height
         while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too low for column to generate
             if (blockposMutable.getY() < 3) {
@@ -85,10 +87,10 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         widthAtHeight = getWidthAtHeight(0, heightDiff, thinnestWidth);
 
         //checks to see if there is enough circular land above and below to hold pillar
-        for (int x = context.getOrigin().getX() - widthAtHeight; x <= context.getOrigin().getX() + widthAtHeight; x += 3) {
-            for (int z = context.getOrigin().getZ() - widthAtHeight; z <= context.getOrigin().getZ() + widthAtHeight; z += 3) {
-                int xDiff = x - context.getOrigin().getX();
-                int zDiff = z - context.getOrigin().getZ();
+        for (int x = centerPos.getX() - widthAtHeight; x <= centerPos.getX() + widthAtHeight; x += 3) {
+            for (int z = centerPos.getZ() - widthAtHeight; z <= centerPos.getZ() + widthAtHeight; z += 3) {
+                int xDiff = x - centerPos.getX();
+                int zDiff = z - centerPos.getZ();
                 if (xDiff * xDiff + zDiff * zDiff <= (widthAtHeight) * (widthAtHeight)) {
 
                     if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
@@ -133,12 +135,12 @@ public class ColumnVertical extends Feature<ColumnConfig> {
 
         //Begin column gen
         for (int y = -2; y <= heightDiff + 2; y++) {
-            widthAtHeight = getWidthAtHeight(y, heightDiff, thinnestWidth);
+            widthAtHeight = Math.min(getWidthAtHeight(y, heightDiff, thinnestWidth), 23);
 
-            for (int x = context.getOrigin().getX() - widthAtHeight - xMod - 1; x <= context.getOrigin().getX() + widthAtHeight + xMod + 1; ++x) {
-                for (int z = context.getOrigin().getZ() - widthAtHeight - zMod - 1; z <= context.getOrigin().getZ() + widthAtHeight + zMod + 1; ++z) {
-                    int xDiff = x - context.getOrigin().getX();
-                    int zDiff = z - context.getOrigin().getZ();
+            for (int x = centerPos.getX() - widthAtHeight - xMod - 1; x <= centerPos.getX() + widthAtHeight + xMod + 1; ++x) {
+                for (int z = centerPos.getZ() - widthAtHeight - zMod - 1; z <= centerPos.getZ() + widthAtHeight + zMod + 1; ++z) {
+                    int xDiff = x - centerPos.getX();
+                    int zDiff = z - centerPos.getZ();
                     blockposMutable.set(x, y + floorHeight, z);
 
                     //scratches the surface for more imperfection

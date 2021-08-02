@@ -9,6 +9,7 @@ import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.Column
 import net.minecraft.block.*;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
@@ -34,12 +35,17 @@ public class ColumnRamp extends Feature<ColumnConfig> {
     @Override
     public boolean generate(FeatureContext<ColumnConfig> context) {
 
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+        BlockPos centerPos = new ChunkPos(context.getOrigin()).getCenterAtY(context.getOrigin().getY());
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(centerPos);
         int minWidth = 4;
         int ceilingHeight;
         int bottomFloorHeight;
         int topFloorHeight;
         int heightDiff;
+        int minX = centerPos.getX() - 23;
+        int maxX = centerPos.getX() + 23;
+        int minZ = centerPos.getZ() - 23;
+        int maxZ = centerPos.getZ() + 23;
         Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 
         //finds ceiling
@@ -69,7 +75,7 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         }
 
         //find floor
-        blockposMutable.set(context.getOrigin()); // reset back to normal height
+        blockposMutable.set(centerPos); // reset back to normal height
         while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too low/tall for column to generate
             if (blockposMutable.getY() < 70) {
@@ -94,10 +100,10 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         int widthAtHeight = getWidthAtHeight(0, heightDiff + 5, minWidth);
 
         //gets center of the ceiling position and floor position
-        int xPosCeiling = context.getOrigin().getX() + getOffsetAtHeight(heightDiff + 1, heightDiff, xTurningValue);
-        int zPosCeiling = context.getOrigin().getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
-        int xPosFloor = context.getOrigin().getX() - getOffsetAtHeight(heightDiff - 1, heightDiff, xTurningValue);
-        int zPosFloor = context.getOrigin().getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
+        int xPosCeiling = centerPos.getX() + getOffsetAtHeight(heightDiff + 1, heightDiff, xTurningValue);
+        int zPosCeiling = centerPos.getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
+        int xPosFloor = centerPos.getX() - getOffsetAtHeight(heightDiff - 1, heightDiff, xTurningValue);
+        int zPosFloor = centerPos.getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
 
         //checks to see if there is enough land above and below to hold pillar
         for (int x = -widthAtHeight; x <= widthAtHeight; x++) {
@@ -155,10 +161,13 @@ public class ColumnRamp extends Feature<ColumnConfig> {
             }
 
             //Begin clearing gen
-            for (int x = context.getOrigin().getX() - widthAtHeight - 1; x <= context.getOrigin().getX() + widthAtHeight + 1; ++x) {
-                for (int z = context.getOrigin().getZ() - widthAtHeight - 1; z <= context.getOrigin().getZ() + widthAtHeight + 1; ++z) {
-                    xDiff = x - context.getOrigin().getX();
-                    zDiff = z - context.getOrigin().getZ();
+            for (int x = centerPos.getX() - widthAtHeight - 1; x <= centerPos.getX() + widthAtHeight + 1; ++x) {
+                if(x + xOffset >= maxX || x + xOffset <= minX) continue;
+                for (int z = centerPos.getZ() - widthAtHeight - 1; z <= centerPos.getZ() + widthAtHeight + 1; ++z) {
+                    if(z + zOffset >= maxZ || z + zOffset <= minZ) continue;
+
+                    xDiff = x - centerPos.getX();
+                    zDiff = z - centerPos.getZ();
                     blockposMutable.set(x + xOffset, y + bottomFloorHeight + 3, z + zOffset);
 
                     //creates pillar with inside block
@@ -245,10 +254,13 @@ public class ColumnRamp extends Feature<ColumnConfig> {
             zOffset = getOffsetAtHeight(y, heightDiff, zTurningValue);
 
             //Begin column gen
-            for (int x = context.getOrigin().getX() - widthAtHeight - 1; x <= context.getOrigin().getX() + widthAtHeight + 1; ++x) {
-                for (int z = context.getOrigin().getZ() - widthAtHeight - 1; z <= context.getOrigin().getZ() + widthAtHeight + 1; ++z) {
-                    xDiff = x - context.getOrigin().getX();
-                    zDiff = z - context.getOrigin().getZ();
+            for (int x = centerPos.getX() - widthAtHeight - 1; x <= centerPos.getX() + widthAtHeight + 1; ++x) {
+                if(x + xOffset >= maxX || x + xOffset <= minX) continue;
+                for (int z = centerPos.getZ() - widthAtHeight - 1; z <= centerPos.getZ() + widthAtHeight + 1; ++z) {
+                    if(z + zOffset >= maxZ || z + zOffset <= minZ) continue;
+
+                    xDiff = x - centerPos.getX();
+                    zDiff = z - centerPos.getZ();
                     blockposMutable.set(x + xOffset, y + bottomFloorHeight, z + zOffset);
 
                     //creates pillar with inside block

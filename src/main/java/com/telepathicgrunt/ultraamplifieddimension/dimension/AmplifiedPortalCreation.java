@@ -24,7 +24,7 @@ public class AmplifiedPortalCreation {
     public static ActionResult PortalCreationRightClick(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
 
         if (!world.isClient() && !player.isInSneakingPose()) {
-            if (player.getStackInHand(hand).getItem().isIn(UADTags.PORTAL_ACTIVATION_ITEMS)) {
+            if (player.getStackInHand(hand).isIn(UADTags.PORTAL_ACTIVATION_ITEMS)) {
                 if(trySpawnPortal(world, hitResult.getBlockPos())){
                     player.swingHand(player.getActiveHand(), true);
                     return ActionResult.SUCCESS;
@@ -39,7 +39,7 @@ public class AmplifiedPortalCreation {
     // ------------------------------------------------------------------------------------//
     // Portal creation and validation check
     public static boolean checkForGeneratedPortal(WorldAccess worldUA) {
-        BlockPos pos = new BlockPos(8, worldUA.getDimensionHeight(), 8);
+        BlockPos pos = new BlockPos(8, worldUA.getTopY(), 8);
         worldUA.getChunk(pos);
 
         while (pos.getY() >= 0) {
@@ -55,7 +55,7 @@ public class AmplifiedPortalCreation {
 
     public static void generatePortal(ServerWorld worldUA) {
         AmplifiedPortalFrame amplifiedPortalFrame = new AmplifiedPortalFrame();
-        BlockPos pos = new BlockPos(8, worldUA.getDimensionHeight(), 8);
+        BlockPos pos = new BlockPos(8, worldUA.getTopY(), 8);
         worldUA.getChunk(pos);
 
         pos = worldUA.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);

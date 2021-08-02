@@ -40,8 +40,8 @@
             "decorator": {
               "config": {
                 "outer": {
-                  "config": {},
-                  "type": "minecraft:heightmap_world_surface"
+                  "config": { "heightmap": "WORLD_SURFACE_WG" },
+                  "type": "minecraft:heightmap"
                 },
                 "inner": {
                   "config": {

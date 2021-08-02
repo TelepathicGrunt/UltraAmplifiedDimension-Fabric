@@ -1,6 +1,7 @@
 package com.telepathicgrunt.ultraamplifieddimension.world.features;
 
 import com.mojang.serialization.Codec;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.EllipsoidFeatureConfig;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
@@ -11,22 +12,18 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
-import java.util.Random;
 
-
-public class EllipsoidPocket extends Feature<OreFeatureConfig>
+public class EllipsoidPocket extends Feature<EllipsoidFeatureConfig>
 {
-	public EllipsoidPocket(Codec<OreFeatureConfig> configFactory) {
+	public EllipsoidPocket(Codec<EllipsoidFeatureConfig> configFactory) {
 		super(configFactory);
 	}
 
 	@Override
-	public boolean generate(FeatureContext<OreFeatureConfig> context) {
+	public boolean generate(FeatureContext<EllipsoidFeatureConfig> context) {
 		BlockPos.Mutable blockposMutable = new BlockPos.Mutable();
 		BlockState blockToReplace;
 		float angleOfRotation = (float) (Math.PI * context.getRandom().nextFloat());
@@ -86,36 +83,33 @@ public class EllipsoidPocket extends Feature<OreFeatureConfig>
 						cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
 
 						blockToReplace = cachedChunk.getBlockState(blockposMutable);
-						for(OreFeatureConfig.Target target : context.getConfig().targets){
+						if(context.getConfig().target.test(blockToReplace, context.getRandom())) {
+							boolean solidState = context.getConfig().state.isOpaque();
+							if(solidState){
+								cachedChunk.setBlockState(blockposMutable, context.getConfig().state, false);
+							}
 
-							if(target.target.test(blockToReplace, context.getRandom())) {
-								boolean solidState = target.state.isOpaque();
-								if(solidState){
-									cachedChunk.setBlockState(blockposMutable, target.state, false);
+							// if our replacement state is not solid, do not expose any liquids then.
+							else {
+								boolean touchingLiquid = false;
+								for(Direction direction : Direction.values()){
+									if(direction != Direction.DOWN){
+										blockposMutable.move(direction);
+										cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
+
+										if(!cachedChunk.getBlockState(blockposMutable).getFluidState().isEmpty()){
+											touchingLiquid = true;
+											blockposMutable.move(direction.getOpposite());
+											break;
+										}
+
+										blockposMutable.move(direction.getOpposite());
+									}
 								}
 
-								// if our replacement state is not solid, do not expose any liquids then.
-								else {
-									boolean touchingLiquid = false;
-									for(Direction direction : Direction.values()){
-										if(direction != Direction.DOWN){
-											blockposMutable.move(direction);
-											cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
-
-											if(!cachedChunk.getBlockState(blockposMutable).getFluidState().isEmpty()){
-												touchingLiquid = true;
-												blockposMutable.move(direction.getOpposite());
-												break;
-											}
-
-											blockposMutable.move(direction.getOpposite());
-										}
-									}
-
-									if(!touchingLiquid){
-										cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
-										cachedChunk.setBlockState(blockposMutable, target.state, false);
-									}
+								if(!touchingLiquid){
+									cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
+									cachedChunk.setBlockState(blockposMutable, context.getConfig().state, false);
 								}
 							}
 						}

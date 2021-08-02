@@ -1,5 +1,21 @@
 {
   "config": {
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "minecraft:dark_oak_sapling"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "max_water_depth": 2147483647,
     "ignore_vines": true,
     "heightmap": "MOTION_BLOCKING",
@@ -21,7 +37,7 @@
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "foliage_provider": {
       "state": {
         "Properties": {
           "persistent": "false",

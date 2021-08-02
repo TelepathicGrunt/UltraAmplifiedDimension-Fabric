@@ -1,6 +1,7 @@
 package com.telepathicgrunt.ultraamplifieddimension.mixin.dimension;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.util.math.noise.NoiseSampler;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.world.chunk.Chunk;
@@ -32,16 +33,19 @@ public interface NoiseChunkGeneratorAccessor {
     int uad_getNoiseSizeZ();
 
     @Accessor("seed")
-    long uad_getfield_236084_w_();
+    long uad_getSeed();
 
     @Accessor("settings")
-    Supplier<ChunkGeneratorSettings> uad_getfield_236080_h_();
+    Supplier<ChunkGeneratorSettings> uad_getSettings();
 
     @Accessor("defaultFluid")
     BlockState uad_getDefaultFluid();
 
     @Accessor("surfaceDepthNoise")
     NoiseSampler uad_getSurfaceDepthNoise();
+
+    @Accessor("edgeDensityNoise")
+    DoublePerlinNoiseSampler uad_getEdgeDensityNoise();
 
     @Invoker("buildBedrock")
     void uad_callBuildBedrock(Chunk chunkIn, Random rand);

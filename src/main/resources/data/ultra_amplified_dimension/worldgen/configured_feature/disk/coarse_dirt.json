@@ -8,8 +8,11 @@
               "Name": "minecraft:coarse_dirt"
             },
             "radius": {
-              "base": 3,
-              "spread": 3
+              "type": "minecraft:uniform",
+              "value": {
+                "min_inclusive": 1,
+                "max_inclusive": 6
+              }
             },
             "half_height": 2,
             "targets": [

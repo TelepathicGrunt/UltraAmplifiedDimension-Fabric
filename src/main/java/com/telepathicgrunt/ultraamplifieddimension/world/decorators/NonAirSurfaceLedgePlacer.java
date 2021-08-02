@@ -41,7 +41,7 @@ public class NonAirSurfaceLedgePlacer extends Decorator<NonAirSurfaceLedgePlacer
 
             // Set the block above for heightmap pos
             BlockState prevBlockState = context.getBlockState(mutable.up());
-            int bottomYLimit = ((ServerWorld)context.getWorld()).getChunkManager().getChunkGenerator().getSeaLevel();
+            int bottomYLimit = context.getWorld().toServerWorld().getChunkManager().getChunkGenerator().getSeaLevel();
 
             // Move downward towards sealevel and get every surface along the way
             while (mutable.getY() >= bottomYLimit) {

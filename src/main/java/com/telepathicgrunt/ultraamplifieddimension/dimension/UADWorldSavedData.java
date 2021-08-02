@@ -26,11 +26,11 @@ public class UADWorldSavedData extends PersistentState {
     private List<SpawnParticles> particles = new ArrayList<>();
 
     public UADWorldSavedData() {
-        super(DATA_KEY);
+        super();
     }
 
     public static UADWorldSavedData get(ServerWorld world) {
-        return world.getPersistentStateManager().getOrCreate(UADWorldSavedData::new, DATA_KEY);
+        return world.getPersistentStateManager().getOrCreate((nbtCompound) -> new UADWorldSavedData(), UADWorldSavedData::new, DATA_KEY + world.getRegistryKey().getValue());
     }
 
     /**
@@ -61,7 +61,7 @@ public class UADWorldSavedData extends PersistentState {
             ServerWorld targetWorld = server.getWorld(entry.targetWorld);
             if (player != null && targetWorld != null && player.world == world) {
                 ChunkPos playerChunkPos = new ChunkPos(player.getBlockPos());
-                targetWorld.getChunkManager().addTicket(ChunkTicketType.POST_TELEPORT, playerChunkPos, 1, player.getEntityId());
+                targetWorld.getChunkManager().addTicket(ChunkTicketType.POST_TELEPORT, playerChunkPos, 1, player.getId());
 
                 player.fallDistance = 0;
                 player.prevY = 0;
@@ -88,11 +88,7 @@ public class UADWorldSavedData extends PersistentState {
     }
 
     @Override
-    public void fromTag(NbtCompound nbt) {
-    }
-
-    @Override
-    public NbtCompound toTag(NbtCompound compound) {
+    public NbtCompound writeNbt(NbtCompound compound) {
         return compound;
     }
 

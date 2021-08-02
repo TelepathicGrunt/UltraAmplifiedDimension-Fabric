@@ -10,8 +10,11 @@
                   "Name": "minecraft:crimson_nylium"
                 },
                 "radius": {
-                  "base": 5,
-                  "spread": 2
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": 3,
+                    "max_inclusive": 7
+                  }
                 },
                 "half_height": 1,
                 "exposed_only": true,

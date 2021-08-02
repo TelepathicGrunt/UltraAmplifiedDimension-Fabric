@@ -6,14 +6,19 @@
           "config": {
             "feature": {
               "config": {
-                "target": {
-                  "Name": "minecraft:stone"
-                },
-                "state": {
-                  "Name": "minecraft:emerald_ore"
-                }
+                "targets": [
+                  {
+                    "target": {
+                      "tag": "minecraft:stone_ore_replaceables",
+                      "predicate_type": "minecraft:tag_match"
+                    },
+                    "state": {
+                      "Name": "minecraft:emerald_ore"
+                    }
+                  }
+                ]
               },
-              "type": "minecraft:emerald_ore"
+              "type": "minecraft:replace_single_block"
             },
             "decorator": {
               "config": {

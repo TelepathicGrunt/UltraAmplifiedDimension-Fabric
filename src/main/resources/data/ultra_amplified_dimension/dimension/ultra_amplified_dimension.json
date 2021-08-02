@@ -224,10 +224,18 @@
         "Name": "minecraft:water"
       },
       
-      "bedrock_roof_position": -10,
+      "noise_caves_enabled": false,
+      "deepslate_enabled": false,
+      "ore_veins_enabled": false,
+      "noodle_caves_enabled": false,
+      "aquifers_enabled": false,
+      
+      "bedrock_roof_position": -1000,
       "bedrock_floor_position": 0,
+      "min_surface_level": 0,
       "sea_level": 75,
       "noise": {
+        "min_y": 0,
         "height": 245,
         "random_density_offset": true,
         "simplex_surface_noise": true,
@@ -246,9 +254,9 @@
           "offset": 4
         },
         "sampling": {
-          "xz_scale": 2,
+          "xz_scale": 1.3,
           "y_scale": 420,
-          "xz_factor": 684,
+          "xz_factor": 400,
           "y_factor": 68400
         }
       },

@@ -9,8 +9,8 @@ import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.CaveConf
 import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.RavineConfig;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.carver.Carver;
+import net.minecraft.world.gen.carver.CaveCarverConfig;
 
 import java.util.function.Supplier;
 
@@ -31,6 +31,6 @@ public class UADCarvers
 		RAVINE_CARVER = createCarver("ravine", () -> new RavineCarver(RavineConfig.CODEC));
 		LONG_RAVINE_CARVER = createCarver("long_ravine", () -> new SuperLongRavineCarver(RavineConfig.CODEC));
 		CAVE_CAVITY_CARVER = createCarver("cave_cavity", () -> new CaveCavityCarver(CaveConfig.CODEC));
-		UNDERWATER_CAVE_CARVER = createCarver("underwater_cave", () -> new UnderwaterCaveCarver(ProbabilityConfig.CODEC));
+		UNDERWATER_CAVE_CARVER = createCarver("underwater_cave", () -> new UnderwaterCaveCarver(CaveCarverConfig.CAVE_CODEC));
 	}
 }

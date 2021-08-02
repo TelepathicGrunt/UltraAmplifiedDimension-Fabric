@@ -10,8 +10,11 @@
                   "Name": "minecraft:lapis_block"
                 },
                 "radius": {
-                  "base": 1,
-                  "spread": 0
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": 1,
+                    "max_inclusive": 1
+                  }
                 },
                 "half_height": 0,
                 "targets": [

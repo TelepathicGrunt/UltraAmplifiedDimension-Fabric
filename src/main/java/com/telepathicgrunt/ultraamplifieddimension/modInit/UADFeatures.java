@@ -2,10 +2,30 @@ package com.telepathicgrunt.ultraamplifieddimension.modInit;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.world.features.*;
-import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.*;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.BambooConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.BlockWithRuleReplaceConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.BoulderFeatureConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.ColumnConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.CountConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.DiskDryConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.EllipsoidFeatureConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.GiantSpikeConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.HeightConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.LootTableConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.NbtDungeonConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.NbtFeatureConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.PondConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.ProbabilityAndCountConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.RootConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.SeaPickleConfig;
+import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.TwoBlockStateConfig;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.SingleStateFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.function.Supplier;
 
@@ -31,7 +51,7 @@ public class UADFeatures {
     public static Feature<DiskDryConfig> DISK_DRY = null;
     public static Feature<DefaultFeatureConfig> SWAMP_CROSS = null;
     public static Feature<TreeFeatureConfig> TREE_SWAMP_HORNED = null;
-    public static Feature<OreFeatureConfig> ELLIPSOID_POCKET = null;
+    public static Feature<EllipsoidFeatureConfig> ELLIPSOID_POCKET = null;
     public static Feature<DefaultFeatureConfig> VINES_LONG = null;
     public static Feature<HeightConfig> VINES_SHORT = null;
     public static Feature<DefaultFeatureConfig> HANGING_RUINS = null;
@@ -72,7 +92,7 @@ public class UADFeatures {
         DISK_DRY = createFeature("disk_dry", () -> new DiskDry(DiskDryConfig.CODEC));
         SWAMP_CROSS = createFeature("swamp_cross", () -> new SwampCross(DefaultFeatureConfig.CODEC));
         TREE_SWAMP_HORNED = createFeature("tree_swamp_horned", () -> new TreeSwampHorned(TreeFeatureConfig.CODEC));
-        ELLIPSOID_POCKET = createFeature("ellipsoid_pocket", () -> new EllipsoidPocket(OreFeatureConfig.CODEC));
+        ELLIPSOID_POCKET = createFeature("ellipsoid_pocket", () -> new EllipsoidPocket(EllipsoidFeatureConfig.CODEC));
         VINES_LONG = createFeature("vines_long", () -> new VinesLong(DefaultFeatureConfig.CODEC));
         VINES_SHORT = createFeature("vines_short", () -> new VinesShort(HeightConfig.CODEC));
         HANGING_RUINS = createFeature("hanging_ruins", () -> new HangingRuins(DefaultFeatureConfig.CODEC));

@@ -8,8 +8,11 @@
               "Name": "minecraft:sand"
             },
             "radius": {
-              "base": 4,
-              "spread": 2
+              "type": "minecraft:uniform",
+              "value": {
+                "min_inclusive": 2,
+                "max_inclusive": 6
+              }
             },
             "half_height": 2,
             "targets": [

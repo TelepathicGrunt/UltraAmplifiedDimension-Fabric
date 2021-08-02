@@ -1,2 +1,4 @@
 accessWidener v1 named
 extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
+accessible method net/minecraft/world/gen/chunk/GenerationShapeConfig <init> (IILnet/minecraft/world/gen/chunk/NoiseSamplingConfig;Lnet/minecraft/world/gen/chunk/SlideConfig;Lnet/minecraft/world/gen/chunk/SlideConfig;IIDDZZZZ)V
+accessible method net/minecraft/world/gen/chunk/ChunkGeneratorSettings <init> (Lnet/minecraft/world/gen/chunk/StructuresConfig;Lnet/minecraft/world/gen/chunk/GenerationShapeConfig;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;IIIIZZZZZZ)V

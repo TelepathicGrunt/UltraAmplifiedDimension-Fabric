@@ -8,8 +8,11 @@
                   "Name": "minecraft:ice"
                 },
                 "radius": {
-                  "base": 2,
-                  "spread": 2
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": 1,
+                    "max_inclusive": 4
+                  }
                 },
                 "half_height": 1,
                 "targets": [

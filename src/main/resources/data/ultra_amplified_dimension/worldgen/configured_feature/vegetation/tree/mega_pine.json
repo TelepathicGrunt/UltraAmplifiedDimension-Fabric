@@ -1,5 +1,21 @@
 {
   "config": {
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "minecraft:spruce_sapling"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "max_water_depth": 0,
     "ignore_vines": false,
     "heightmap": "OCEAN_FLOOR",
@@ -32,7 +48,7 @@
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "foliage_provider": {
       "state": {
         "Properties": {
           "persistent": "false",
@@ -46,8 +62,11 @@
       "radius": 0,
       "offset": 0,
       "crown_height": {
-        "base": 4,
-        "spread": 5
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 1,
+          "max_inclusive": 9
+        }
       },
       "type": "minecraft:mega_pine_foliage_placer"
     },

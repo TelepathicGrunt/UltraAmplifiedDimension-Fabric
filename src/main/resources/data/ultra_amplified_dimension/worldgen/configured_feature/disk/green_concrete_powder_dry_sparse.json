@@ -8,8 +8,11 @@
               "Name": "minecraft:green_concrete_powder"
             },
             "radius": {
-              "base": 6,
-              "spread": 2
+              "type": "minecraft:uniform",
+              "value": {
+                "min_inclusive": 4,
+                "max_inclusive": 8
+              }
             },
             "half_height": 2,
             "targets": [
@@ -33,7 +36,7 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": { "heightmap": "WORLD_SURFACE_WG" },
               "type": "minecraft:heightmap"
             }
           },

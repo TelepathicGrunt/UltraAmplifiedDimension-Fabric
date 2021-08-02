@@ -3,18 +3,23 @@ package com.telepathicgrunt.ultraamplifieddimension.world.carver;
 import com.mojang.serialization.Codec;
 import com.telepathicgrunt.ultraamplifieddimension.mixin.dimension.BiomeContainerAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.utils.GeneralUtils;
+import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.CaveConfig;
 import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.RavineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.carver.Carver;
+import net.minecraft.world.gen.carver.CarverContext;
+import net.minecraft.world.gen.carver.CaveCarverConfig;
+import net.minecraft.world.gen.chunk.AquiferSampler;
 
 import java.util.BitSet;
 import java.util.HashSet;
@@ -28,7 +33,7 @@ public class RavineCarver extends Carver<RavineConfig>
 	private SimpleRegistry<Biome> biomeRegistry;
 
 	public RavineCarver(Codec<RavineConfig> codec) {
-		super(codec, 255);
+		super(codec);
 		this.alwaysCarvableBlocks = new HashSet<>(this.alwaysCarvableBlocks);
 		this.alwaysCarvableBlocks.add(Blocks.NETHERRACK);
 		this.alwaysCarvableBlocks.add(Blocks.ICE);
@@ -38,31 +43,31 @@ public class RavineCarver extends Carver<RavineConfig>
 	}
 
 	@Override
-	public boolean shouldCarve(Random random, int chunkX, int chunkZ, RavineConfig config) {
+	public boolean shouldCarve(RavineConfig config, Random random) {
 		return random.nextFloat() <= config.probability;
 	}
 
 	@Override
-	public boolean carve(Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int chunkX, int chunkZ, int originalX, int originalZ, BitSet mask, RavineConfig config) {
-		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831() : null;
+	public boolean carve(CarverContext carverContext, RavineConfig config, Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, ChunkPos chunkPos, BitSet mask) {
+		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes() : null;
 		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
-			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831();
+			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes();
 		}
 
 		int i = (this.getBranchFactor() * 2 - 1) * 16;
-		double xpos = chunkX * 16 + random.nextInt(16);
-		double height = config.heightPlacement.getValue(random);
-		double zpos = chunkZ * 16 + random.nextInt(16);
+		double xpos = chunkPos.getStartX() + random.nextInt(16);
+		double height = config.y.get(random, carverContext);
+		double zpos = chunkPos.getStartZ() + random.nextInt(16);
 		float xzNoise2 = random.nextFloat() * ((float) Math.PI * 2F);
 		float xzCosNoise = (random.nextFloat() - 0.5F) / 8.0F;
 		float widthHeightBase = (random.nextFloat() * 2.0F + random.nextFloat()) * 2.0F;
 		int maxIteration = i - random.nextInt(i / 4);
-		this.func_202535_a(region, biomeBlockPos, random.nextLong(), originalX, originalZ, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, maxIteration, config.tallness.getValue(random) / 10D, mask, config);
+		this.func_202535_a(region, biomeBlockPos, random.nextLong(), chunkPos, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, maxIteration, config.tallness.get(random, carverContext) / 10D, mask, config);
 		return true;
 	}
 
 
-	private void func_202535_a(Chunk world, Function<BlockPos, Biome> biomeBlockPos, long randomSeed, int mainChunkX, int mainChunkZ, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int maxIteration, double heightMultiplier, BitSet mask, RavineConfig config) {
+	private void func_202535_a(Chunk world, Function<BlockPos, Biome> biomeBlockPos, long randomSeed, ChunkPos chunkPos, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int maxIteration, double heightMultiplier, BitSet mask, RavineConfig config) {
 		Random random = new Random(randomSeed);
 
 		float f = 1.0F;
@@ -94,26 +99,26 @@ public class RavineCarver extends Carver<RavineConfig>
 			f1 = f1 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 1.5F;
 			f4 = f4 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 3.0F;
 			if (random.nextInt(4) != 0) {
-				if (!this.canCarveBranch(mainChunkX, mainChunkZ, randomBlockX, randomBlockZ, j, maxIteration, widthHeightBase)) {
+				if (!this.canCarveBranch(chunkPos, randomBlockX, randomBlockZ, j, maxIteration, widthHeightBase)) {
 					return;
 				}
 
-				this.carveAtTarget(world, biomeBlockPos, random, mainChunkX, mainChunkZ, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
+				this.carveAtTarget(world, biomeBlockPos, random, chunkPos, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
 			}
 		}
 
 	}
 
-	protected void carveAtTarget(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, int mainChunkX, int mainChunkZ, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, RavineConfig config) {
-		double d0 = mainChunkX * 16 + 8;
-		double d1 = mainChunkZ * 16 + 8;
+	protected void carveAtTarget(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, ChunkPos chunkPos, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, RavineConfig config) {
+		double d0 = chunkPos.getCenterX();
+		double d1 = chunkPos.getCenterZ();
 		if (!(xRange < d0 - 16.0D - placementXZBound * 2.0D) && !(zRange < d1 - 16.0D - placementXZBound * 2.0D) && !(xRange > d0 + 16.0D + placementXZBound * 2.0D) && !(zRange > d1 + 16.0D + placementXZBound * 2.0D)) {
-			int i = Math.max(MathHelper.floor(xRange - placementXZBound) - mainChunkX * 16 - 1, 0);
-			int j = Math.min(MathHelper.floor(xRange + placementXZBound) - mainChunkX * 16 + 1, 16);
+			int i = Math.max(MathHelper.floor(xRange - placementXZBound) - chunkPos.getStartX() - 1, 0);
+			int j = Math.min(MathHelper.floor(xRange + placementXZBound) - chunkPos.getStartX() + 1, 16);
 			int minY = Math.max(MathHelper.floor(yRange - placementYBound) - 1, 9);
 			int maxY = Math.min(MathHelper.floor(yRange + placementYBound) + 1, config.cutoffHeight);
-			int i1 = Math.max(MathHelper.floor(zRange - placementXZBound) - mainChunkZ * 16 - 1, 0);
-			int j1 = Math.min(MathHelper.floor(zRange + placementXZBound) - mainChunkZ * 16 + 1, 16);
+			int i1 = Math.max(MathHelper.floor(zRange - placementXZBound) - chunkPos.getStartZ() - 1, 0);
+			int j1 = Math.min(MathHelper.floor(zRange + placementXZBound) - chunkPos.getStartZ() + 1, 16);
 			if (i <= j && minY <= maxY && i1 <= j1) {
 				BlockState fillerBlock;
 				BlockState secondaryFloorBlockstate;
@@ -122,11 +127,11 @@ public class RavineCarver extends Carver<RavineConfig>
 				BlockPos.Mutable blockpos$Mutabledown = new BlockPos.Mutable();
 
 				for (int xInChunk = i; xInChunk < j; ++xInChunk) {
-					int x = xInChunk + mainChunkX * 16;
+					int x = xInChunk + chunkPos.getStartX();
 					double xSquaringModified = (x + 0.5D - xRange) / placementXZBound;
 
 					for (int zInChunk = i1; zInChunk < j1; ++zInChunk) {
-						int z = zInChunk + mainChunkZ * 16;
+						int z = zInChunk + chunkPos.getStartZ();
 						double zSquaringModified = (z + 0.5D - zRange) / placementXZBound;
 						double xzSquaredModified = (xSquaringModified * xSquaringModified) + (zSquaringModified * zSquaringModified);
 
@@ -206,15 +211,5 @@ public class RavineCarver extends Carver<RavineConfig>
 
 			}
 		}
-	}
-
-
-	/**
-	 * MC doesn't seem to do anything with the returned value in the end. Strange. I wonder why.
-	 */
-	@Override
-	protected boolean isPositionExcluded(double p_222708_1_, double p_222708_3_, double p_222708_5_, int p_222708_7_) {
-		return true;
-		//return (p_222708_1_ * p_222708_1_ + p_222708_5_ * p_222708_5_) * (double)this.field_202536_i[p_222708_7_ - 1] + p_222708_3_ * p_222708_3_ / 6.0D >= 1.0D;
 	}
 }

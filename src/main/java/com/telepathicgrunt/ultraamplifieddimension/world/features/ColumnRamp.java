@@ -15,6 +15,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 import java.util.Set;
@@ -31,20 +32,20 @@ public class ColumnRamp extends Feature<ColumnConfig> {
 
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, ColumnConfig columnConfig) {
+    public boolean generate(FeatureContext<ColumnConfig> context) {
 
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
         int minWidth = 4;
         int ceilingHeight;
         int bottomFloorHeight;
         int topFloorHeight;
         int heightDiff;
-        Chunk cachedChunk = world.getChunk(blockposMutable);
+        Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 
         //finds ceiling
-        while (!GeneralUtils.isFullCube(world, blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
+        while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too high for ramp to generate
-            if (blockposMutable.getY() > chunkGenerator.getWorldHeight() - 1) {
+            if (blockposMutable.getY() > context.getGenerator().getWorldHeight() - 1) {
                 return false;
             }
             blockposMutable.move(Direction.UP, 2);
@@ -52,9 +53,9 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         ceilingHeight = blockposMutable.getY();
 
         //finds floor above ceiling
-        while (GeneralUtils.isFullCube(world, blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
+        while (GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too high for ramp to generate
-            if (blockposMutable.getY() > chunkGenerator.getWorldHeight() - 1) {
+            if (blockposMutable.getY() > context.getGenerator().getWorldHeight() - 1) {
                 return false;
             }
             blockposMutable.move(Direction.UP);
@@ -68,8 +69,8 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         }
 
         //find floor
-        blockposMutable.set(position); // reset back to normal height
-        while (!GeneralUtils.isFullCube(world, blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
+        blockposMutable.set(context.getOrigin()); // reset back to normal height
+        while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too low/tall for column to generate
             if (blockposMutable.getY() < 70) {
                 return false;
@@ -85,7 +86,7 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         }
 
         //how much to turn on a range of -1 to 1. -1 for north, 0 for south
-        float randFloat = rand.nextFloat();
+        float randFloat = context.getRandom().nextFloat();
         float xTurningValue = (float) Math.sin(randFloat * Math.PI * 2);
         float zTurningValue = (float) Math.cos(randFloat * Math.PI * 2);
 
@@ -93,10 +94,10 @@ public class ColumnRamp extends Feature<ColumnConfig> {
         int widthAtHeight = getWidthAtHeight(0, heightDiff + 5, minWidth);
 
         //gets center of the ceiling position and floor position
-        int xPosCeiling = position.getX() + getOffsetAtHeight(heightDiff + 1, heightDiff, xTurningValue);
-        int zPosCeiling = position.getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
-        int xPosFloor = position.getX() - getOffsetAtHeight(heightDiff - 1, heightDiff, xTurningValue);
-        int zPosFloor = position.getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
+        int xPosCeiling = context.getOrigin().getX() + getOffsetAtHeight(heightDiff + 1, heightDiff, xTurningValue);
+        int zPosCeiling = context.getOrigin().getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
+        int xPosFloor = context.getOrigin().getX() - getOffsetAtHeight(heightDiff - 1, heightDiff, xTurningValue);
+        int zPosFloor = context.getOrigin().getZ() + getOffsetAtHeight(0, heightDiff, zTurningValue);
 
         //checks to see if there is enough land above and below to hold pillar
         for (int x = -widthAtHeight; x <= widthAtHeight; x++) {
@@ -104,7 +105,7 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                 if (x * x + z * z > widthAtHeight * widthAtHeight * 0.85 && x * x + z * z < widthAtHeight * widthAtHeight) {
 
                     if (blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                        cachedChunk = world.getChunk(blockposMutable);
+                        cachedChunk = context.getWorld().getChunk(blockposMutable);
 
                     BlockState block1 = cachedChunk.getBlockState(blockposMutable.set(xPosCeiling + x, ceilingHeight + 2, zPosCeiling + z));
                     BlockState block2 = cachedChunk.getBlockState(blockposMutable.set(xPosFloor + x, bottomFloorHeight - 2, zPosFloor + z));
@@ -154,10 +155,10 @@ public class ColumnRamp extends Feature<ColumnConfig> {
             }
 
             //Begin clearing gen
-            for (int x = position.getX() - widthAtHeight - 1; x <= position.getX() + widthAtHeight + 1; ++x) {
-                for (int z = position.getZ() - widthAtHeight - 1; z <= position.getZ() + widthAtHeight + 1; ++z) {
-                    xDiff = x - position.getX();
-                    zDiff = z - position.getZ();
+            for (int x = context.getOrigin().getX() - widthAtHeight - 1; x <= context.getOrigin().getX() + widthAtHeight + 1; ++x) {
+                for (int z = context.getOrigin().getZ() - widthAtHeight - 1; z <= context.getOrigin().getZ() + widthAtHeight + 1; ++z) {
+                    xDiff = x - context.getOrigin().getX();
+                    zDiff = z - context.getOrigin().getZ();
                     blockposMutable.set(x + xOffset, y + bottomFloorHeight + 3, z + zOffset);
 
                     //creates pillar with inside block
@@ -169,17 +170,17 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                     }
 
                     if (blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                        cachedChunk = world.getChunk(blockposMutable);
+                        cachedChunk = context.getWorld().getChunk(blockposMutable);
 
                     BlockState block = cachedChunk.getBlockState(blockposMutable);
                     if (!block.isIn(BlockTags.LEAVES) && !block.isIn(BlockTags.LOGS) && !irreplacableBlocks.contains(block.getBlock()) && xzDiffSquaredStretched <= circleBounds) {
-                        if (blockposMutable.getY() < chunkGenerator.getSeaLevel() && chunkGenerator instanceof NoiseChunkGenerator) {
-                            cachedChunk.setBlockState(blockposMutable, ((NoiseChunkGeneratorAccessor) chunkGenerator).uad_getDefaultFluid(), false);
+                        if (blockposMutable.getY() < context.getGenerator().getSeaLevel() && context.getGenerator() instanceof NoiseChunkGenerator) {
+                            cachedChunk.setBlockState(blockposMutable, ((NoiseChunkGeneratorAccessor) context.getGenerator()).uad_getDefaultFluid(), false);
                         }
                         else {
 
                             tempMutable.set(blockposMutable).move(Direction.DOWN);
-                            if (columnConfig.snowy && Blocks.SNOW.getDefaultState().canPlaceAt(world, blockposMutable)) {
+                            if (context.getConfig().snowy && Blocks.SNOW.getDefaultState().canPlaceAt(context.getWorld(), blockposMutable)) {
                                 cachedChunk.setBlockState(blockposMutable, Blocks.SNOW.getDefaultState(), false);
 
                                 BlockState belowBlock = cachedChunk.getBlockState(tempMutable);
@@ -201,7 +202,7 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                         //check above while moving up one.
                         tempMutable.set(blockposMutable).move(Direction.UP);
                         block = cachedChunk.getBlockState(tempMutable);
-                        while (tempMutable.getY() < chunkGenerator.getWorldHeight() && !block.canPlaceAt(world, tempMutable)) {
+                        while (tempMutable.getY() < context.getGenerator().getWorldHeight() && !block.canPlaceAt(context.getWorld(), tempMutable)) {
                             cachedChunk.setBlockState(tempMutable, Blocks.AIR.getDefaultState(), false);
                             block = cachedChunk.getBlockState(tempMutable.move(Direction.UP));
                         }
@@ -211,20 +212,20 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                         BlockState blockBelowBelowAir = cachedChunk.getBlockState(blockposMutable.move(Direction.DOWN));
                         blockposMutable.move(Direction.UP); // Move back to blockBelowAir
 
-                        if (GeneralUtils.isFullCube(world, blockposMutable, blockBelowAir)) {
-                            if ((columnConfig.topBlock.getBlock() instanceof FallingBlock && blockBelowBelowAir.isAir()) || blockposMutable.getY() < chunkGenerator.getSeaLevel()) {
-                                cachedChunk.setBlockState(blockposMutable, columnConfig.middleBlock, false);
+                        if (GeneralUtils.isFullCube(context.getWorld(), blockposMutable, blockBelowAir)) {
+                            if ((context.getConfig().topBlock.getBlock() instanceof FallingBlock && blockBelowBelowAir.isAir()) || blockposMutable.getY() < context.getGenerator().getSeaLevel()) {
+                                cachedChunk.setBlockState(blockposMutable, context.getConfig().middleBlock, false);
                             }
                             else {
-                                cachedChunk.setBlockState(blockposMutable, columnConfig.topBlock, false);
+                                cachedChunk.setBlockState(blockposMutable, context.getConfig().topBlock, false);
                                 tempMutable.set(blockposMutable).move(Direction.UP);
                                 BlockState aboveBlock = cachedChunk.getBlockState(tempMutable);
 
-                                if (columnConfig.snowy && aboveBlock.isAir() && Blocks.SNOW.getDefaultState().canPlaceAt(world, tempMutable)) {
+                                if (context.getConfig().snowy && aboveBlock.isAir() && Blocks.SNOW.getDefaultState().canPlaceAt(context.getWorld(), tempMutable)) {
                                     cachedChunk.setBlockState(tempMutable, Blocks.SNOW.getDefaultState(), false);
 
-                                    if (columnConfig.topBlock.contains(SnowyBlock.SNOWY)) {
-                                        cachedChunk.setBlockState(blockposMutable, columnConfig.topBlock.with(SnowyBlock.SNOWY, true), false);
+                                    if (context.getConfig().topBlock.contains(SnowyBlock.SNOWY)) {
+                                        cachedChunk.setBlockState(blockposMutable, context.getConfig().topBlock.with(SnowyBlock.SNOWY, true), false);
                                     }
                                 }
                             }
@@ -244,10 +245,10 @@ public class ColumnRamp extends Feature<ColumnConfig> {
             zOffset = getOffsetAtHeight(y, heightDiff, zTurningValue);
 
             //Begin column gen
-            for (int x = position.getX() - widthAtHeight - 1; x <= position.getX() + widthAtHeight + 1; ++x) {
-                for (int z = position.getZ() - widthAtHeight - 1; z <= position.getZ() + widthAtHeight + 1; ++z) {
-                    xDiff = x - position.getX();
-                    zDiff = z - position.getZ();
+            for (int x = context.getOrigin().getX() - widthAtHeight - 1; x <= context.getOrigin().getX() + widthAtHeight + 1; ++x) {
+                for (int z = context.getOrigin().getZ() - widthAtHeight - 1; z <= context.getOrigin().getZ() + widthAtHeight + 1; ++z) {
+                    xDiff = x - context.getOrigin().getX();
+                    zDiff = z - context.getOrigin().getZ();
                     blockposMutable.set(x + xOffset, y + bottomFloorHeight, z + zOffset);
 
                     //creates pillar with inside block
@@ -259,8 +260,8 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                     }
 
                     if (y <= heightDiff && xzDiffSquaredStretched <= circleBounds) {
-                        if (!GeneralUtils.isFullCube(world, blockposMutable, world.getBlockState(blockposMutable))) {
-                            world.setBlockState(blockposMutable, columnConfig.insideBlock, 2);
+                        if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, context.getWorld().getBlockState(blockposMutable))) {
+                            context.getWorld().setBlockState(blockposMutable, context.getConfig().insideBlock, 2);
                         }
                     }
                     //We are at non-pillar space
@@ -269,27 +270,27 @@ public class ColumnRamp extends Feature<ColumnConfig> {
                         //top block followed by 4 middle blocks below that
                         for (int downward = 0; downward < 6 && y - downward >= -3; downward++) {
                             tempMutable.set(blockposMutable).move(Direction.DOWN, downward);
-                            BlockState block = world.getBlockState(tempMutable);
-                            BlockState blockBelow = world.getBlockState(tempMutable.move(Direction.DOWN));
+                            BlockState block = context.getWorld().getBlockState(tempMutable);
+                            BlockState blockBelow = context.getWorld().getBlockState(tempMutable.move(Direction.DOWN));
                             tempMutable.move(Direction.UP);
 
-                            if (block == columnConfig.insideBlock) {
-                                if (tempMutable.getY() >= chunkGenerator.getSeaLevel() - 1 && downward == 1 && !(columnConfig.topBlock.getBlock() instanceof FallingBlock && blockBelow.isAir())) {
-                                    world.setBlockState(tempMutable, columnConfig.topBlock, 2);
+                            if (block == context.getConfig().insideBlock) {
+                                if (tempMutable.getY() >= context.getGenerator().getSeaLevel() - 1 && downward == 1 && !(context.getConfig().topBlock.getBlock() instanceof FallingBlock && blockBelow.isAir())) {
+                                    context.getWorld().setBlockState(tempMutable, context.getConfig().topBlock, 2);
 
                                     tempPos2.set(tempMutable).move(Direction.UP);
-                                    BlockState aboveBlock = world.getBlockState(tempPos2);
+                                    BlockState aboveBlock = context.getWorld().getBlockState(tempPos2);
 
-                                    if (columnConfig.snowy && aboveBlock.isAir() && Blocks.SNOW.getDefaultState().canPlaceAt(world, tempPos2)) {
-                                        world.setBlockState(tempPos2, Blocks.SNOW.getDefaultState(), 2);
+                                    if (context.getConfig().snowy && aboveBlock.isAir() && Blocks.SNOW.getDefaultState().canPlaceAt(context.getWorld(), tempPos2)) {
+                                        context.getWorld().setBlockState(tempPos2, Blocks.SNOW.getDefaultState(), 2);
 
-                                        if (columnConfig.topBlock.contains(SnowyBlock.SNOWY)) {
-                                            world.setBlockState(tempMutable, columnConfig.topBlock.with(SnowyBlock.SNOWY, true), 2);
+                                        if (context.getConfig().topBlock.contains(SnowyBlock.SNOWY)) {
+                                            context.getWorld().setBlockState(tempMutable, context.getConfig().topBlock.with(SnowyBlock.SNOWY, true), 2);
                                         }
                                     }
                                 }
                                 else {
-                                    world.setBlockState(tempMutable, columnConfig.middleBlock, 2);
+                                    context.getWorld().setBlockState(tempMutable, context.getConfig().middleBlock, 2);
                                 }
                             }
                         }

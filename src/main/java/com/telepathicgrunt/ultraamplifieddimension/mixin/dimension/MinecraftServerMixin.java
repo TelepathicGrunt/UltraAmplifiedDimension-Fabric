@@ -35,6 +35,6 @@ public class MinecraftServerMixin {
 								GeneratorOptions dimensiongeneratorsettings, boolean isDebugWorld, long seed, long hashedSeed)
 	{
 		CaveCavityCarver.setSeed(hashedSeed);
-		BiomeSetsHelper.generateBiomeSets(registryManager.get(Registry.BIOME_KEY));
+		BiomeSetsHelper.generateBiomeSets(registryManager.getMutable(Registry.BIOME_KEY));
 	}
 }

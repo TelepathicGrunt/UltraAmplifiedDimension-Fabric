@@ -13,6 +13,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,30 +51,30 @@ public class GlowPatch extends Feature<CountConfig> {
 
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, CountConfig countConfig) {
+    public boolean generate(FeatureContext<CountConfig> context) {
         BlockPos.Mutable blockposMutable = new BlockPos.Mutable();
-        Chunk cachedChunk = world.getChunk(position);
+        Chunk cachedChunk = context.getWorld().getChunk(context.getOrigin());
 
         // Cancel glowpatch spawning if too close to visible sky.
         for(Direction direction : Direction.Type.HORIZONTAL){
-            blockposMutable.set(position).move(direction, 6);
-            int nearbyLandY = world.getTopY(Heightmap.Type.OCEAN_FLOOR_WG, blockposMutable.getX(), blockposMutable.getZ());
+            blockposMutable.set(context.getOrigin()).move(direction, 6);
+            int nearbyLandY = context.getWorld().getTopY(Heightmap.Type.OCEAN_FLOOR_WG, blockposMutable.getX(), blockposMutable.getZ());
 
-            if(nearbyLandY < position.getY()){
+            if(nearbyLandY < context.getOrigin().getY()){
                 return false;
             }
         }
 
         // tries as times specified to convert a randomly chosen nearby block
-        for (int attempts = 0; attempts < countConfig.count; ++attempts) {
+        for (int attempts = 0; attempts < context.getConfig().count; ++attempts) {
             // clustered around the center the most
-            int gausX = (int) (Math.max(Math.min(rand.nextGaussian() * 3, 15), -15)); // range of -15 to 15
-            int gausY = rand.nextInt(4) - rand.nextInt(4); // range of -4 to 4
-            int gausZ = (int) (Math.max(Math.min(rand.nextGaussian() * 3, 15), -15)); // range of -15 to 15
+            int gausX = (int) (Math.max(Math.min(context.getRandom().nextGaussian() * 3, 15), -15)); // range of -15 to 15
+            int gausY = context.getRandom().nextInt(4) - context.getRandom().nextInt(4); // range of -4 to 4
+            int gausZ = (int) (Math.max(Math.min(context.getRandom().nextGaussian() * 3, 15), -15)); // range of -15 to 15
 
-            blockposMutable.set(position).move(gausX, gausY + 1, gausZ);
+            blockposMutable.set(context.getOrigin()).move(gausX, gausY + 1, gausZ);
             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                cachedChunk = world.getChunk(blockposMutable);
+                cachedChunk = context.getWorld().getChunk(blockposMutable);
 
             // Glowstuff cannot be placed in sunlight
             // Need cache for heightmap checking

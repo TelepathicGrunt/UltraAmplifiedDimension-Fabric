@@ -140,7 +140,7 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
         this.seed = seed;
 
         sealevel = this.settings.get().getSeaLevel();
-        landTerraformingStructures = new ArrayList<>(StructureFeature.JIGSAW_STRUCTURES);
+        landTerraformingStructures = new ArrayList<>(StructureFeature.LAND_MODIFYING_STRUCTURES);
         landTerraformingStructures.add(StructureFeature.MONUMENT);
     }
 
@@ -510,11 +510,11 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                                 {
                                     StructurePiece structurepiece = objectlistiterator.next();
                                     BlockBox mutableboundingbox = structurepiece.getBoundingBox();
-                                    pieceX = Math.max(0, Math.max(mutableboundingbox.minX - x, x - mutableboundingbox.maxX));
-                                    pieceY = y - (mutableboundingbox.minY + (structurepiece instanceof PoolStructurePiece ? ((PoolStructurePiece)structurepiece).getGroundLevelDelta() : 0));
-                                    pieceZ = Math.max(0, Math.max(mutableboundingbox.minZ - z, z - mutableboundingbox.maxZ));
+                                    pieceX = Math.max(0, Math.max(mutableboundingbox.getMinX() - x, x - mutableboundingbox.getMaxX()));
+                                    pieceY = y - (mutableboundingbox.getMinY() + (structurepiece instanceof PoolStructurePiece ? ((PoolStructurePiece)structurepiece).getGroundLevelDelta() : 0));
+                                    pieceZ = Math.max(0, Math.max(mutableboundingbox.getMinZ() - z, z - mutableboundingbox.getMaxZ()));
 
-                                    if(structurepiece instanceof OceanMonumentGenerator.Piece){
+                                    if(structurepiece instanceof OceanMonumentGenerator.Base){
                                         pieceY -= 2;
                                         noiseValue += giantTerraformNoise(pieceX, pieceY, pieceZ) * 0.8D;
                                     }
@@ -659,7 +659,8 @@ public class UADChunkGenerator extends NoiseChunkGenerator {
                     defaultBlockForSurface = Blocks.END_STONE.getDefaultState();
                 }
 
-                biome.buildSurface(sharedseedrandom, chunk, xPos, zPos, maxY, noise, defaultBlockForSurface, this.defaultFluid, this.getSeaLevel(), worldGenRegion.getSeed());
+                int minY = this.settings.get().getMinSurfaceLevel();
+                biome.buildSurface(sharedseedrandom, chunk, xPos, zPos, maxY, noise, defaultBlockForSurface, this.defaultFluid, this.getSeaLevel(), minY, worldGenRegion.getSeed());
             }
         }
 

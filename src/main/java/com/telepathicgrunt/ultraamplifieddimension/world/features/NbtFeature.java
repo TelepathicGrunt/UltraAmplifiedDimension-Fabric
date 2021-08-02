@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.utils.GeneralUtils;
 import com.telepathicgrunt.ultraamplifieddimension.world.features.configs.NbtFeatureConfig;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -32,44 +34,45 @@ public class NbtFeature extends Feature<NbtFeatureConfig> {
 
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, NbtFeatureConfig config) {
+    public boolean generate(FeatureContext<NbtFeatureConfig> context) {
 
         // Person wants an empty feature for some reason.
-        if (config.nbtResourcelocationsAndWeights.size() == 0) {
+        if (context.getConfig().nbtResourcelocationsAndWeights.size() == 0) {
             return false;
         }
 
-        BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable().set(position);
+        BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable().set(context.getOrigin());
 
         // Makes sure it generates with land around it instead of cutting into cliffs or hanging over an edge by checking if block at north, east, west, and south are acceptable terrain blocks that appear only at top of land.
-        int radius = config.solidLandRadius;
+        int radius = context.getConfig().solidLandRadius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (Math.abs(x * z) > radius && Math.abs(x * z) < radius * 2) {
-                    blockpos$Mutable.set(position).move(-x, -1, -z);
-                    if (!world.getBlockState(blockpos$Mutable).isOpaque()) {
+                    blockpos$Mutable.set(context.getOrigin()).move(-x, -1, -z);
+                    if (! context.getWorld().getBlockState(blockpos$Mutable).isOpaque()) {
                         return false;
                     }
-                    //world.setBlockState(blockpos$Mutable.up(), Blocks.REDSTONE_BLOCK.getDefaultState(), 2);
+                    //context.getWorld().setBlockState(blockpos$Mutable.up(), Blocks.REDSTONE_BLOCK.getDefaultState(), 2);
                 }
             }
         }
 
-        StructureManager templatemanager = world.toServerWorld().getServer().getStructureManager();
-        Identifier nbtRL = GeneralUtils.getRandomEntry(config.nbtResourcelocationsAndWeights, rand);
-        Structure template = templatemanager.getStructure(nbtRL);
+        StructureManager templatemanager = context.getWorld().toServerWorld().getServer().getStructureManager();
+        Identifier nbtRL = GeneralUtils.getRandomEntry(context.getConfig().nbtResourcelocationsAndWeights, context.getRandom());
+        Structure template = templatemanager.getStructureOrBlank(nbtRL);
 
         if (template == null) {
-            UltraAmplifiedDimension.LOGGER.warn(config.nbtResourcelocationsAndWeights.toString() + " NTB does not exist!");
+            UltraAmplifiedDimension.LOGGER.warn(context.getConfig().nbtResourcelocationsAndWeights.toString() + " NTB does not exist!");
             return false;
         }
 
         BlockPos halfLengths = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
-        placementsettings.setRotation(BlockRotation.random(rand)).setPosition(halfLengths).setIgnoreEntities(false);
-        if(config.processor != null){
-            config.processor.get().getList().forEach(placementsettings::addProcessor);
+        placementsettings.setRotation(BlockRotation.random(context.getRandom())).setPosition(halfLengths).setIgnoreEntities(false);
+        if(context.getConfig().processor != null){
+            context.getConfig().processor.get().getList().forEach(placementsettings::addProcessor);
         }
-        template.placeAndNotifyListeners(world, blockpos$Mutable.set(position).move(-halfLengths.getX(), 0, -halfLengths.getZ()), placementsettings, rand);
+        blockpos$Mutable.set(context.getOrigin()).move(-halfLengths.getX(), 0, -halfLengths.getZ());
+        template.place(context.getWorld(), blockpos$Mutable, blockpos$Mutable, placementsettings, context.getRandom(), Block.NO_REDRAW);
 
         return true;
     }

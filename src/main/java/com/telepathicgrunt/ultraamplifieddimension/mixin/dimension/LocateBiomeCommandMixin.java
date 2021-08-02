@@ -26,7 +26,7 @@ public class LocateBiomeCommandMixin {
     private static BlockPos uad_expandSearch(BlockPos blockPos, ServerCommandSource source, Identifier biomeID) {
         if(blockPos == null && source.getWorld().getChunkManager().getChunkGenerator().getBiomeSource() instanceof UADBiomeProvider){
             // Will never be null as the command already checked and validated that the biome exists
-            Biome biome = source.getMinecraftServer().getRegistryManager().get(Registry.BIOME_KEY).get(biomeID);
+            Biome biome = source.getServer().getRegistryManager().get(Registry.BIOME_KEY).get(biomeID);
             return source.getWorld().locateBiome(biome, new BlockPos(source.getPosition()), 36000, 36);
         }
 

@@ -2,7 +2,9 @@ package com.telepathicgrunt.ultraamplifieddimension.mixin.structures;
 
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADChunkGenerator;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
@@ -20,12 +22,12 @@ public abstract class FortressStructureStartMixin {
      * @reason Raise Nether Fortresses in UAD to between y = 88 and 135
      */
     @Inject(
-            method = "init(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;IILnet/minecraft/world/biome/Biome;Lnet/minecraft/world/gen/feature/DefaultFeatureConfig;)V",
+            method = "init(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/world/biome/Biome;Lnet/minecraft/world/gen/feature/DefaultFeatureConfig;Lnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "TAIL")
     )
-    private void uad_adjustHeight(DynamicRegistryManager dynamicRegistries, ChunkGenerator chunkGenerator, StructureManager templateManager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig config, CallbackInfo ci) {
+    private void uad_adjustHeight(DynamicRegistryManager dynamicRegistryManager, ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, Biome biome, DefaultFeatureConfig defaultFeatureConfig, HeightLimitView heightLimitView, CallbackInfo ci) {
         if(chunkGenerator instanceof UADChunkGenerator){
-            ((StructureStartAccessor)this).uad_callRandomUpwardTranslation(((StructureStartAccessor)this).uad_getRandom(), 88, 135);
+            ((StructureStartAccessor)this).uad_callRandomUpwardTranslation(((StructureStartAccessor)this).uad_getRandom(), heightLimitView.getBottomY() + 88, heightLimitView.getBottomY() + 135);
         }
     }
 }

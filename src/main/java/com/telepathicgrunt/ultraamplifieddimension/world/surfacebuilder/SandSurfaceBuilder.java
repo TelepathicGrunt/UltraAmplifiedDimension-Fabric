@@ -20,11 +20,11 @@ public class SandSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
     }
 
     @Override
-    public void generate(Random random, Chunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
-        this.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), seaLevel);
+    public void generate(Random random, Chunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
+        this.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), minY, seaLevel);
     }
 
-    protected void buildSurface(Random random, Chunk chunk, Biome biome, int xStart, int zStart, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState topBlock, BlockState middleBlock, BlockState bottomBlock, int seaLevel) {
+    protected void buildSurface(Random random, Chunk chunk, Biome biome, int xStart, int zStart, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState topBlock, BlockState middleBlock, BlockState bottomBlock, int minY, int seaLevel) {
 
         BlockState topBlockstate = topBlock;
         BlockState bottomBlockstate = middleBlock;
@@ -34,7 +34,7 @@ public class SandSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
         int z = zStart & 15;
         BlockPos.Mutable blockPosMutable = new BlockPos.Mutable(x, startHeight, z);
 
-        for (; blockPosMutable.getY() >= 0; blockPosMutable.move(Direction.DOWN)) {
+        for (; blockPosMutable.getY() >= minY; blockPosMutable.move(Direction.DOWN)) {
             BlockState currentBlock = chunk.getBlockState(blockPosMutable);
             if (bottomLayerNoise != -1 && currentBlock.getMaterial() == Material.AIR) {
                 bottomLayerNoise = -1;

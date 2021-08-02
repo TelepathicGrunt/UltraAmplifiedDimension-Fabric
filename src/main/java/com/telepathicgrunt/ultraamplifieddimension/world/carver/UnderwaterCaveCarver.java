@@ -3,6 +3,7 @@ package com.telepathicgrunt.ultraamplifieddimension.world.carver;
 import com.mojang.serialization.Codec;
 import com.telepathicgrunt.ultraamplifieddimension.mixin.dimension.BiomeContainerAccessor;
 import com.telepathicgrunt.ultraamplifieddimension.utils.GeneralUtils;
+import com.telepathicgrunt.ultraamplifieddimension.world.carver.configs.RavineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,7 +14,10 @@ import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ProbabilityConfig;
+import net.minecraft.world.gen.carver.CarverContext;
 import net.minecraft.world.gen.carver.CaveCarver;
+import net.minecraft.world.gen.carver.CaveCarverConfig;
+import net.minecraft.world.gen.chunk.AquiferSampler;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.BitSet;
@@ -27,9 +31,9 @@ public class UnderwaterCaveCarver extends CaveCarver
 {
 	private SimpleRegistry<Biome> biomeRegistry;
 
-	public UnderwaterCaveCarver(Codec<ProbabilityConfig> codec)
+	public UnderwaterCaveCarver(Codec<CaveCarverConfig> codec)
 	{
-		super(codec, 73);
+		super(codec);
 		this.alwaysCarvableBlocks = new HashSet<>(this.alwaysCarvableBlocks);
 		this.alwaysCarvableBlocks.add(Blocks.SAND);
 		this.alwaysCarvableBlocks.add(Blocks.GRAVEL);
@@ -42,44 +46,40 @@ public class UnderwaterCaveCarver extends CaveCarver
 
 
 	@Override
-	public boolean shouldCarve(Random random, int chunkX, int chunkZ, ProbabilityConfig config)
-	{
+	public boolean shouldCarve(CaveCarverConfig config, Random random) {
 		return random.nextFloat() <= config.probability;
 	}
 
 
 	@Override
-	protected boolean isRegionUncarvable(Chunk chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ)
-	{
+	protected boolean isRegionUncarvable(Chunk chunk, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
 		return false;
 	}
 
 	@Override
-	protected boolean carveAtPoint(Chunk chunk, Function<BlockPos, Biome> biomePos, BitSet carvingMask, Random rand, BlockPos.Mutable p_230358_5_, BlockPos.Mutable p_230358_6_, BlockPos.Mutable p_230358_7_, int p_230358_8_, int p_230358_9_, int p_230358_10_, int posX, int posZ, int p_230358_13_, int posY, int p_230358_15_, MutableBoolean isSurface) {
-		IndexedIterable<Biome> reg = chunk.getBiomeArray() != null ? ((BiomeContainerAccessor)chunk.getBiomeArray()).uad_getField_25831() : null;
+	protected boolean carveAtPoint(CarverContext context, CaveCarverConfig config, Chunk chunk, Function<BlockPos, Biome> biomePos, BitSet carvingMask, Random rand, BlockPos.Mutable pos, BlockPos.Mutable downPos, AquiferSampler sampler, MutableBoolean isSurface) {
+		IndexedIterable<Biome> reg = chunk.getBiomeArray() != null ? ((BiomeContainerAccessor)chunk.getBiomeArray()).uad_getBiomes() : null;
 		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
-			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)chunk.getBiomeArray()).uad_getField_25831();
+			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)chunk.getBiomeArray()).uad_getBiomes();
 		}
 
-		return func_222728_a(biomeRegistry, biomePos, chunk, carvingMask, rand, p_230358_5_, p_230358_8_, p_230358_9_, p_230358_10_, posX, posZ, p_230358_13_, posY, p_230358_15_, this.alwaysCarvableBlocks);
+		return func_222728_a(context, config, biomeRegistry, biomePos, chunk, carvingMask, rand, pos, downPos, this.alwaysCarvableBlocks);
+	}
+
+	protected static boolean func_222728_a(CarverContext context, CaveCarverConfig config, SimpleRegistry<Biome> biomeRegistry, Function<BlockPos, Biome> biomePos, Chunk chunk, BitSet carvingMask, Random random, BlockPos.Mutable pos, BlockPos.Mutable downPos, Set<Block> carvableBlocks) {
+		return carvingBlock(context, config, biomeRegistry, biomePos, chunk, carvingMask, random, pos, downPos, carvableBlocks);
 	}
 
 
-	protected static boolean func_222728_a(SimpleRegistry<Biome> biomeRegistry, Function<BlockPos, Biome> biomePos, Chunk chunk, BitSet carvingMask, Random random, BlockPos.Mutable MutableIn, int minHeight, int chunkX, int chunkZ, int x, int z, int maskY, int y, int atomicBoolean, Set<Block> carvableBlocks) {
-		return carvingBlock(biomeRegistry, biomePos, chunk, carvingMask, random, MutableIn, minHeight, chunkX, chunkZ, x, z, maskY, y, atomicBoolean, carvableBlocks);
-	}
-
-
-	protected static boolean carvingBlock(SimpleRegistry<Biome> biomeRegistry, Function<BlockPos, Biome> biomeBlockPos, Chunk chunkIn, BitSet carvingMask, Random random, BlockPos.Mutable mutableBlockPos, int minHeight, int chunkX, int chunkZ, int xStart, int zStart, int maskY, int y, int atomicBoolean, Set<Block> carvableBlocks) {
-		if (y >= minHeight) {
+	protected static boolean carvingBlock(CarverContext context, CaveCarverConfig config, SimpleRegistry<Biome> biomeRegistry, Function<BlockPos, Biome> biomeBlockPos, Chunk chunkIn, BitSet carvingMask, Random random, BlockPos.Mutable pos, BlockPos.Mutable downPos, Set<Block> carvableBlocks) {
+		if (pos.getY() >= context.getMinY()) {
 			return false;
 		}
 		else {
-			mutableBlockPos.set(xStart, y, zStart);
 			BlockState lavaBlock;
 
-			if(y < 11){
-				Biome biome = biomeBlockPos.apply(mutableBlockPos);
+			if(pos.getY() < 11){
+				Biome biome = biomeBlockPos.apply(pos);
 				Identifier biomeID = biomeRegistry != null ? biomeRegistry.getId(biome) : null;
 				String biomeIDString = biomeID == null ? "" : biomeID.toString();
 
@@ -90,29 +90,28 @@ public class UnderwaterCaveCarver extends CaveCarver
 				lavaBlock = Blocks.LAVA.getDefaultState();
 			}
 
-			BlockState blockstate = chunkIn.getBlockState(mutableBlockPos);
+			BlockState blockstate = chunkIn.getBlockState(pos);
 			if (!carvableBlocks.contains(blockstate.getBlock())) {
 				return false;
 			}
-			else if (y == 10) {
+			else if (pos.getY() == 10) {
 				float f = random.nextFloat();
 				if (f < 0.25D && lavaBlock != Blocks.OBSIDIAN.getDefaultState()) {
-					chunkIn.setBlockState(mutableBlockPos, Blocks.MAGMA_BLOCK.getDefaultState(), false);
-					chunkIn.getBlockTickScheduler().schedule(mutableBlockPos, Blocks.MAGMA_BLOCK, 0);
+					chunkIn.setBlockState(pos, Blocks.MAGMA_BLOCK.getDefaultState(), false);
+					chunkIn.getBlockTickScheduler().schedule(pos, Blocks.MAGMA_BLOCK, 0);
 				}
 				else {
-					chunkIn.setBlockState(mutableBlockPos, Blocks.OBSIDIAN.getDefaultState(), false);
+					chunkIn.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState(), false);
 				}
 
 				return true;
 			}
-			else if (y < 10) {
-				chunkIn.setBlockState(mutableBlockPos, lavaBlock, false);
+			else if (pos.getY() < 10) {
+				chunkIn.setBlockState(pos, lavaBlock, false);
 				return false;
 			}
 			else {
-				mutableBlockPos.set(xStart, y, zStart);
-				chunkIn.setBlockState(mutableBlockPos, WATER.getBlockState(), false);
+				chunkIn.setBlockState(pos, WATER.getBlockState(), false);
 				return true;
 			}
 		}

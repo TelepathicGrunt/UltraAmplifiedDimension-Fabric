@@ -19,7 +19,7 @@ public class GravelSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
     }
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
         this.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), seaLevel);
     }
 
@@ -33,7 +33,7 @@ public class GravelSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
         int x = xStart & 15;
         int z = zStart & 15;
 
-        for (int y = startHeight; y >= 0; --y) {
+        for (int y = startHeight; y >= minY; --y) {
             blockpos$Mutable.set(x, y, z);
             BlockState iblockstate2 = chunkIn.getBlockState(blockpos$Mutable);
             if (iblockstate2.getMaterial() == Material.AIR) {

@@ -7,6 +7,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -18,10 +19,10 @@ public class OnSolidBlockPlacer extends Feature<BlockWithRuleReplaceConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, BlockWithRuleReplaceConfig replaceBlockConfig) {
-        BlockPos.Mutable mutable = new BlockPos.Mutable().set(position);
-        if (replaceBlockConfig.target.test(world.getBlockState(mutable), rand) && world.getBlockState(mutable.move(Direction.DOWN)).isSideSolidFullSquare(world, mutable, Direction.UP)) {
-            world.setBlockState(mutable.move(Direction.UP), replaceBlockConfig.state, 2);
+    public boolean generate(FeatureContext<BlockWithRuleReplaceConfig> context) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable().set(context.getOrigin());
+        if (context.getConfig().target.test( context.getWorld().getBlockState(mutable), context.getRandom()) && context.getWorld().getBlockState(mutable.move(Direction.DOWN)).isSideSolidFullSquare( context.getWorld(), mutable, Direction.UP)) {
+            context.getWorld().setBlockState(mutable.move(Direction.UP), context.getConfig().state, 2);
             return true;
         }
 

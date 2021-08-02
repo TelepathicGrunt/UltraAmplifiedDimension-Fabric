@@ -31,7 +31,7 @@ public abstract class OceanMonumentPiecesMonumentBuildingMixin {
             OceanMonumentPiecesUtils.generateWaterBox(world, chunkGenerator, ((OceanMonumentGenerator.Base)(Object)this), mutableBoundingBox);
 
             // This causes the normal ridiculous makeOpening to not place any water as it's min y passed in is 0.
-            return -1;
+            return Integer.MIN_VALUE;
         }
 
         return i;

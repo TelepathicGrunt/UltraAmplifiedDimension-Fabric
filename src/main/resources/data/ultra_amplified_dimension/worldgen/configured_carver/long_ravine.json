@@ -2,14 +2,28 @@
   "config": {
     "probability": 0.029412,
     "cutoff_height": 50,
-    "height_placement": {
-        "base": 15,
-        "spread": 4
-    },
     "tallness": {
         "base": 10,
         "spread": 5
-    }
+    },
+    "lava_level": {
+      "above_bottom": 10
+    },
+    "aquifers_enabled": false,
+    "y": {
+      "min_inclusive": {
+        "absolute": 11
+      },
+      "max_inclusive": {
+        "absolute": 19
+      },
+      "inner": 8,
+      "type": "minecraft:biased_to_bottom"
+    },
+    "yScale": 0.5,
+    "horizontal_radius_multiplier": 1.0,
+    "vertical_radius_multiplier": 1.0,
+    "floor_level": -0.7
   },
   "type": "ultra_amplified_dimension:long_ravine"
 }

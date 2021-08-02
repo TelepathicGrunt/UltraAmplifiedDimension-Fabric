@@ -38,6 +38,7 @@
     "structures.TemplateStructurePieceAccessor",
     "structures.WoodlandMansionStructureStartMixin",
     "surfacebuilders.NetherForestSurfaceBuilderMixin",
+    "surfacebuilders.NetherSurfaceBuilderMixin",
     "surfacebuilders.ValleySurfaceBuilderMixin"
   ],
   "client": [

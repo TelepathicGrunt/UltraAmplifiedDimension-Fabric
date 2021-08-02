@@ -16,6 +16,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -27,21 +28,22 @@ public class SnowIceLayerHandlerFeature extends Feature<DefaultFeatureConfig>
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos position, DefaultFeatureConfig config) {
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
 		BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();
 
 		for (int xOffset = 0; xOffset < 16; xOffset++) {
 			for (int zOffset = 0; zOffset < 16; zOffset++) {
-				blockpos$Mutable.set(position).move(xOffset, 0, zOffset);
-				Biome biome = world.getBiome(blockpos$Mutable);
+				blockpos$Mutable.set(context.getOrigin()).move(xOffset, 0, zOffset);
+				Biome biome = context.getWorld().getBiome(blockpos$Mutable);
+				FeatureContext<DefaultFeatureConfig> newContext = new FeatureContext<>(context.getWorld(), context.getGenerator(), context.getRandom(), blockpos$Mutable, context.getConfig());
 				if (BiomeSetsHelper.FROZEN_BIOMES.contains(biome)) {
-					UADFeatures.SNOW_ICE_ALL_LAYERS.generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_ICE_ALL_LAYERS.generate(newContext);
 				}
 				else if (BiomeSetsHelper.COLD_OCEAN_BIOMES.contains(biome)) {
-					UADFeatures.SNOW_LAYER_WITHOUT_ICE.generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_LAYER_WITHOUT_ICE.generate(newContext);
 				}
 				else {
-					UADFeatures.SNOW_ICE_TOP_LAYER.generate(world, generator, random, blockpos$Mutable, config);
+					UADFeatures.SNOW_ICE_TOP_LAYER.generate(newContext);
 				}
 			}
 		}

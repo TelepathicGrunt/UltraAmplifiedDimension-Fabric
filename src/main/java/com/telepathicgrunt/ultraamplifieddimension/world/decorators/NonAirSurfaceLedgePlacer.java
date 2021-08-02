@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,7 +41,7 @@ public class NonAirSurfaceLedgePlacer extends Decorator<NonAirSurfaceLedgePlacer
 
             // Set the block above for heightmap pos
             BlockState prevBlockState = context.getBlockState(mutable.up());
-            int bottomYLimit = context.getSeaLevel();
+            int bottomYLimit = ((ServerWorld)context.getWorld()).getChunkManager().getChunkGenerator().getSeaLevel();
 
             // Move downward towards sealevel and get every surface along the way
             while (mutable.getY() >= bottomYLimit) {

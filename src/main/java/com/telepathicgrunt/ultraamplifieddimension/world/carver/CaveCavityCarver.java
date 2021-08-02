@@ -10,12 +10,15 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.carver.Carver;
+import net.minecraft.world.gen.carver.CarverContext;
+import net.minecraft.world.gen.chunk.AquiferSampler;
 
 import java.util.BitSet;
 import java.util.HashSet;
@@ -43,7 +46,7 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 
 
 	public CaveCavityCarver(Codec<CaveConfig> codec) {
-		super(codec, 250);
+		super(codec);
 		this.alwaysCarvableBlocks = new HashSet<>(this.alwaysCarvableBlocks);
 		this.alwaysCarvableBlocks.add(Blocks.NETHERRACK);
 		this.alwaysCarvableBlocks.add(Blocks.ICE);
@@ -56,30 +59,30 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 	 * Checks whether the entire cave can spawn or not. (Not the individual parts)
 	 */
 	@Override
-	public boolean shouldCarve(Random random, int chunkX, int chunkZ, CaveConfig config) {
+	public boolean shouldCarve(CaveConfig config, Random random) {
 		return random.nextFloat() <= config.probability;
 	}
 
 	@Override
-	public boolean carve(Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int chunkX, int chunkZ, int originalX, int originalZ, BitSet mask, CaveConfig config) {
-		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831() : null;
+	public boolean carve(CarverContext carverContext, CaveConfig config, Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, ChunkPos chunkPos, BitSet mask) {
+		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes() : null;
 		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
-			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getField_25831();
+			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes();
 		}
 
 		int maxIterations = (this.getBranchFactor() * 2 - 1) * 16;
-		double xpos = chunkX * 16 + random.nextInt(16);
+		double xpos = chunkPos.getStartX() + random.nextInt(16);
 		double height = random.nextInt(random.nextInt(2) + 1) + 34;
-		double zpos = chunkZ * 16 + random.nextInt(16);
-		float xzNoise2 = random.nextFloat() * ((float) Math.PI * 1F);
+		double zpos = chunkPos.getStartZ() + random.nextInt(16);
+		float xzNoise2 = random.nextFloat() * ((float) Math.PI);
 		float xzCosNoise = (random.nextFloat() - 0.5F) / 16.0F;
 		float widthHeightBase = (random.nextFloat() + random.nextFloat()) / 16; // width And Height Modifier
-		this.carveCavity(region, biomeBlockPos, random, seaLevel, originalX, originalZ, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIterations, random.nextDouble() + 20D, mask, config);
+		this.carveCavity(region, biomeBlockPos, random, aquiferSampler, chunkPos.x, chunkPos.z, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIterations, random.nextDouble() + 20D, mask, config);
 		return true;
 	}
 
 
-	private void carveCavity(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, int seaLevel, int mainChunkX, int mainChunkZ, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, CaveConfig config) {
+	private void carveCavity(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, int mainChunkX, int mainChunkZ, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, CaveConfig config) {
 		float ledgeWidth = 1.0F;
 
 		// CONTROLS THE LEDGES' WIDTH! FINALLY FOUND WHAT THIS JUNK DOES
@@ -314,14 +317,5 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 				}
 			}
 		}
-	}
-
-	/**
-	 * MC doesn't seem to do anything with the returned value in the end. Strange. I wonder why.
-	 */
-	@Override
-	protected boolean isPositionExcluded(double p_222708_1_, double p_222708_3_, double p_222708_5_, int p_222708_7_)
-	{
-		return true;
 	}
 }

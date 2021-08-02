@@ -5,6 +5,7 @@ import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GrassBlock;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
@@ -16,7 +17,7 @@ import java.util.Random;
 public class GlowgrassBlock extends GrassBlock {
 
     public GlowgrassBlock() {
-        super(Settings.of(Material.SOLID_ORGANIC).ticksRandomly().strength(0.5F).sounds(BlockSoundGroup.GRASS).luminance((blockState) -> 15));
+        super(Settings.of(Material.SOLID_ORGANIC, MapColor.GREEN).ticksRandomly().strength(0.5F).sounds(BlockSoundGroup.GRASS).luminance((blockState) -> 15));
     }
 
 

@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -17,18 +18,18 @@ public class ProperSeapickle extends Feature<SeaPickleConfig> {
         super(codec);
     }
 
-    public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random rand, BlockPos pos, SeaPickleConfig config) {
+    public boolean generate(FeatureContext<SeaPickleConfig> context) {
         int picklesPlaced = 0;
 
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for(int i = 0; i < config.count; ++i) {
-            int x = rand.nextInt(8) - rand.nextInt(8);
-            int z = rand.nextInt(8) - rand.nextInt(8);
-            int y = rand.nextInt(8) - rand.nextInt(8);
-            mutable.set(pos).move(x, y, z);
-            BlockState blockstate = Blocks.SEA_PICKLE.getDefaultState().with(SeaPickleBlock.PICKLES, rand.nextInt(config.maxPickles - (config.minPickles - 1)) + config.minPickles);
-            if (world.getBlockState(mutable).isOf(Blocks.WATER) && blockstate.canPlaceAt(world, mutable)) {
-                world.setBlockState(mutable, blockstate, 2);
+        for(int i = 0; i < context.getConfig().count; ++i) {
+            int x = context.getRandom().nextInt(8) - context.getRandom().nextInt(8);
+            int z = context.getRandom().nextInt(8) - context.getRandom().nextInt(8);
+            int y = context.getRandom().nextInt(8) - context.getRandom().nextInt(8);
+            mutable.set(context.getOrigin()).move(x, y, z);
+            BlockState blockstate = Blocks.SEA_PICKLE.getDefaultState().with(SeaPickleBlock.PICKLES, context.getRandom().nextInt(context.getConfig().maxPickles - (context.getConfig().minPickles - 1)) + context.getConfig().minPickles);
+            if ( context.getWorld().getBlockState(mutable).isOf(Blocks.WATER) && blockstate.canPlaceAt( context.getWorld(), mutable)) {
+                context.getWorld().setBlockState(mutable, blockstate, 2);
                 ++picklesPlaced;
             }
         }

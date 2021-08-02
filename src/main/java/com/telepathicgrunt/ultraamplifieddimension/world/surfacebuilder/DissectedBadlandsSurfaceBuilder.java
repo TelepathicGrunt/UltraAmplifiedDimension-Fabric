@@ -23,7 +23,7 @@ public class DissectedBadlandsSurfaceBuilder extends BadlandsSurfaceBuilder {
 
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
         double spikeHeight = 0.0D;
         double d1 = Math.min(Math.abs(noise), this.heightCutoffNoise.sample(x * 0.20D, z * 0.20D, false) * 15.0D);
         if (d1 > -2.5D) {
@@ -53,7 +53,7 @@ public class DissectedBadlandsSurfaceBuilder extends BadlandsSurfaceBuilder {
         BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();
 
         //might need to make k start at 255
-        for (int y = Math.max(startHeight, (int) spikeHeight + 1); y >= 0; --y) {
+        for (int y = Math.max(startHeight, (int) spikeHeight + 1); y >= minY; --y) {
             blockpos$Mutable.set(xInChunk, y, zInChunk);
             Material material = chunkIn.getBlockState(blockpos$Mutable).getMaterial();
             if ((material == Material.AIR || material == Material.WATER || material == Material.LAVA) && y < (int) spikeHeight && !hitSolidUnderwaterBlock) {

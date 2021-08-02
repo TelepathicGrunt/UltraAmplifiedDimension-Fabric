@@ -10,6 +10,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -21,11 +22,11 @@ public class MarkedTreasureChest extends Feature<LootTableConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, LootTableConfig config) {
-        BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable().set(position);
+    public boolean generate(FeatureContext<LootTableConfig> context) {
+        BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable().set(context.getOrigin());
 
         //surface block must be solid with water above
-        if (!world.getBlockState(blockpos$Mutable).isOpaque() || world.getBlockState(blockpos$Mutable.up()).getFluidState().isEmpty()) {
+        if (!context.getWorld().getBlockState(blockpos$Mutable).isOpaque() || context.getWorld().getBlockState(blockpos$Mutable.up()).getFluidState().isEmpty()) {
             return false;
         }
 
@@ -36,7 +37,7 @@ public class MarkedTreasureChest extends Feature<LootTableConfig> {
                 continue;
             }
 
-            if (!world.getBlockState(blockpos$Mutable.down().offset(face)).isOpaque()) {
+            if (!context.getWorld().getBlockState(blockpos$Mutable.down().offset(face)).isOpaque()) {
                 return false;
             }
         }
@@ -56,16 +57,16 @@ public class MarkedTreasureChest extends Feature<LootTableConfig> {
                 }
 
                 //creates a thick x shape
-                if (random.nextFloat() < 0.85 && Math.abs(absx - absz) < 2) {
-                    world.setBlockState(blockpos$Mutable.set(position).move(x, 0, z), Blocks.RED_SAND.getDefaultState(), 2);
+                if (context.getRandom().nextFloat() < 0.85 && Math.abs(absx - absz) < 2) {
+                    context.getWorld().setBlockState(blockpos$Mutable.set(context.getOrigin()).move(x, 0, z), Blocks.RED_SAND.getDefaultState(), 2);
                 }
             }
         }
 
-        blockpos$Mutable.set(position).move(Direction.DOWN);
+        blockpos$Mutable.set(context.getOrigin()).move(Direction.DOWN);
         //places chest with a 50/50 split between treasure chest and end city loot
-        world.setBlockState(blockpos$Mutable, StructurePiece.orientateChest(world, blockpos$Mutable, Blocks.CHEST.getDefaultState()), 2);
-        LootableContainerBlockEntity.setLootTable(world, random, blockpos$Mutable, config.lootTable);
+        context.getWorld().setBlockState(blockpos$Mutable, StructurePiece.orientateChest(context.getWorld(), blockpos$Mutable, Blocks.CHEST.getDefaultState()), 2);
+        LootableContainerBlockEntity.setLootTable(context.getWorld(), context.getRandom(), blockpos$Mutable, context.getConfig().lootTable);
         //UltraAmplified.Logger.log(Level.DEBUG, "Marked Treasure Chest "+" | "+blockpos.getX()+" "+blockpos.getZ());
 
         return true;

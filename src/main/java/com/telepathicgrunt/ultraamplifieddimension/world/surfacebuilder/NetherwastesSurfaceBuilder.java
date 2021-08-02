@@ -32,7 +32,7 @@ public class NetherwastesSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
     }
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
         int sealevel = seaLevel + 1;
         int xInChunk = x & 15;
         int zInChunk = z & 15;
@@ -43,7 +43,7 @@ public class NetherwastesSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
         BlockState topBlockstate = config.getTopMaterial();
         BlockState bottomBlockstates = config.getTopMaterial();
 
-        for (int ypos = startHeight; ypos >= 0; --ypos) {
+        for (int ypos = startHeight; ypos >= minY; --ypos) {
             blockpos$Mutable.set(xInChunk, ypos, zInChunk);
             blockpos$MutableUnder.set(blockpos$Mutable).move(Direction.DOWN);
             BlockState currentBlockToReplace = chunkIn.getBlockState(blockpos$Mutable);

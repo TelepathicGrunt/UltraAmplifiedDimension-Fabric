@@ -43,7 +43,7 @@ public class UADStructures {
         if(transformSurroundingLand){
             StructureFeatureAccessor.uad_setJIGSAW_STRUCTURES(
                     ImmutableList.<StructureFeature<?>>builder()
-                        .addAll(StructureFeature.JIGSAW_STRUCTURES)
+                        .addAll(StructureFeature.LAND_MODIFYING_STRUCTURES)
                         .add(structure)
                         .build()
             );

@@ -31,18 +31,6 @@ public interface NoiseChunkGeneratorAccessor {
     @Accessor("noiseSizeZ")
     int uad_getNoiseSizeZ();
 
-    @Accessor("lowerInterpolatedNoise")
-    OctavePerlinNoiseSampler uad_getLowerInterpolatedNoise();
-
-    @Accessor("upperInterpolatedNoise")
-    OctavePerlinNoiseSampler uad_getUpperInterpolatedNoise();
-
-    @Accessor("interpolationNoise")
-    OctavePerlinNoiseSampler uad_getInterpolationNoise();
-
-    @Accessor("densityNoise")
-    OctavePerlinNoiseSampler uad_getDensityNoise();
-
     @Accessor("seed")
     long uad_getfield_236084_w_();
 

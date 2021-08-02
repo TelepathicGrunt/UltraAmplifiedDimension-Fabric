@@ -2,7 +2,8 @@ package com.telepathicgrunt.ultraamplifieddimension.cardinalcomponents;
 
 import com.telepathicgrunt.ultraamplifieddimension.UltraAmplifiedDimension;
 import com.telepathicgrunt.ultraamplifieddimension.dimension.UADDimension;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
@@ -102,14 +103,14 @@ public class PlayerComponent implements IPlayerComponent {
 
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.teleporting = tag.getBoolean("teleporting");
-        this.nonUADimension = RegistryKey.of(Registry.DIMENSION, new Identifier(tag.getString("non_ua_dimension_namespace"), tag.getString("non_ua_dmension_path")));
+        this.nonUADimension = RegistryKey.of(Registry.WORLD_KEY, new Identifier(tag.getString("non_ua_dimension_namespace"), tag.getString("non_ua_dmension_path")));
         this.nonUADPitch = tag.getFloat("pitch");
         this.nonUADYaw = tag.getFloat("yaw");
     }
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putBoolean("teleporting", this.teleporting);
         tag.putString("non_ua_dimension_namespace", nonUADimension.getValue().getNamespace());
         tag.putString("non_ua_dmension_path", nonUADimension.getValue().getPath());

@@ -12,6 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
 import java.util.Random;
@@ -35,23 +36,23 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
 
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, DefaultFeatureConfig configBlock) {
+    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
         //checks to see if there is an ocean biome in this chunk
         //breaks out of nested loop if ocean if found so oceanBiome holds the ocean
-        Biome oceanBiome = getOceanInChunk(world, position);
+        Biome oceanBiome = getOceanInChunk(context.getWorld(), context.getOrigin());
 
         //does not do anything if there is no ocean biome
         if (oceanBiome == null) {
             return false;
         }
 
-        int sealevel = world.toServerWorld().getSeaLevel();
+        int sealevel = context.getWorld().toServerWorld().getSeaLevel();
         boolean containedFlag;
         BlockState currentblock;
         BlockState blockAbove;
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable(position.getX(), 0, position.getZ());  //set y to 0
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable(context.getOrigin().getX(), 0, context.getOrigin().getZ());  //set y to 0
         BlockPos.Mutable blockposMutableAbove = new BlockPos.Mutable().set(blockposMutable);
-        Chunk chunk = world.getChunk(position.getX() >> 4, position.getZ() >> 4);
+        Chunk chunk = context.getWorld().getChunk(context.getOrigin().getX() >> 4, context.getOrigin().getZ() >> 4);
 
         BlockState oceanTopBlock = oceanBiome.getGenerationSettings().getSurfaceConfig().getTopMaterial();
         BlockState oceanUnderBlock = oceanBiome.getGenerationSettings().getSurfaceConfig().getUnderMaterial();
@@ -62,7 +63,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
         //ocean biome was found and thus, is not null. Can safely contain all water in this chunk
         for (int x = 0; x < 16; ++x) {
             for (int z = 0; z < 16; ++z) {
-                blockposMutable.set(position.getX() + x, 256, position.getZ() + z);
+                blockposMutable.set(context.getOrigin().getX() + x, 256, context.getOrigin().getZ() + z);
                 for (; blockposMutable.getY() >= sealevel; blockposMutable.move(Direction.DOWN)) {
 
                     currentblock = chunk.getBlockState(blockposMutable);
@@ -94,7 +95,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
                         //Do world instead of chunk as this could check into the next chunk over.
                         blockposMutable.move(face);
                         if(blockposMutable.getX() >> 4 != chunk.getPos().x || blockposMutable.getZ() >> 4 != chunk.getPos().z)
-                            chunk = world.getChunk(blockposMutable);
+                            chunk = context.getWorld().getChunk(blockposMutable);
 
                         currentblock = chunk.getBlockState(blockposMutable);
 
@@ -113,7 +114,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
 
                     blockposMutableAbove.set(blockposMutable).move(Direction.UP);
                     if(blockposMutable.getX() >> 4 != chunk.getPos().x || blockposMutable.getZ() >> 4 != chunk.getPos().z)
-                        chunk = world.getChunk(blockposMutable);
+                        chunk = context.getWorld().getChunk(blockposMutable);
 
                     if (containedFlag) {
                         //water block is contained
@@ -123,7 +124,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
                         //if above is middle block, replace above block with third config block so middle block (sand/gravel) cannot fall.
                         if (blockAbove == oceanUnderBlock) {
                             if (useCoralBottom || !(oceanBiome.getGenerationSettings().getSurfaceConfig() instanceof TernarySurfaceConfig)) {
-                                chunk.setBlockState(blockposMutableAbove, DEAD_CORAL_ARRAY[random.nextInt(DEAD_CORAL_ARRAY.length)], false);
+                                chunk.setBlockState(blockposMutableAbove, DEAD_CORAL_ARRAY[context.getRandom().nextInt(DEAD_CORAL_ARRAY.length)], false);
                             }
                             else {
                                 chunk.setBlockState(blockposMutableAbove, ((TernarySurfaceConfig) oceanBiome.getGenerationSettings().getSurfaceConfig()).getUnderwaterMaterial(), false);
@@ -145,7 +146,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
                             else {
                                 //if config top block is dead coral, randomly chooses any dead coral block to place
                                 if (useCoralTop) {
-                                    chunk.setBlockState(blockposMutable, DEAD_CORAL_ARRAY[random.nextInt(DEAD_CORAL_ARRAY.length)], false);
+                                    chunk.setBlockState(blockposMutable, DEAD_CORAL_ARRAY[context.getRandom().nextInt(DEAD_CORAL_ARRAY.length)], false);
                                 }
                                 else {
                                     chunk.setBlockState(blockposMutable, oceanTopBlock, false);
@@ -156,7 +157,7 @@ public class ContainLiquidForOceans extends Feature<DefaultFeatureConfig> {
                         //place first config block if too high
                         //if config top block is dead coral, randomly chooses any dead coral block to place
                         else if (useCoralTop) {
-                            chunk.setBlockState(blockposMutable, DEAD_CORAL_ARRAY[random.nextInt(DEAD_CORAL_ARRAY.length)], false);
+                            chunk.setBlockState(blockposMutable, DEAD_CORAL_ARRAY[context.getRandom().nextInt(DEAD_CORAL_ARRAY.length)], false);
                         }
                         else {
                             chunk.setBlockState(blockposMutable, oceanTopBlock, false);

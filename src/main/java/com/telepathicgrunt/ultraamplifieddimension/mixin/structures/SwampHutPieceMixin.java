@@ -32,7 +32,7 @@ public abstract class SwampHutPieceMixin {
     private void uad_fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPos, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if(chunkGenerator instanceof UADChunkGenerator){
             BlockBox box = ((SwampHutGenerator)(Object)this).getBoundingBox();
-            ((SwampHutGenerator)(Object)this).getBoundingBox().move(0, chunkGenerator.getHeight(box.minX + (box.getBlockCountX() / 2), box.minZ + (box.getBlockCountZ() / 2), Heightmap.Type.WORLD_SURFACE_WG) - box.minY + 2, 0);
+            ((SwampHutGenerator)(Object)this).getBoundingBox().move(0, chunkGenerator.getHeight(box.getMinX() + (box.getBlockCountX() / 2), box.getMinZ() + (box.getBlockCountZ() / 2), Heightmap.Type.WORLD_SURFACE_WG, world) - box.getMinY() + 2, 0);
         }
     }
 }

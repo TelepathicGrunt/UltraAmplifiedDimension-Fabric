@@ -13,6 +13,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -24,23 +25,23 @@ public class BigCactus extends Feature<HeightConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, HeightConfig betterCactusConfig) {
-        BlockPos.Mutable blockpos = new BlockPos.Mutable().set(position);
-        Chunk cachedChunk = world.getChunk(blockpos);
-        Direction cactusFacing = Direction.fromHorizontal(rand.nextInt(4));
+    public boolean generate(FeatureContext<HeightConfig> context) {
+        BlockPos.Mutable blockpos = new BlockPos.Mutable().set(context.getOrigin());
+        Chunk cachedChunk = context.getWorld().getChunk(blockpos);
+        Direction cactusFacing = Direction.fromHorizontal(context.getRandom().nextInt(4));
 
         //gets height with some variations
         //then gets left and right side between 2 and maximum height - 3
         //then finds the direction that the cactus will be facing
-        int maxHeight = betterCactusConfig.height + rand.nextInt(2);
-        int frontSideHeight = 2 + rand.nextInt(maxHeight - 4);
-        int backSideHeight = 2 + rand.nextInt(maxHeight - 4);
+        int maxHeight = context.getConfig().height + context.getRandom().nextInt(2);
+        int frontSideHeight = 2 + context.getRandom().nextInt(maxHeight - 4);
+        int backSideHeight = 2 + context.getRandom().nextInt(maxHeight - 4);
 
         // make sure there is space for the cactus and its arms
-        while(blockpos.getY() <= position.getY() + betterCactusConfig.height + 1){
+        while(blockpos.getY() <= context.getOrigin().getY() + context.getConfig().height + 1){
             if(!cachedChunk.getBlockState(blockpos).isAir() ||
-                (blockpos.getY() >= position.getY() + frontSideHeight && (!cachedChunk.getBlockState(blockpos.move(cactusFacing)).isAir() || !cachedChunk.getBlockState(blockpos.move(cactusFacing)).isAir())) ||
-                (blockpos.getY() >= position.getY() + backSideHeight && (!cachedChunk.getBlockState(blockpos.move(cactusFacing.getOpposite(), 3)).isAir() || !cachedChunk.getBlockState(blockpos.move(cactusFacing.getOpposite())).isAir())))
+                (blockpos.getY() >= context.getOrigin().getY() + frontSideHeight && (!cachedChunk.getBlockState(blockpos.move(cactusFacing)).isAir() || !cachedChunk.getBlockState(blockpos.move(cactusFacing)).isAir())) ||
+                (blockpos.getY() >= context.getOrigin().getY() + backSideHeight && (!cachedChunk.getBlockState(blockpos.move(cactusFacing.getOpposite(), 3)).isAir() || !cachedChunk.getBlockState(blockpos.move(cactusFacing.getOpposite())).isAir())))
             {
                 return false;
             }
@@ -48,7 +49,7 @@ public class BigCactus extends Feature<HeightConfig> {
             blockpos.move(Direction.UP).move(cactusFacing, 2); // move up and back to center stalk
         }
         // Go back to start pos
-        blockpos.set(position);
+        blockpos.set(context.getOrigin());
 
         if (cachedChunk.getBlockState(blockpos.move(Direction.DOWN)).isIn(BlockTags.SAND)) {
             blockpos.move(Direction.UP); // Move back to start pos
@@ -68,10 +69,10 @@ public class BigCactus extends Feature<HeightConfig> {
 
                     //create the branches off of cactus
                     if (currentHeight == frontSideHeight) {
-                        createBranch(world, chunkGenerator, blockpos, cactusFacing, rand.nextInt(maxHeight - frontSideHeight - 2) + 2);
+                        createBranch(context.getWorld(), context.getGenerator(), blockpos, cactusFacing, context.getRandom().nextInt(maxHeight - frontSideHeight - 2) + 2);
                     }
                     if (currentHeight == backSideHeight) {
-                        createBranch(world, chunkGenerator, blockpos, cactusFacing.getOpposite(), rand.nextInt(maxHeight - backSideHeight - 2) + 2);
+                        createBranch(context.getWorld(), context.getGenerator(), blockpos, cactusFacing.getOpposite(), context.getRandom().nextInt(maxHeight - backSideHeight - 2) + 2);
                     }
 
                 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADTags;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
@@ -24,8 +25,10 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 
 public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
@@ -35,23 +38,27 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess serverWorldAccess, ChunkGenerator chunkGenerator, Random random, BlockPos blockPos, TreeFeatureConfig config) {
+	public boolean generate(FeatureContext<TreeFeatureConfig> context) {
 		Set<BlockPos> set = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
 		Set<BlockPos> set3 = Sets.newHashSet();
-		BlockBox blockBox = BlockBox.empty();
-		boolean bl = this.generate(serverWorldAccess, chunkGenerator, random, blockPos, set, set2, config);
-		if (blockBox.minX <= blockBox.maxX && bl && !set.isEmpty()) {
-			if (!config.decorators.isEmpty()) {
+		BlockBox blockBox = new BlockBox(0, 0, 0, 0, 0, 0);
+		BiConsumer<BlockPos, BlockState> biConsumer3 = (pos, state) -> {
+			set3.add(pos.toImmutable());
+			context.getWorld().setBlockState(pos, state, Block.NOTIFY_ALL | Block.FORCE_STATE);
+		};
+		boolean bl = this.generate(context.getWorld(), context.getGenerator(), context.getRandom(), context.getOrigin(), set, set2, context.getConfig());
+		if (blockBox.getMinX() <= blockBox.getMaxX() && bl && !set.isEmpty()) {
+			if (!context.getConfig().decorators.isEmpty()) {
 				List<BlockPos> list = Lists.newArrayList(set);
 				List<BlockPos> list2 = Lists.newArrayList(set2);
 				list.sort(Comparator.comparingInt(Vec3i::getY));
 				list2.sort(Comparator.comparingInt(Vec3i::getY));
-				config.decorators.forEach((decorator) -> decorator.generate(serverWorldAccess, random, list, list2, set3, blockBox));
+				context.getConfig().decorators.forEach((decorator) -> decorator.generate(context.getWorld(), biConsumer3, context.getRandom(), list, list2));
 			}
 
-			VoxelSet voxelSet = this.placeLogsAndLeaves(serverWorldAccess, blockBox, set, set3);
-			Structure.updateCorner(serverWorldAccess, 3, voxelSet, blockBox.minX, blockBox.minY, blockBox.minZ);
+			VoxelSet voxelSet = this.placeLogsAndLeaves(context.getWorld(), blockBox, set, set3);
+			Structure.updateCorner(context.getWorld(), 3, voxelSet, blockBox.getMinX(), blockBox.getMinY(), blockBox.getMinZ());
 			return true;
 		} else {
 			return false;
@@ -139,7 +146,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 								BlockPos blockpos = new BlockPos(x, currentHeight, z);
 
 								if (isAirOrLeaves(world, blockpos) || isReplaceablePlant(world, blockpos)) {
-									this.setBlockState(world, blockpos, config.leavesProvider.getBlockState(random, blockpos)); // .with(LeavesBlock.DISTANCE, 1)
+									this.setBlockState(world, blockpos, config.foliageProvider.getBlockState(random, blockpos)); // .with(LeavesBlock.DISTANCE, 1)
 									leavesPositions.add(blockpos);
 								}
 							}
@@ -176,7 +183,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 					this.setBlockState(world, mutable, config.trunkProvider.getBlockState(rand, mutable));
 					logPositions.add(mutable);
 				} else if(currentHeight == height - 1) {
-					this.setBlockState(world, mutable, config.leavesProvider.getBlockState(rand, mutable)); //.with(LeavesBlock.DISTANCE, 1)
+					this.setBlockState(world, mutable, config.foliageProvider.getBlockState(rand, mutable)); //.with(LeavesBlock.DISTANCE, 1)
 					leavesPositions.add(mutable);
 				}
 			}
@@ -226,7 +233,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 
 
 	private static boolean isDirtOrGrass(TestableWorld world, BlockPos pos) {
-		return world.testBlockState(pos, (state) -> isSoil(state.getBlock()) || state.isOf(Blocks.FARMLAND) || state.isIn(UADTags.COMMON_DIRT_BLOCKS));
+		return world.testBlockState(pos, (state) -> isSoil(state) || state.isOf(Blocks.FARMLAND) || state.isIn(UADTags.COMMON_DIRT_BLOCKS));
 	}
 
 
@@ -263,7 +270,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 		while (var9.hasNext()) {
 			blockPos2 = var9.next();
 			if (box.contains(blockPos2)) {
-				voxelSet.set(blockPos2.getX() - box.minX, blockPos2.getY() - box.minY, blockPos2.getZ() - box.minZ, true, true);
+				voxelSet.set(blockPos2.getX() - box.getMinX(), blockPos2.getY() - box.getMinY(), blockPos2.getZ() - box.getMinZ());
 			}
 		}
 
@@ -272,7 +279,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 		while (var9.hasNext()) {
 			blockPos2 = var9.next();
 			if (box.contains(blockPos2)) {
-				voxelSet.set(blockPos2.getX() - box.minX, blockPos2.getY() - box.minY, blockPos2.getZ() - box.minZ, true, true);
+				voxelSet.set(blockPos2.getX() - box.getMinX(), blockPos2.getY() - box.getMinY(), blockPos2.getZ() - box.getMinZ());
 			}
 
 			Direction[] var11 = Direction.values();
@@ -285,7 +292,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 						list.get(0).add(mutable.toImmutable());
 						setBlockStateWithoutUpdatingNeighbors(world, mutable, blockState.with(Properties.DISTANCE_1_7, 1));
 						if (box.contains(mutable)) {
-							voxelSet.set(mutable.getX() - box.minX, mutable.getY() - box.minY, mutable.getZ() - box.minZ, true, true);
+							voxelSet.set(mutable.getX() - box.getMinX(), mutable.getY() - box.getMinY(), mutable.getZ() - box.getMinZ());
 						}
 					}
 				}
@@ -298,7 +305,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 
 			for (BlockPos blockPos3 : set) {
 				if (box.contains(blockPos3)) {
-					voxelSet.set(blockPos3.getX() - box.minX, blockPos3.getY() - box.minY, blockPos3.getZ() - box.minZ, true, true);
+					voxelSet.set(blockPos3.getX() - box.getMinX(), blockPos3.getY() - box.getMinY(), blockPos3.getZ() - box.getMinZ());
 				}
 
 				Direction[] var27 = Direction.values();
@@ -313,7 +320,7 @@ public class TreeSwampHorned extends Feature<TreeFeatureConfig> {
 								BlockState blockState3 = blockState2.with(Properties.DISTANCE_1_7, k + 1);
 								setBlockStateWithoutUpdatingNeighbors(world, mutable, blockState3);
 								if (box.contains(mutable)) {
-									voxelSet.set(mutable.getX() - box.minX, mutable.getY() - box.minY, mutable.getZ() - box.minZ, true, true);
+									voxelSet.set(mutable.getX() - box.getMinX(), mutable.getY() - box.getMinY(), mutable.getZ() - box.getMinZ());
 								}
 
 								set2.add(mutable.toImmutable());

@@ -14,6 +14,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -25,17 +26,16 @@ public class EllipsoidPocket extends Feature<OreFeatureConfig>
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, OreFeatureConfig config) {
+	public boolean generate(FeatureContext<OreFeatureConfig> context) {
 		BlockPos.Mutable blockposMutable = new BlockPos.Mutable();
 		BlockState blockToReplace;
-		float angleOfRotation = (float) (Math.PI * rand.nextFloat());
+		float angleOfRotation = (float) (Math.PI * context.getRandom().nextFloat());
 		float sinOfAngle = MathHelper.sin(angleOfRotation);
 		float cosOfAngle = MathHelper.cos(angleOfRotation);
-		float size = config.size * 0.5f;
-		boolean solidState = config.state.isOpaque();
+		float size = context.getConfig().size * 0.5f;
 		Chunk cachedChunk;
 		float stretchedFactor = 0.7f;
-		if(config.size < 10) stretchedFactor = 1;
+		if(context.getConfig().size < 10) stretchedFactor = 1;
 		int maxY = (int) (size / 3);
 		int minY = -maxY - 	1;
 
@@ -48,12 +48,12 @@ public class EllipsoidPocket extends Feature<OreFeatureConfig>
 				y = (int)(y + 0.5f);
 			}
 
-			// rand.nextFloat() took up too much time
+			// context.getRandom().nextFloat() took up too much time
 //			if(y < 0){
-//				yModified = y + rand.nextFloat() * 0.5f;
+//				yModified = y + context.getRandom().nextFloat() * 0.5f;
 //			}
 //			else if (y > 0){
-//				y = (int) ((y + 0.25f) + (rand.nextFloat() * 0.5f));
+//				y = (int) ((y + 0.25f) + (context.getRandom().nextFloat() * 0.5f));
 //			}
 
 			float percentageOfRadius = 1f - (yModified / size) * (yModified / size) * 3;
@@ -68,50 +68,54 @@ public class EllipsoidPocket extends Feature<OreFeatureConfig>
 					majorComp = (x + 0.5f) * cosOfAngle - (z + 0.5f) * sinOfAngle;
 					minorComp = (x + 0.5f) * sinOfAngle + (z + 0.5f) * cosOfAngle;
 
-					// rand.nextFloat() took up too much time
-//					if(config.size > 10){
+					// context.getRandom().nextFloat() took up too much time
+//					if(context.getConfig().size > 10){
 //						majorComp = (x + 0.275f) * cosOfAngle - (z + 0.275f) * sinOfAngle;
 //						minorComp = (x + 0.275f) * sinOfAngle + (z + 0.275f) * cosOfAngle;
 //					}
 //					else {
-//						majorComp = ((x + 0.25f) + (rand.nextFloat() * 0.5f)) * cosOfAngle - ((z + 0.25f) + (rand.nextFloat() * 0.5f)) * sinOfAngle;
-//						minorComp = ((x + 0.25f) + (rand.nextFloat() * 0.5f)) * sinOfAngle + ((z + 0.25f) + (rand.nextFloat() * 0.5f)) * cosOfAngle;
+//						majorComp = ((x + 0.25f) + (context.getRandom().nextFloat() * 0.5f)) * cosOfAngle - ((z + 0.25f) + (context.getRandom().nextFloat() * 0.5f)) * sinOfAngle;
+//						minorComp = ((x + 0.25f) + (context.getRandom().nextFloat() * 0.5f)) * sinOfAngle + ((z + 0.25f) + (context.getRandom().nextFloat() * 0.5f)) * cosOfAngle;
 //					}
 
 					float result = ((majorComp * majorComp) / (majorRadiusSq * majorRadiusSq)) +
 									((minorComp * minorComp) / (minorRadiusSq * minorRadiusSq));
 
 					if(result * 100f < 1f && !(x == 0 && z == 0 && y * y >= (size * size))) {
-						blockposMutable.set(position.getX() + x, position.getY() + y, position.getZ() + z);
-						cachedChunk = getCachedChunk(world, blockposMutable);
+						blockposMutable.set(context.getOrigin().getX() + x, context.getOrigin().getY() + y, context.getOrigin().getZ() + z);
+						cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
 
 						blockToReplace = cachedChunk.getBlockState(blockposMutable);
-						if(config.target.test(blockToReplace, rand)) {
-							if(solidState){
-								cachedChunk.setBlockState(blockposMutable, config.state, false);
-							}
+						for(OreFeatureConfig.Target target : context.getConfig().targets){
 
-							// if our replacement state is not solid, do not expose any liquids then.
-							else {
-								boolean touchingLiquid = false;
-								for(Direction direction : Direction.values()){
-									if(direction != Direction.DOWN){
-										blockposMutable.move(direction);
-										cachedChunk = getCachedChunk(world, blockposMutable);
-
-										if(!cachedChunk.getBlockState(blockposMutable).getFluidState().isEmpty()){
-											touchingLiquid = true;
-											blockposMutable.move(direction.getOpposite());
-											break;
-										}
-
-										blockposMutable.move(direction.getOpposite());
-									}
+							if(target.target.test(blockToReplace, context.getRandom())) {
+								boolean solidState = target.state.isOpaque();
+								if(solidState){
+									cachedChunk.setBlockState(blockposMutable, target.state, false);
 								}
 
-								if(!touchingLiquid){
-									cachedChunk = getCachedChunk(world, blockposMutable);
-									cachedChunk.setBlockState(blockposMutable, config.state, false);
+								// if our replacement state is not solid, do not expose any liquids then.
+								else {
+									boolean touchingLiquid = false;
+									for(Direction direction : Direction.values()){
+										if(direction != Direction.DOWN){
+											blockposMutable.move(direction);
+											cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
+
+											if(!cachedChunk.getBlockState(blockposMutable).getFluidState().isEmpty()){
+												touchingLiquid = true;
+												blockposMutable.move(direction.getOpposite());
+												break;
+											}
+
+											blockposMutable.move(direction.getOpposite());
+										}
+									}
+
+									if(!touchingLiquid){
+										cachedChunk = getCachedChunk(context.getWorld(), blockposMutable);
+										cachedChunk.setBlockState(blockposMutable, target.state, false);
+									}
 								}
 							}
 						}

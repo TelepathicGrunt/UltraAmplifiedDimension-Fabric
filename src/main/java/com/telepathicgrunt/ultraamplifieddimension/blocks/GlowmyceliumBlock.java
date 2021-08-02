@@ -13,7 +13,7 @@ import java.util.Random;
 public class GlowmyceliumBlock extends MyceliumBlock {
 
     public GlowmyceliumBlock() {
-        super(Settings.of(Material.SOLID_ORGANIC, MaterialColor.PURPLE).ticksRandomly().strength(0.4F).sounds(BlockSoundGroup.GRASS).luminance((blockState) -> 15));
+        super(Settings.of(Material.SOLID_ORGANIC, MapColor.PURPLE).ticksRandomly().strength(0.4F).sounds(BlockSoundGroup.GRASS).luminance((blockState) -> 15));
     }
 
 

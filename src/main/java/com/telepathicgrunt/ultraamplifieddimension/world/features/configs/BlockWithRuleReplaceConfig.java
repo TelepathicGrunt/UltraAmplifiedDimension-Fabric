@@ -8,7 +8,7 @@ import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class BlockWithRuleReplaceConfig implements FeatureConfig {
     public static final Codec<BlockWithRuleReplaceConfig> CODEC = RecordCodecBuilder.create((columnConfigInstance) -> columnConfigInstance.group(
-            RuleTest.field_25012.fieldOf("target").forGetter((config) -> config.target),
+            RuleTest.TYPE_CODEC.fieldOf("target").forGetter((config) -> config.target),
             BlockState.CODEC.fieldOf("state").forGetter((config) -> config.state)
         ).apply(columnConfigInstance, BlockWithRuleReplaceConfig::new));
 

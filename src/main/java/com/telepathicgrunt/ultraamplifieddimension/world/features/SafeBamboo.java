@@ -12,6 +12,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -28,33 +29,33 @@ public class SafeBamboo extends Feature<BambooConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, BambooConfig bambooConfig) {
+    public boolean generate(FeatureContext<BambooConfig> context) {
 
         int i = 0;
-        int maxHeight = rand.nextInt((bambooConfig.maxHeight + 1) - bambooConfig.minHeight) + bambooConfig.minHeight;
-        int podzolRange = rand.nextInt((bambooConfig.podzolMaxRadius + 1) - bambooConfig.podzolMinRadius) + bambooConfig.podzolMinRadius;
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
-        Chunk cachedChunk = world.getChunk(position);
+        int maxHeight = context.getRandom().nextInt((context.getConfig().maxHeight + 1) - context.getConfig().minHeight) + context.getConfig().minHeight;
+        int podzolRange = context.getRandom().nextInt((context.getConfig().podzolMaxRadius + 1) - context.getConfig().podzolMinRadius) + context.getConfig().podzolMinRadius;
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+        Chunk cachedChunk = context.getWorld().getChunk(context.getOrigin());
 
         if (cachedChunk.getBlockState(blockposMutable).isAir()) {
-            if (Blocks.BAMBOO.getDefaultState().canPlaceAt(world, blockposMutable)) {
-                for (int x = position.getX() - podzolRange; x <= position.getX() + podzolRange; ++x) {
-                    for (int z = position.getZ() - podzolRange; z <= position.getZ() + podzolRange; ++z) {
-                        for (int y = position.getY() - 2; y <= position.getY() + 2; ++y) {
-                            int xDiff = x - position.getX();
-                            int zDiff = z - position.getZ();
+            if (Blocks.BAMBOO.getDefaultState().canPlaceAt(context.getWorld(), blockposMutable)) {
+                for (int x = context.getOrigin().getX() - podzolRange; x <= context.getOrigin().getX() + podzolRange; ++x) {
+                    for (int z = context.getOrigin().getZ() - podzolRange; z <= context.getOrigin().getZ() + podzolRange; ++z) {
+                        for (int y = context.getOrigin().getY() - 2; y <= context.getOrigin().getY() + 2; ++y) {
+                            int xDiff = x - context.getOrigin().getX();
+                            int zDiff = z - context.getOrigin().getZ();
                             if (xDiff * xDiff + zDiff * zDiff <= podzolRange * podzolRange) {
                                 blockposMutable.set(x, y, z);
-                                if (rand.nextFloat() < 0.4F && world.getBlockState(blockposMutable).getBlock() == Blocks.GRASS_BLOCK) {
-                                    world.setBlockState(blockposMutable, Blocks.PODZOL.getDefaultState(), 3);
+                                if (context.getRandom().nextFloat() < 0.4F && context.getWorld().getBlockState(blockposMutable).getBlock() == Blocks.GRASS_BLOCK) {
+                                    context.getWorld().setBlockState(blockposMutable, Blocks.PODZOL.getDefaultState(), 3);
                                 }
                             }
                         }
                     }
                 }
 
-                blockposMutable.set(position);
-                for (int height = 0; height < maxHeight && height <= chunkGenerator.getWorldHeight() && cachedChunk.getBlockState(blockposMutable).isAir(); ++height) {
+                blockposMutable.set(context.getOrigin());
+                for (int height = 0; height < maxHeight && height <= context.getGenerator().getWorldHeight() && cachedChunk.getBlockState(blockposMutable).isAir(); ++height) {
                     cachedChunk.setBlockState(blockposMutable, BAMBOO_DEFAULT, false);
                     blockposMutable.move(Direction.UP, 1);
                 }

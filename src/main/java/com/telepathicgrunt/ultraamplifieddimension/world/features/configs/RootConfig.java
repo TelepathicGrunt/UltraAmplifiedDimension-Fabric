@@ -8,8 +8,8 @@ import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class RootConfig implements FeatureConfig {
     public static final Codec<RootConfig> CODEC = RecordCodecBuilder.create((configInstance) -> configInstance.group(
-            RuleTest.field_25012.fieldOf("root_replace_target").forGetter((config) -> config.rootReplaceTarget),
-            RuleTest.field_25012.fieldOf("valid_above_state").forGetter((config) -> config.validAboveState),
+            RuleTest.TYPE_CODEC.fieldOf("root_replace_target").forGetter((config) -> config.rootReplaceTarget),
+            RuleTest.TYPE_CODEC.fieldOf("valid_above_state").forGetter((config) -> config.validAboveState),
             BlockState.CODEC.fieldOf("root_block").forGetter((config) -> config.rootBlock)
         ).apply(configInstance, RootConfig::new));
 

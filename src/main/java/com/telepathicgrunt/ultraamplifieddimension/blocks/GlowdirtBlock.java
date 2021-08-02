@@ -1,7 +1,13 @@
 package com.telepathicgrunt.ultraamplifieddimension.blocks;
 
 import com.telepathicgrunt.ultraamplifieddimension.modInit.UADBlocks;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.Material;
+import net.minecraft.block.SnowBlock;
+import net.minecraft.block.SnowyBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.tag.FluidTags;
@@ -16,7 +22,7 @@ import java.util.Random;
 public class GlowdirtBlock extends Block {
 
     public GlowdirtBlock() {
-        super(Settings.of(Material.SOIL, MaterialColor.DIRT).ticksRandomly().strength(0.4F).sounds(BlockSoundGroup.GRAVEL).luminance((blockState) -> 15));
+        super(Settings.of(Material.SOIL, MapColor.DIRT_BROWN).ticksRandomly().strength(0.4F).sounds(BlockSoundGroup.GRAVEL).luminance((blockState) -> 15));
     }
 
 

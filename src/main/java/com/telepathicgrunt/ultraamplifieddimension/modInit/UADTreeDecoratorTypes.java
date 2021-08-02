@@ -5,7 +5,7 @@ import com.telepathicgrunt.ultraamplifieddimension.mixin.features.TreeDecoratorT
 import com.telepathicgrunt.ultraamplifieddimension.world.features.treedecorators.DiskGroundDecorator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.tree.TreeDecoratorType;
+import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 
 import java.util.function.Supplier;
 

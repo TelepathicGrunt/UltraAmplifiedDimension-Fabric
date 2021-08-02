@@ -13,6 +13,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -34,22 +35,22 @@ public class ColumnVertical extends Feature<ColumnConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, ColumnConfig columnConfig) {
+    public boolean generate(FeatureContext<ColumnConfig> context) {
 
-        setSeed(world.getSeed());
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
+        setSeed(context.getWorld().getSeed());
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
         int minWidth = 3;
         int maxWidth = 10;
         int ceilingHeight;
         int floorHeight;
         int heightDiff;
-        Chunk cachedChunk = world.getChunk(blockposMutable);
+        Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 
         //checks to see if position is acceptable for pillar gen
         //finds ceiling
-        while (!GeneralUtils.isFullCube(world, blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
+        while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too high for column to generate
-            if (blockposMutable.getY() > chunkGenerator.getWorldHeight() - 1) {
+            if (blockposMutable.getY() > context.getGenerator().getWorldHeight() - 1) {
                 return false;
             }
             blockposMutable.move(Direction.UP, 2);
@@ -57,8 +58,8 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         ceilingHeight = blockposMutable.getY();
 
         //find floor
-        blockposMutable.set(position); // reset back to normal height
-        while (!GeneralUtils.isFullCube(world, blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
+        blockposMutable.set(context.getOrigin()); // reset back to normal height
+        while (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, cachedChunk.getBlockState(blockposMutable))) {
             //too low for column to generate
             if (blockposMutable.getY() < 3) {
                 return false;
@@ -84,21 +85,21 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         widthAtHeight = getWidthAtHeight(0, heightDiff, thinnestWidth);
 
         //checks to see if there is enough circular land above and below to hold pillar
-        for (int x = position.getX() - widthAtHeight; x <= position.getX() + widthAtHeight; x += 3) {
-            for (int z = position.getZ() - widthAtHeight; z <= position.getZ() + widthAtHeight; z += 3) {
-                int xDiff = x - position.getX();
-                int zDiff = z - position.getZ();
+        for (int x = context.getOrigin().getX() - widthAtHeight; x <= context.getOrigin().getX() + widthAtHeight; x += 3) {
+            for (int z = context.getOrigin().getZ() - widthAtHeight; z <= context.getOrigin().getZ() + widthAtHeight; z += 3) {
+                int xDiff = x - context.getOrigin().getX();
+                int zDiff = z - context.getOrigin().getZ();
                 if (xDiff * xDiff + zDiff * zDiff <= (widthAtHeight) * (widthAtHeight)) {
 
                     if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                        cachedChunk = world.getChunk(blockposMutable);
+                        cachedChunk = context.getWorld().getChunk(blockposMutable);
 
                     BlockState block1 = cachedChunk.getBlockState(blockposMutable.set(x, ceilingHeight + 3, z));
                     BlockState block2 = cachedChunk.getBlockState(blockposMutable.set(x, floorHeight - 2, z));
 
                     //there is not enough land to contain bases of pillar
-                    if (!GeneralUtils.isFullCube(world, blockposMutable, block1) ||
-                        !GeneralUtils.isFullCube(world, blockposMutable, block2)) {
+                    if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, block1) ||
+                        !GeneralUtils.isFullCube(context.getWorld(), blockposMutable, block2)) {
                         return false;
                     }
                 }
@@ -110,8 +111,8 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         int zMod;
         //adds perlin noise to the pillar shape to make it more oval
         //larger pillars will be more oval shaped
-        boolean flagImperfection1 = rand.nextBoolean();
-        boolean flagImperfection2 = rand.nextBoolean();
+        boolean flagImperfection1 = context.getRandom().nextBoolean();
+        boolean flagImperfection2 = context.getRandom().nextBoolean();
 
         if (flagImperfection1 && flagImperfection2) {
             xMod = heightDiff / 20 + 1;
@@ -134,16 +135,16 @@ public class ColumnVertical extends Feature<ColumnConfig> {
         for (int y = -2; y <= heightDiff + 2; y++) {
             widthAtHeight = getWidthAtHeight(y, heightDiff, thinnestWidth);
 
-            for (int x = position.getX() - widthAtHeight - xMod - 1; x <= position.getX() + widthAtHeight + xMod + 1; ++x) {
-                for (int z = position.getZ() - widthAtHeight - zMod - 1; z <= position.getZ() + widthAtHeight + zMod + 1; ++z) {
-                    int xDiff = x - position.getX();
-                    int zDiff = z - position.getZ();
+            for (int x = context.getOrigin().getX() - widthAtHeight - xMod - 1; x <= context.getOrigin().getX() + widthAtHeight + xMod + 1; ++x) {
+                for (int z = context.getOrigin().getZ() - widthAtHeight - zMod - 1; z <= context.getOrigin().getZ() + widthAtHeight + zMod + 1; ++z) {
+                    int xDiff = x - context.getOrigin().getX();
+                    int zDiff = z - context.getOrigin().getZ();
                     blockposMutable.set(x, y + floorHeight, z);
 
                     //scratches the surface for more imperfection
                     //cut the number of scratches on smallest part of pillar by 4
                     boolean flagImperfection3 = this.noiseGen.eval(x * 0.06D, z * 0.6D, y * 0.02D) < 0;
-                    if (flagImperfection3 && (widthAtHeight > thinnestWidth || (widthAtHeight == thinnestWidth && rand.nextInt(4) == 0))) {
+                    if (flagImperfection3 && (widthAtHeight > thinnestWidth || (widthAtHeight == thinnestWidth && context.getRandom().nextInt(4) == 0))) {
                         currentWidth = widthAtHeight - 1;
                     }
                     else {
@@ -156,10 +157,10 @@ public class ColumnVertical extends Feature<ColumnConfig> {
                     if (xzDiffSquaredStretched <= (currentWidth - 1) * (currentWidth - 1)) {
 
                         if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                            cachedChunk = world.getChunk(blockposMutable);
+                            cachedChunk = context.getWorld().getChunk(blockposMutable);
 
                         if (!cachedChunk.getBlockState(blockposMutable).isOpaque()) {
-                            cachedChunk.setBlockState(blockposMutable, columnConfig.insideBlock, false);
+                            cachedChunk.setBlockState(blockposMutable, context.getConfig().insideBlock, false);
                         }
                     }
                     //We are at non-pillar space
@@ -169,27 +170,27 @@ public class ColumnVertical extends Feature<ColumnConfig> {
                         for (int downward = 0; downward < 6 && y - downward >= -3; downward++) {
 
                             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                                cachedChunk = world.getChunk(blockposMutable);
+                                cachedChunk = context.getWorld().getChunk(blockposMutable);
 
-                            if (cachedChunk.getBlockState(blockposMutable) == columnConfig.insideBlock) {
-                                if(downward == 1 && blockposMutable.getY() >= chunkGenerator.getSeaLevel() - 1){
-                                    if(!columnConfig.snowy){
-                                        cachedChunk.setBlockState(blockposMutable, columnConfig.topBlock, false);
+                            if (cachedChunk.getBlockState(blockposMutable) == context.getConfig().insideBlock) {
+                                if(downward == 1 && blockposMutable.getY() >= context.getGenerator().getSeaLevel() - 1){
+                                    if(!context.getConfig().snowy){
+                                        cachedChunk.setBlockState(blockposMutable, context.getConfig().topBlock, false);
                                     }
                                     else{
                                         cachedChunk.setBlockState(blockposMutable.move(Direction.UP), Blocks.SNOW.getDefaultState(), false);
                                         blockposMutable.move(Direction.DOWN);
 
-                                        if (columnConfig.topBlock.contains(SnowyBlock.SNOWY)) {
-                                            cachedChunk.setBlockState(blockposMutable, columnConfig.topBlock.with(SnowyBlock.SNOWY, true), false);
+                                        if (context.getConfig().topBlock.contains(SnowyBlock.SNOWY)) {
+                                            cachedChunk.setBlockState(blockposMutable, context.getConfig().topBlock.with(SnowyBlock.SNOWY, true), false);
                                         }
                                         else{
-                                            cachedChunk.setBlockState(blockposMutable, columnConfig.topBlock, false);
+                                            cachedChunk.setBlockState(blockposMutable, context.getConfig().topBlock, false);
                                         }
                                     }
                                 }
                                 else{
-                                    cachedChunk.setBlockState(blockposMutable, columnConfig.middleBlock, false);
+                                    cachedChunk.setBlockState(blockposMutable, context.getConfig().middleBlock, false);
                                 }
                             }
 

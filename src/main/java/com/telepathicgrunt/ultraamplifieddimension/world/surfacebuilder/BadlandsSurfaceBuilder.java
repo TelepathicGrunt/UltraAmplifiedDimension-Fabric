@@ -32,9 +32,8 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig>
         super(codec);
     }
 
-
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
         int xInChunk = x & 15;
         int zInChunk = z & 15;
         BlockState blockstate = Blocks.WHITE_TERRACOTTA.getDefaultState();
@@ -46,7 +45,7 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig>
         int i1 = 0;
         BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();
 
-        for (int y = startHeight; y >= 0; --y) {
+        for (int y = startHeight; y >= minY; --y) {
             if (i1 < 15) {
                 blockpos$Mutable.set(xInChunk, y, zInChunk);
                 BlockState blockstate2 = chunkIn.getBlockState(blockpos$Mutable);

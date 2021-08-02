@@ -10,6 +10,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -23,8 +24,8 @@ public class AmplifiedPortalFrame extends Feature<DefaultFeatureConfig>
 
 	//need to be made due to extending feature
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random rand, BlockPos pos, DefaultFeatureConfig config) {
-		return false;
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+		return generate(context.getWorld(), context.getOrigin());
 	}
 
 	//is called in AmplifiedPortalBehavior which doesn't have a chunk generator passed in

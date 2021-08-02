@@ -14,31 +14,31 @@ public class MineshaftPiecesUtils {
     // called in structures/MineshaftPiecesMixin
     public static void generateFloorRoom(StructureWorldAccess world, MineshaftGenerator.MineshaftRoom room, BlockBox mutableBoundingBox){
         BlockBox box = room.getBoundingBox();
-        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMinY(), box.getMaxZ(), Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
     }
 
     // called in structures/MineshaftPiecesMixin
     public static void generateLargeRoom(StructureWorldAccess world, MineshaftGenerator.MineshaftRoom room, BlockBox mutableBoundingBox){
         BlockBox box = room.getBoundingBox();
         box.encompass(new BlockBox(
-                mutableBoundingBox.minX,
-                box.minY,
-                mutableBoundingBox.minZ,
-                mutableBoundingBox.maxX,
-                box.maxY + Math.min(140, 225 - box.minY),
-                mutableBoundingBox.maxZ));
+                box.getMinX(),
+                box.getMinY(),
+                mutableBoundingBox.getMinZ(),
+                mutableBoundingBox.getMaxX(),
+                box.getMaxY() + Math.min(140, 225 - box.getMinY()),
+                mutableBoundingBox.getMaxZ()));
 
         // floor
-        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX, box.minY, box.minZ, box.maxX + 8, box.minY, box.maxZ, Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
-        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.minX + 3, box.minY + 1, box.minZ + 3, box.maxX - 1, box.minY + 4, box.maxZ - 1, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX() + 8, box.getMinY(), box.getMaxZ(), Blocks.COARSE_DIRT.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, box.getMinX() + 3, box.getMinY() + 1, box.getMinZ() + 3, box.getMaxX() - 1, box.getMinY() + 4, box.getMaxZ() - 1, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
 
-        for (BlockBox MutableBoundingBox : ((MineshaftRoomAccessor)room).uad_getEntrances()) {
-            ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, MutableBoundingBox.minX, MutableBoundingBox.maxY - 2, MutableBoundingBox.minZ, MutableBoundingBox.maxX, MutableBoundingBox.maxY, MutableBoundingBox.maxZ, Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
+        for (BlockBox mutableBoundingBox2 : ((MineshaftRoomAccessor)room).uad_getEntrances()) {
+            ((StructurePieceAccessor)room).uad_callFillWithOutline(world, mutableBoundingBox, mutableBoundingBox2.getMinX(), mutableBoundingBox2.getMaxY() - 2, mutableBoundingBox2.getMinZ(), mutableBoundingBox2.getMaxX(), mutableBoundingBox2.getMaxY(), mutableBoundingBox2.getMaxZ(), Blocks.CAVE_AIR.getDefaultState(), Blocks.CAVE_AIR.getDefaultState(), false);
         }
 
         // wall
-        ((StructurePieceAccessor)room).uad_callFillHalfEllipsoid(world, mutableBoundingBox, box.minX + 3, box.minY + 4, box.minZ + 3, box.maxX - 3, box.maxY, box.maxZ - 3, Blocks.CAVE_AIR.getDefaultState(), false);
-        MineshaftPiecesUtils.updateLiquidBlocks(room, world, box, box.minX - 1, box.minY + 4, box.minZ - 1, box.maxX + 1, box.maxY, box.maxZ + 1);
+        ((StructurePieceAccessor)room).uad_callFillHalfEllipsoid(world, mutableBoundingBox, box.getMinX() + 3, box.getMinY() + 4, box.getMinZ() + 3, box.getMaxX() - 3, box.getMaxY(), box.getMaxZ() - 3, Blocks.CAVE_AIR.getDefaultState(), false);
+        MineshaftPiecesUtils.updateLiquidBlocks(room, world, box, box.getMinX() - 1, box.getMinY() + 4, box.getMinZ() - 1, box.getMaxX() + 1, box.getMaxY(), box.getMaxZ() + 1);
     }
 
     // Prevents walls of water that doesnt flow or move.

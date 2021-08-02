@@ -14,6 +14,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -26,20 +27,20 @@ public class ContainUndergroundLiquids extends Feature<DefaultFeatureConfig>
 	private MutableRegistry<Biome> BIOME_REGISTRY = null;
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, DefaultFeatureConfig configBlock) {
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
 		if(BIOME_REGISTRY == null){
-			BIOME_REGISTRY = world.toServerWorld().getRegistryManager().get(Registry.BIOME_KEY);
+			BIOME_REGISTRY = context.getWorld().toServerWorld().getRegistryManager().getMutable(Registry.BIOME_KEY);
 		}
 
 		BlockState replacementBlock;
 		BlockState currentblock;
 		BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable();
-		Chunk chunk = world.getChunk(position.getX() >> 4, position.getZ() >> 4);
-		int maxHeight = Math.min(61, chunkGenerator.getSeaLevel() - 1);
+		Chunk chunk = context.getWorld().getChunk(context.getOrigin().getX() >> 4, context.getOrigin().getZ() >> 4);
+		int maxHeight = Math.min(61, context.getGenerator().getSeaLevel() - 1);
 
 		for (int x = 0; x < 16; ++x) {
 			for (int z = 0; z < 16; ++z) {
-				blockpos$Mutable.set(position.getX() + x, maxHeight, position.getZ() + z);
+				blockpos$Mutable.set(context.getOrigin().getX() + x, maxHeight, context.getOrigin().getZ() + z);
 				while (blockpos$Mutable.getY() > 10) {
 					currentblock = chunk.getBlockState(blockpos$Mutable);
 
@@ -59,14 +60,14 @@ public class ContainUndergroundLiquids extends Feature<DefaultFeatureConfig>
 						blockpos$Mutable.move(face);
 						if(blockpos$Mutable.getY() <= maxHeight){
 							//Do world instead of chunk as this could check into the next chunk over.
-							currentblock = world.getBlockState(blockpos$Mutable);
+							currentblock = context.getWorld().getBlockState(blockpos$Mutable);
 							if (currentblock.isAir()) {
 								//grabs what block to use based on what biome we are in
-								Biome biome = world.getBiome(blockpos$Mutable);
+								Biome biome = context.getWorld().getBiome(blockpos$Mutable);
 								Identifier rl = BIOME_REGISTRY.getId(biome);
 
 								replacementBlock = GeneralUtils.carverFillerBlock(rl == null ? "" : rl.toString(), biome);
-								world.setBlockState(blockpos$Mutable, replacementBlock, 2);
+								context.getWorld().setBlockState(blockpos$Mutable, replacementBlock, 2);
 							}
 						}
 						blockpos$Mutable.move(face.getOpposite());

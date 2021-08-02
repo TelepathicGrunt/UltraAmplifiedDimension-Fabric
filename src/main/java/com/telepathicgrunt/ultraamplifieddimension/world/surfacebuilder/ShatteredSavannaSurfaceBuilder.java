@@ -18,15 +18,15 @@ public class ShatteredSavannaSurfaceBuilder extends SurfaceBuilder<QuadrarySurfa
 
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, QuadrarySurfaceBuilderConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, QuadrarySurfaceBuilderConfig config) {
         if (noise > 1.75D) {
-            SurfaceBuilder.DEFAULT.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.STONE_CONFIG);
+            SurfaceBuilder.DEFAULT.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, SurfaceBuilder.STONE_CONFIG);
         }
         else if (noise > -0.5D) {
-            UADSurfaceBuilders.PLATEAU_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, UADSurfaceBuilders.COARSE_DIRT_COARSE_DIRT_GRAVEL_DIRT_SURFACE);
+            UADSurfaceBuilders.PLATEAU_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, UADSurfaceBuilders.COARSE_DIRT_COARSE_DIRT_GRAVEL_DIRT_SURFACE);
         }
         else {
-            UADSurfaceBuilders.PLATEAU_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, UADSurfaceBuilders.GRASS_BLOCK_DIRT_GRAVEL_COARSE_DIRT_SURFACE);
+            UADSurfaceBuilders.PLATEAU_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, UADSurfaceBuilders.GRASS_BLOCK_DIRT_GRAVEL_COARSE_DIRT_SURFACE);
         }
     }
 

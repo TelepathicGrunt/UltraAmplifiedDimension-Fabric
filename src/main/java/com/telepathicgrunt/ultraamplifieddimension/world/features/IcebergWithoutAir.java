@@ -13,6 +13,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SingleStateFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -24,58 +25,58 @@ public class IcebergWithoutAir extends Feature<SingleStateFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, SingleStateFeatureConfig icebergConfig) {
+    public boolean generate(FeatureContext<SingleStateFeatureConfig> context) {
 
-        boolean flag = random.nextDouble() > 0.7D;
-        BlockState iblockstate = icebergConfig.state;
-        double d0 = random.nextDouble() * 2.0D * Math.PI;
-        int i = 11 - random.nextInt(5);
-        int j = 3 + random.nextInt(3);
-        boolean flag1 = random.nextDouble() > 0.7D;
-        int upperHeight = flag1 ? random.nextInt(6) + 6 : random.nextInt(15) + 3;
-        if (!flag1 && random.nextDouble() > 0.9D) {
-            upperHeight += random.nextInt(19) + 7;
+        boolean flag = context.getRandom().nextDouble() > 0.7D;
+        BlockState iblockstate = context.getConfig().state;
+        double d0 = context.getRandom().nextDouble() * 2.0D * Math.PI;
+        int i = 11 - context.getRandom().nextInt(5);
+        int j = 3 + context.getRandom().nextInt(3);
+        boolean flag1 = context.getRandom().nextDouble() > 0.7D;
+        int upperHeight = flag1 ? context.getRandom().nextInt(6) + 6 : context.getRandom().nextInt(15) + 3;
+        if (!flag1 && context.getRandom().nextDouble() > 0.9D) {
+            upperHeight += context.getRandom().nextInt(19) + 7;
         }
 
-        int downHeight = Math.min(upperHeight + random.nextInt(11), 18);
-        int maxheight = Math.min(upperHeight + random.nextInt(7) - random.nextInt(5), 11);
+        int downHeight = Math.min(upperHeight + context.getRandom().nextInt(11), 18);
+        int maxheight = Math.min(upperHeight + context.getRandom().nextInt(7) - context.getRandom().nextInt(5), 11);
         int radius = flag1 ? i : 11;
 
         for (int x = -radius; x < radius; ++x) {
             for (int z = -radius; z < radius; ++z) {
                 for (int y = 0; y < upperHeight; ++y) {
-                    int k2 = flag1 ? this.func_205178_b(y, upperHeight, maxheight) : this.func_205183_a(random, y, upperHeight, maxheight);
+                    int k2 = flag1 ? this.func_205178_b(y, upperHeight, maxheight) : this.func_205183_a(context.getRandom(), y, upperHeight, maxheight);
                     if (flag1 || x < k2) {
-                        this.func_205181_a(world, random, position, upperHeight, x, y, z, k2, radius, flag1, j, d0, flag, iblockstate);
+                        this.func_205181_a(context.getWorld(), context.getRandom(), context.getOrigin(), upperHeight, x, y, z, k2, radius, flag1, j, d0, flag, iblockstate);
                     }
                 }
             }
         }
 
-        this.func_205186_a(world, position, maxheight, upperHeight, flag1, i);
+        this.func_205186_a(context.getWorld(), context.getOrigin(), maxheight, upperHeight, flag1, i);
 
         for (int x = -radius; x < radius; ++x) {
             for (int z = -radius; z < radius; ++z) {
                 for (int y = -1; y > -downHeight; --y) {
                     int l3 = flag1 ? MathHelper.ceil(radius * (1.0F - (float) Math.pow(y, 2.0D) / (downHeight * 8.0F))) : radius;
-                    int l2 = this.func_205187_b(random, -y, downHeight, maxheight);
+                    int l2 = this.func_205187_b(context.getRandom(), -y, downHeight, maxheight);
                     if (x < l2) {
-                        this.func_205181_a(world, random, position, downHeight, x, y, z, l2, l3, flag1, j, d0, flag, iblockstate);
+                        this.func_205181_a(context.getWorld(), context.getRandom(), context.getOrigin(), downHeight, x, y, z, l2, l3, flag1, j, d0, flag, iblockstate);
                     }
                 }
             }
         }
 
-        boolean flag2 = flag1 ? random.nextDouble() > 0.1D : random.nextDouble() > 0.7D;
+        boolean flag2 = flag1 ? context.getRandom().nextDouble() > 0.1D : context.getRandom().nextDouble() > 0.7D;
         if (flag2) {
-            this.func_205184_a(random, world, maxheight, upperHeight, position, flag1, i, d0, j);
+            this.func_205184_a(context.getRandom(), context.getWorld(), maxheight, upperHeight, context.getOrigin(), flag1, i, d0, j);
         }
 
         return true;
     }
 
 
-    private void func_205184_a(Random random, WorldAccess world,int maxheight, int height, BlockPos position,boolean flag, int int1, double double1, int int2)
+    private void func_205184_a(Random random, WorldAccess world,int maxheight, int height, BlockPos position, boolean flag, int int1, double double1, int int2)
     {
         int x = random.nextBoolean() ? -1 : 1;
         int z = random.nextBoolean() ? -1 : 1;
@@ -218,7 +219,7 @@ public class IcebergWithoutAir extends Feature<SingleStateFeatureConfig> {
     }
 
 
-    private void func_205186_a(WorldAccess world, BlockPos position,int smallRadiusIn, int height, boolean flag, int largeRadiusIn)
+    private void func_205186_a(WorldAccess world, BlockPos position, int smallRadiusIn, int height, boolean flag, int largeRadiusIn)
     {
         int radius = flag ? largeRadiusIn : smallRadiusIn / 2;
         BlockPos.Mutable blockpos$Mutable = new BlockPos.Mutable().set(position);
@@ -259,7 +260,7 @@ public class IcebergWithoutAir extends Feature<SingleStateFeatureConfig> {
     }
 
     public int func_205178_b(int p_205178_1_, int p_205178_2_, int p_205178_3_) {
-        float f1 = (1.0F - (float)Math.pow(p_205178_1_, 2.0D) / ((float)p_205178_2_ * 1.0F)) * (float)p_205178_3_;
+        float f1 = (1.0F - (float)Math.pow(p_205178_1_, 2.0D) / ((float) p_205178_2_)) * (float)p_205178_3_;
         return MathHelper.ceil(f1 / 2.0F);
     }
 

@@ -30,7 +30,7 @@ public abstract class DesertPyramidPieceMixin {
     private void uad_fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPos, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if(chunkGenerator instanceof UADChunkGenerator){
             BlockBox box = ((DesertTempleGenerator)(Object)this).getBoundingBox();
-            box.move(0, chunkGenerator.getHeight(box.minX + (box.getBlockCountX() / 2), box.minZ + (box.getBlockCountZ() / 2), Heightmap.Type.WORLD_SURFACE_WG) - box.minY, 0);
+            box.move(0, chunkGenerator.getHeight(box.getMinX() + (box.getBlockCountX() / 2), box.getMinZ() + (box.getBlockCountZ() / 2), Heightmap.Type.WORLD_SURFACE_WG, world) - box.getMinY(), 0);
         }
     }
 }

@@ -7,9 +7,11 @@
             "feature": "minecraft:blue_ice",
             "decorator": {
               "config": {
-                "bottom_offset": 40,
-                "top_offset": 0,
-                "maximum": 160
+                "height": {
+                  "type": "minecraft:uniform",
+                  "min_inclusive": { "absolute": 40 },
+                  "max_inclusive": { "absolute": 160 }
+                }
               },
               "type": "minecraft:range"
             }

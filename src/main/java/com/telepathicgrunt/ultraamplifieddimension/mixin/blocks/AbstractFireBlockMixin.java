@@ -16,7 +16,7 @@ public class AbstractFireBlockMixin {
 	 * Make it so that Nether Portals can be created and activated in Ultra Amplified Dimension
 	 * @author TelepathicGrunt
 	 */
-	@Inject(method = "method_30366(Lnet/minecraft/world/World;)Z",
+	@Inject(method = "isOverworldOrNether(Lnet/minecraft/world/World;)Z",
 			at = @At(value = "RETURN"),
 			cancellable = true)
 	private static void uad_allowNetherPortal(World world, CallbackInfoReturnable<Boolean> cir) {

@@ -14,6 +14,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -37,36 +38,36 @@ public class Roots extends Feature<RootConfig>
 
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, RootConfig blockConfig) {
-		setSeed(world.getSeed());
+	public boolean generate(FeatureContext<RootConfig> context) {
+		setSeed(context.getWorld().getSeed());
 
-		BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
-		Chunk cachedChunk = world.getChunk(blockposMutable);
+		BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+		Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 		BlockState currentBlockState;
 		int xOffset;
 		int zOffset;
 		int yOffset;
 
 		//increase the number of roots the higher up in the world it is
-		int numOfRoots = 1 + (position.getY() - chunkGenerator.getSeaLevel()) / 50;
+		int numOfRoots = 1 + (context.getOrigin().getY() - context.getGenerator().getSeaLevel()) / 50;
 		//makes root length increase the higher up in the world it is
-		int rootLength = 2 + (position.getY() - chunkGenerator.getSeaLevel()) / 22;
+		int rootLength = 2 + (context.getOrigin().getY() - context.getGenerator().getSeaLevel()) / 22;
 
 		for (int rootNum = 1; rootNum < numOfRoots + 1; rootNum++) {
 
 			//set mutable block pos back to the starting block of the roots
-			blockposMutable.set(position);
+			blockposMutable.set(context.getOrigin());
 			if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-				cachedChunk = world.getChunk(blockposMutable);
+				cachedChunk = context.getWorld().getChunk(blockposMutable);
 
 			//attempts to grow root branch as long as the new position is an air block. Otherwise, terminate root
 			for (int length = 0; length < rootLength; length++) {
 
 				//checks to see if air block is not higher than starting place
 				currentBlockState = cachedChunk.getBlockState(blockposMutable);
-				if (blockposMutable.getY() <= position.getY() &&
-						(blockConfig.rootReplaceTarget.test(currentBlockState, rand) ||
-						 currentBlockState == blockConfig.rootBlock ||
+				if (blockposMutable.getY() <= context.getOrigin().getY() &&
+						(context.getConfig().rootReplaceTarget.test(currentBlockState, context.getRandom()) ||
+						 currentBlockState == context.getConfig().rootBlock ||
 						 currentBlockState == Blocks.VINE.getDefaultState()))
 				{
 					// Make sure it is under ledge and not going off to the side which looks weird.
@@ -75,7 +76,7 @@ public class Roots extends Feature<RootConfig>
 					blockposMutable.move(Direction.UP);
 					for(; upwardOffset < 8; upwardOffset++){
 						BlockState blockState = cachedChunk.getBlockState(blockposMutable);
-						if(blockConfig.validAboveState.test(blockState, rand)){
+						if(context.getConfig().validAboveState.test(blockState, context.getRandom())){
 							isUnderLedge = true;
 							break;
 						}
@@ -86,11 +87,11 @@ public class Roots extends Feature<RootConfig>
 						blockposMutable.move(Direction.DOWN, upwardOffset); // Move back to current pos.
 
 						//set root block
-						cachedChunk.setBlockState(blockposMutable, blockConfig.rootBlock, false);
+						cachedChunk.setBlockState(blockposMutable, context.getConfig().rootBlock, false);
 
 						//rare chance to also generate a vine
-						if (rand.nextFloat() < 0.05F) {
-							generateTinyVine(world, cachedChunk, rand, blockposMutable);
+						if (context.getRandom().nextFloat() < 0.05F) {
+							generateTinyVine(context.getWorld(), cachedChunk, context.getRandom(), blockposMutable);
 						}
 					}
 				}
@@ -113,7 +114,7 @@ public class Roots extends Feature<RootConfig>
 				blockposMutable.move(xOffset, yOffset, zOffset);
 
 				if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-					cachedChunk = world.getChunk(blockposMutable);
+					cachedChunk = context.getWorld().getChunk(blockposMutable);
 			}
 		}
 

@@ -17,11 +17,11 @@ public class OffsetPlacer extends Decorator<YOffsetPlacerConfig> {
 
     @Override
     public Stream<BlockPos> getPositions(DecoratorContext context, Random rand, YOffsetPlacerConfig config, BlockPos pos) {
-        if(config.ySpread > 0){
-            return Stream.of(pos.up(config.yOffset + rand.nextInt(config.ySpread * 2) - config.ySpread));
+        if(config.ySpread() > 0){
+            return Stream.of(pos.up(config.yOffset() + rand.nextInt(config.ySpread() * 2) - config.ySpread()));
         }
         else{
-            return Stream.of(pos.up(config.yOffset));
+            return Stream.of(pos.up(config.yOffset()));
         }
     }
 }

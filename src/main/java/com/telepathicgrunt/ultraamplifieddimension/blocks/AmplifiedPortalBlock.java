@@ -36,7 +36,7 @@ public class AmplifiedPortalBlock extends Block
 
 	public AmplifiedPortalBlock()
 	{
-		super(Settings.of(Material.GLASS, MaterialColor.BLACK).luminance((blockState) -> 15).strength(5.0F, 3600000.0F));
+		super(Settings.of(Material.GLASS, MapColor.BLACK).luminance((blockState) -> 15).strength(5.0F, 3600000.0F));
 	}
 
 	@Override
@@ -91,8 +91,8 @@ public class AmplifiedPortalBlock extends Block
 
 				// Set current UA position and rotations
 				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAPos(playerEntity.getPos());
-				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAPitch(playerEntity.pitch);
-				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAYaw(playerEntity.yaw);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAPitch(playerEntity.getPitch());
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setUAYaw(playerEntity.getYaw());
 			}
 
 			// Otherwise, take us to Ultra Amplified Dimension.
@@ -105,8 +105,8 @@ public class AmplifiedPortalBlock extends Block
 				// Set current nonUA position, rotations, and dimension before teleporting
 				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAPos(playerEntity.getPos());
 				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUADimension(playerEntity.world.getRegistryKey());
-				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAPitch(playerEntity.pitch);
-				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAYaw(playerEntity.yaw);
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAPitch(playerEntity.getPitch());
+				UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).setNonUAYaw(playerEntity.getYaw());
 			}
 
 			//Get the world itself. If the world doesn't exist, get Overworld instead.
@@ -130,10 +130,10 @@ public class AmplifiedPortalBlock extends Block
 				// If it is player's first time teleporting to UA dimension, 
 				// find top block at world origin closest to portal
 				BlockPos worldOriginBlockPos = new BlockPos(10, 0, 8);
-				int portalY = world.getDimensionHeight();
+				int portalY = world.getTopY();
 
 				//finds where portal block is
-				while (portalY > 0) {
+				while (portalY > world.getBottomY()) {
 					if (destinationWorld.getBlockState(worldOriginBlockPos.up(portalY)) == UADBlocks.AMPLIFIED_PORTAL.getDefaultState()) {
 						break;
 					}
@@ -165,7 +165,7 @@ public class AmplifiedPortalBlock extends Block
 
 					if (!validSpaceFound) {
 						//no valid space found around portal. get top solid block instead
-						worldOriginBlockPos = destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(10, world.getDimensionHeight(), 8));
+						worldOriginBlockPos = destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(10, world.getTopY(), 8));
 					}
 
 					playerVec3Pos = Vec3d.ofCenter(worldOriginBlockPos).add(0, -0.3D, 0); // Set where player spawns
@@ -186,7 +186,7 @@ public class AmplifiedPortalBlock extends Block
 						// The portal will try to not replace any block and be at the next air block above non-air blocks.
 						BlockPos playerBlockPos = destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, destinationWorld.getSpawnPos());
 						BlockState blockState = destinationWorld.getBlockState(playerBlockPos);
-						while (blockState.getMaterial() != Material.AIR && playerBlockPos.getY() < destinationWorld.getDimensionHeight() - 2) {
+						while (blockState.getMaterial() != Material.AIR && playerBlockPos.getY() < destinationWorld.getTopY() - 2) {
 							playerBlockPos = playerBlockPos.up();
 							blockState = destinationWorld.getBlockState(playerBlockPos);
 						}
@@ -239,7 +239,7 @@ public class AmplifiedPortalBlock extends Block
 				if (pos.getX() == 8 && pos.getZ() == 8) {
 
 					// finds the highest portal at world origin
-					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getDimensionHeight(), pos.getZ());
+					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getTopY(), pos.getZ());
 					while (posOfHighestPortal.getY() >= 0) {
 						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
 						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL) {

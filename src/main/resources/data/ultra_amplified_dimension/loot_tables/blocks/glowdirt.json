@@ -4,7 +4,7 @@
 	[
 	{
 		"name":"pool1",
-		"rolls":1,
+		"rolls": 1,
 		"entries":
 		[
 		{
@@ -21,7 +21,7 @@
 									{
 										"enchantment":"minecraft:silk_touch",
 										"levels":{
-											"min":1
+											"min": 1
 										}
 									}
 								]
@@ -56,7 +56,7 @@
 	},
 	{
 		"name":"pool2",
-		"rolls":1,
+		"rolls": 1,
 		"entries":
 		[
 		{
@@ -73,7 +73,7 @@
 									{
 										"enchantment":"minecraft:silk_touch",
 										"levels":{
-											"min":1
+											"min": 1
 										}
 									}
 								]

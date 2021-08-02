@@ -11,11 +11,10 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SingleStateFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
-import java.util.Random;
 import java.util.Set;
 
 
@@ -28,9 +27,9 @@ public class LakeWideShallow extends Feature<SingleStateFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, SingleStateFeatureConfig configBlock) {
+    public boolean generate(FeatureContext<SingleStateFeatureConfig> context) {
 
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
 
         //creates the actual lakes
         boolean containedFlag;
@@ -40,20 +39,20 @@ public class LakeWideShallow extends Feature<SingleStateFeatureConfig> {
             for (int z = 0; z < 16; ++z) {
                 int y = 5;
 
-                blockposMutable.set(position).move(x, y, z);
+                blockposMutable.set(context.getOrigin()).move(x, y, z);
 
-                blockState = world.getBlockState(blockposMutable);
+                blockState = context.getWorld().getBlockState(blockposMutable);
                 material = blockState.getMaterial();
 
                 //Finds first solid block of land starting from 5 blocks higher than initial input position
                 //We use unacceptable solid set to help skip solid blocks like leaves.
                 while ((!material.isSolid() || unacceptableSolidMaterials.contains(material) || BlockTags.PLANKS.contains(blockState.getBlock())) && y > 0) {
                     y--;
-                    material = world.getBlockState(blockposMutable.move(Direction.DOWN)).getMaterial();
+                    material = context.getWorld().getBlockState(blockposMutable.move(Direction.DOWN)).getMaterial();
                 }
 
                 //checks if the spot is solid all around (diagonally too) and has nothing solid above it
-                containedFlag = checkIfValidSpot(world, blockposMutable);
+                containedFlag = checkIfValidSpot(context.getWorld(), blockposMutable);
 
 
                 //Is spot contained and not exposed on ledges
@@ -65,23 +64,23 @@ public class LakeWideShallow extends Feature<SingleStateFeatureConfig> {
 
                     if(lakeVal < 0.8d){
                         //check below without moving down
-                        blockState = world.getBlockState(blockposMutable.down());
+                        blockState = context.getWorld().getBlockState(blockposMutable.down());
 
                         //sets the water
-                        if ((isSoil(blockState.getBlock()) && random.nextInt(5) == 0)) {
-                            world.setBlockState(blockposMutable, Blocks.SEAGRASS.getDefaultState(), 3);
+                        if ((isSoil(blockState) && context.getRandom().nextInt(5) == 0)) {
+                            context.getWorld().setBlockState(blockposMutable, Blocks.SEAGRASS.getDefaultState(), 3);
                         }
                         else {
-                            world.setBlockState(blockposMutable, configBlock.state, 3);
+                            context.getWorld().setBlockState(blockposMutable, context.getConfig().state, 3);
                         }
 
                         //remove floating plants so they aren't hovering.
                         //check above while moving up one.
-                        blockState = world.getBlockState(blockposMutable.move(Direction.UP));
+                        blockState = context.getWorld().getBlockState(blockposMutable.move(Direction.UP));
 
-                        while(blockposMutable.getY() < chunkGenerator.getWorldHeight() && !blockState.canPlaceAt(world, blockposMutable)){
-                            world.setBlockState(blockposMutable, Blocks.AIR.getDefaultState(), 3);
-                            blockState = world.getBlockState(blockposMutable.move(Direction.UP));
+                        while(blockposMutable.getY() < context.getGenerator().getWorldHeight() && !blockState.canPlaceAt( context.getWorld(), blockposMutable)){
+                            context.getWorld().setBlockState(blockposMutable, Blocks.AIR.getDefaultState(), 3);
+                            blockState = context.getWorld().getBlockState(blockposMutable.move(Direction.UP));
                         }
                     }
                 }

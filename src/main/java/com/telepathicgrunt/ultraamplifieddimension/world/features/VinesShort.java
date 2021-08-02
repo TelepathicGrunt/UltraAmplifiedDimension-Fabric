@@ -11,6 +11,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -23,21 +24,21 @@ public class VinesShort extends Feature<HeightConfig>
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerators, Random rand, BlockPos position, HeightConfig config) {
+	public boolean generate(FeatureContext<HeightConfig> context) {
 
 		//generates vines from given position down 6 blocks if path is clear and the given position is valid
 		//Also won't generate vines below Y = 15.
 		int length = 0;
 		boolean extendingVine = false;
 
-		BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
-		Chunk chunk = world.getChunk(position);
+		BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+		Chunk chunk = context.getWorld().getChunk(context.getOrigin());
 
-		while (blockposMutable.getY() > 15 && length < config.height) {
+		while (blockposMutable.getY() > 15 && length < context.getConfig().height) {
 			if (chunk.getBlockState(blockposMutable).isAir()) {
 				for (Direction direction : Direction.Type.HORIZONTAL) {
 					BlockState blockState = Blocks.VINE.getDefaultState().with(VineBlock.getFacingProperty(direction), true);
-					if (blockState.canPlaceAt(world, blockposMutable)) {
+					if (blockState.canPlaceAt(context.getWorld(), blockposMutable)) {
 						chunk.setBlockState(blockposMutable, blockState, false);
 						length++;
 						extendingVine = true;

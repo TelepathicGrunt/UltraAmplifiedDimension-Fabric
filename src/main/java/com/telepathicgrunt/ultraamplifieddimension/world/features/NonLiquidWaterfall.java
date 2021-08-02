@@ -13,6 +13,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -25,15 +26,15 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, TwoBlockStateConfig config) {
+    public boolean generate(FeatureContext<TwoBlockStateConfig> context) {
 
         //creates a waterfall of blue ice that has a puddle at bottom
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
-        Chunk cachedChunk = world.getChunk(blockposMutable);
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+        Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 
         // valid ceiling
         BlockState blockState = cachedChunk.getBlockState(blockposMutable.move(Direction.UP));
-        if (!GeneralUtils.isFullCube(world, blockposMutable, blockState) || !blockState.getFluidState().isEmpty()) {
+        if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, blockState) || !blockState.getFluidState().isEmpty()) {
             return false;
         }
 
@@ -41,10 +42,10 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
         int numberOfSolidSides = 0;
         int neededNumberOfSides;
 
-        blockState = cachedChunk.getBlockState(blockposMutable.set(position).move(Direction.DOWN));
+        blockState = cachedChunk.getBlockState(blockposMutable.set(context.getOrigin()).move(Direction.DOWN));
         if(!blockState.getFluidState().isEmpty()) return false;
 
-        if (!GeneralUtils.isFullCube(world, blockposMutable, blockState)) {
+        if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, blockState)) {
             neededNumberOfSides = 4; // Ceiling with all sides blocked off
         }
         else {
@@ -53,14 +54,14 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
 
         Direction emptySpot = null;
         for (Direction face : Direction.Type.HORIZONTAL) {
-            blockposMutable.set(position).move(face);
+            blockposMutable.set(context.getOrigin()).move(face);
             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                cachedChunk = world.getChunk(blockposMutable);
+                cachedChunk = context.getWorld().getChunk(blockposMutable);
 
             blockState = cachedChunk.getBlockState(blockposMutable);
             if(!blockState.getFluidState().isEmpty()) return false;
 
-            if (GeneralUtils.isFullCube(world, blockposMutable, blockState)) {
+            if (GeneralUtils.isFullCube(context.getWorld(), blockposMutable, blockState)) {
                 ++numberOfSolidSides;
             }
             else {
@@ -74,11 +75,11 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
         }
 
         //initial starting point of icefall
-        blockposMutable.set(position);
+        blockposMutable.set(context.getOrigin());
         if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-            cachedChunk = world.getChunk(blockposMutable);
+            cachedChunk = context.getWorld().getChunk(blockposMutable);
 
-        cachedChunk.setBlockState(blockposMutable, config.state1, false);
+        cachedChunk.setBlockState(blockposMutable, context.getConfig().state1, false);
 
 
         // If in wall, move out of wall
@@ -86,9 +87,9 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
             // move to empty spot and set it to ice
             blockposMutable.move(emptySpot);
             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                cachedChunk = world.getChunk(blockposMutable);
+                cachedChunk = context.getWorld().getChunk(blockposMutable);
 
-            cachedChunk.setBlockState(blockposMutable, config.state1, false);
+            cachedChunk.setBlockState(blockposMutable, context.getConfig().state1, false);
         }
 
         int ledgeOffsets = 0;
@@ -106,9 +107,9 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
             BlockState belowBlockState = cachedChunk.getBlockState(blockposMutable);
 
             // Move down until it hits a solid block or liquid
-            if (!GeneralUtils.isFullCube(world, blockposMutable, belowBlockState) && belowBlockState.getFluidState().isEmpty())
+            if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, belowBlockState) && belowBlockState.getFluidState().isEmpty())
             {
-                cachedChunk.setBlockState(blockposMutable, config.state1, false);
+                cachedChunk.setBlockState(blockposMutable, context.getConfig().state1, false);
                 continue; //restart loop to keep moving downward
             }
 
@@ -121,21 +122,21 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
 
                 blockposMutable.move(face);
                 if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                    cachedChunk = world.getChunk(blockposMutable);
+                    cachedChunk = context.getWorld().getChunk(blockposMutable);
                 BlockState sideBlockState = cachedChunk.getBlockState(blockposMutable);
 
                 // side is open to move to
-                if (!GeneralUtils.isFullCube(world, blockposMutable, sideBlockState) && sideBlockState.getFluidState().isEmpty()) {
+                if (!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, sideBlockState) && sideBlockState.getFluidState().isEmpty()) {
 
                     // check under side to see if it is good
                     blockposMutable.move(Direction.DOWN);
                     BlockState belowSideBlockState = cachedChunk.getBlockState(blockposMutable);
 
                     // side below is valid. Time to flow to ledge
-                    if(!GeneralUtils.isFullCube(world, blockposMutable, belowSideBlockState) && belowSideBlockState.getFluidState().isEmpty()){
+                    if(!GeneralUtils.isFullCube(context.getWorld(), blockposMutable, belowSideBlockState) && belowSideBlockState.getFluidState().isEmpty()){
                         blockposMutable.move(Direction.UP);
-                        cachedChunk.setBlockState(blockposMutable, config.state1, false);
-                        cachedChunk.setBlockState(blockposMutable.move(Direction.DOWN), config.state1, false);
+                        cachedChunk.setBlockState(blockposMutable, context.getConfig().state1, false);
+                        cachedChunk.setBlockState(blockposMutable.move(Direction.DOWN), context.getConfig().state1, false);
 
                         ledgeOffsets++;
                         deadEnd = false;
@@ -162,32 +163,32 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
         }
 
         //creates blue ice puddle at bottom
-        position = blockposMutable.toImmutable();
-        int width = rand.nextInt(2) + 2;
+        BlockPos position = blockposMutable.toImmutable();
+        int width = context.getRandom().nextInt(2) + 2;
         for (int y = -2; y < 0; y++) {
             for (int x = -width; x <= width; x++) {
                 for (int z = -width; z <= width; z++) {
                     if ((x * x) + (z * z) <= width * width) {
-                        if (position.getY() + y > 1 && position.getY() + y < chunkGenerator.getWorldHeight()) {
+                        if (position.getY() + y > 1 && position.getY() + y < context.getGenerator().getWorldHeight()) {
 
                             blockposMutable.set(position).move(x, y, z);
                             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z){
-                                cachedChunk = world.getChunk(blockposMutable);
+                                cachedChunk = context.getWorld().getChunk(blockposMutable);
                             }
 
                             BlockState blockStateAtPuddlePos = cachedChunk.getBlockState(blockposMutable);
 
                             //replace solid and liquid blocks
-                            if (GeneralUtils.isFullCube(world, blockposMutable, blockStateAtPuddlePos) || !blockStateAtPuddlePos.getFluidState().isEmpty()) {
+                            if (GeneralUtils.isFullCube(context.getWorld(), blockposMutable, blockStateAtPuddlePos) || !blockStateAtPuddlePos.getFluidState().isEmpty()) {
 
-                                BlockState biomeTopBlock = world.getBiome(blockposMutable).getGenerationSettings().getSurfaceConfig().getTopMaterial();
+                                BlockState biomeTopBlock = context.getWorld().getBiome(blockposMutable).getGenerationSettings().getSurfaceConfig().getTopMaterial();
                                 BlockState aboveBlockState = cachedChunk.getBlockState(blockposMutable.move(Direction.UP));
-                                boolean isAboveFullCube = GeneralUtils.isFullCube(world, blockposMutable, aboveBlockState);
+                                boolean isAboveFullCube = GeneralUtils.isFullCube(context.getWorld(), blockposMutable, aboveBlockState);
                                 blockposMutable.move(Direction.DOWN);
 
                                 // If replacing biome top block, place state 2 instead of state 1
                                 if (blockStateAtPuddlePos == biomeTopBlock && !isAboveFullCube) {
-                                    cachedChunk.setBlockState(blockposMutable, config.state2, false);
+                                    cachedChunk.setBlockState(blockposMutable, context.getConfig().state2, false);
 
                                     // Remove snow layer above
                                     if(aboveBlockState.isOf(Blocks.SNOW)){
@@ -196,11 +197,11 @@ public class NonLiquidWaterfall extends Feature<TwoBlockStateConfig> {
                                 }
                                 else{
                                     // Make ice turn lava into obsidian to help separate the two better.
-                                    if(config.state1.isIn(BlockTags.ICE) && blockStateAtPuddlePos.getFluidState().isIn(FluidTags.LAVA)){
+                                    if(context.getConfig().state1.isIn(BlockTags.ICE) && blockStateAtPuddlePos.getFluidState().isIn(FluidTags.LAVA)){
                                         cachedChunk.setBlockState(blockposMutable, Blocks.OBSIDIAN.getDefaultState(), false);
                                     }
                                     else{
-                                        cachedChunk.setBlockState(blockposMutable, config.state1, false);
+                                        cachedChunk.setBlockState(blockposMutable, context.getConfig().state1, false);
                                     }
                                 }
                             }

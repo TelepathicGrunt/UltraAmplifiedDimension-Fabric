@@ -9,12 +9,9 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-
-import java.util.Random;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 
 public class Boulders extends Feature<BoulderFeatureConfig> {
@@ -34,30 +31,30 @@ public class Boulders extends Feature<BoulderFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos position, BoulderFeatureConfig config) {
+    public boolean generate(FeatureContext<BoulderFeatureConfig> context) {
 
-        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(position);
-        Chunk cachedChunk = world.getChunk(blockposMutable);
+        BlockPos.Mutable blockposMutable = new BlockPos.Mutable().set(context.getOrigin());
+        Chunk cachedChunk = context.getWorld().getChunk(blockposMutable);
 
         // No boulders on trees or too high up
-        if(blockposMutable.getY() > ((chunkGenerator.getWorldHeight() - config.maxRadius) - 2))
+        if(blockposMutable.getY() > ((context.getGenerator().getWorldHeight() - context.getConfig().maxRadius) - 2))
         {
             return false;
         }
 
-        setSeed(world.getSeed());
+        setSeed(context.getWorld().getSeed());
         int maxRadius;
         int minRadius;
         int startRadius;
         int prevHeight = 0;
 
-        for(int stackCount = 0; stackCount < config.boulderStackCount; stackCount++){
-            maxRadius = config.maxRadius;
-            minRadius = config.minRadius;
-            int radiusModifier = (stackCount / (int)Math.max(Math.ceil(config.boulderStackCount / config.maxRadius) + 1, 1));
+        for(int stackCount = 0; stackCount < context.getConfig().boulderStackCount; stackCount++){
+            maxRadius = context.getConfig().maxRadius;
+            minRadius = context.getConfig().minRadius;
+            int radiusModifier = (stackCount / (int)Math.max(Math.ceil((int)(context.getConfig().boulderStackCount / context.getConfig().maxRadius) + 1), 1));
             maxRadius = Math.max(maxRadius - radiusModifier, 1);
             minRadius = Math.max(minRadius - radiusModifier, 1);
-            startRadius = Math.max(random.nextInt(maxRadius - minRadius + 1) + minRadius, 1);
+            startRadius = Math.max(context.getRandom().nextInt(maxRadius - minRadius + 1) + minRadius, 1);
             int randMax = (int) Math.max(startRadius * 0.7f, 3);
             int randMin = (int) Math.max(startRadius * 0.35f, 1);
 
@@ -65,9 +62,9 @@ public class Boulders extends Feature<BoulderFeatureConfig> {
             for (int currentCount = 0; currentCount < 3; ++currentCount) {
 
                 // randomizes the x, y, or z by +1/-1/0 independently to make boulders more natural looking
-                int x = Math.max(Math.min(startRadius + (random.nextInt(3) - 1), maxRadius), minRadius);
-                int y = Math.max(Math.min(startRadius + (random.nextInt(3) - 1), maxRadius), minRadius);
-                int z = Math.max(Math.min(startRadius + (random.nextInt(3) - 1), maxRadius), minRadius);
+                int x = Math.max(Math.min(startRadius + (context.getRandom().nextInt(3) - 1), maxRadius), minRadius);
+                int y = Math.max(Math.min(startRadius + (context.getRandom().nextInt(3) - 1), maxRadius), minRadius);
+                int z = Math.max(Math.min(startRadius + (context.getRandom().nextInt(3) - 1), maxRadius), minRadius);
 
                 float calculatedDistance = (x + y + z) * 0.333F + 0.5F;
 
@@ -85,32 +82,32 @@ public class Boulders extends Feature<BoulderFeatureConfig> {
                         }
 
                         if(blockpos.getX() >> 4 != cachedChunk.getPos().x || blockpos.getZ() >> 4 != cachedChunk.getPos().z)
-                            cachedChunk = world.getChunk(blockpos);
+                            cachedChunk = context.getWorld().getChunk(blockpos);
 
                         //adds the blocks for generation in this boulder
-                        BlockState boulderBlock = GeneralUtils.getRandomEntry(config.blockAndWeights, random);
+                        BlockState boulderBlock = GeneralUtils.getRandomEntry(context.getConfig().blockAndWeights, context.getRandom());
                         cachedChunk.setBlockState(blockpos, boulderBlock, false);
                     }
                 }
 
                 // Randomizes pos of next blob to help keep boulders from looking samey
-                if(config.boulderStackCount > 1){
+                if(context.getConfig().boulderStackCount > 1){
                     blockposMutable.move(
-                            random.nextInt(randMax) - randMin,
-                            random.nextInt(randMax) - randMin,
-                            random.nextInt(randMax) - randMin);
+                            context.getRandom().nextInt(randMax) - randMin,
+                            context.getRandom().nextInt(randMax) - randMin,
+                            context.getRandom().nextInt(randMax) - randMin);
                 }
                 else{
                     blockposMutable.move(
-                            random.nextInt(startRadius * 2) - startRadius,
+                            context.getRandom().nextInt(startRadius * 2) - startRadius,
                             0,
-                            random.nextInt(startRadius * 2) - startRadius);
+                            context.getRandom().nextInt(startRadius * 2) - startRadius);
 
                     blockposMutable.move(Direction.UP,
-                            config.heightmapSpread ?
-                                    world.getTopY(Heightmap.Type.OCEAN_FLOOR_WG, blockposMutable.getX(), blockposMutable.getZ())
-                                        - random.nextInt(2) - blockposMutable.getY()
-                                    : -random.nextInt( 2)
+                            context.getConfig().heightmapSpread ?
+                                    context.getWorld().getTopY(Heightmap.Type.OCEAN_FLOOR_WG, blockposMutable.getX(), blockposMutable.getZ())
+                                        - context.getRandom().nextInt(2) - blockposMutable.getY()
+                                    : -context.getRandom().nextInt( 2)
                             );
                 }
             }
@@ -118,13 +115,13 @@ public class Boulders extends Feature<BoulderFeatureConfig> {
             prevHeight += minRadius;
 
             // set next boulders on top of previous to do stacking
-            blockposMutable.set(position).move(
-                    random.nextInt(randMax) - randMin,
+            blockposMutable.set(context.getOrigin()).move(
+                    context.getRandom().nextInt(randMax) - randMin,
                     prevHeight,
-                    random.nextInt(randMax) - randMin);
+                    context.getRandom().nextInt(randMax) - randMin);
 
             if(blockposMutable.getX() >> 4 != cachedChunk.getPos().x || blockposMutable.getZ() >> 4 != cachedChunk.getPos().z)
-                cachedChunk = world.getChunk(blockposMutable);
+                cachedChunk = context.getWorld().getChunk(blockposMutable);
 
             BlockState currentState = cachedChunk.getBlockState(blockposMutable);
             while(!currentState.isAir() && !currentState.isIn(BlockTags.LEAVES) && !currentState.isIn(BlockTags.LOGS)){
@@ -132,7 +129,7 @@ public class Boulders extends Feature<BoulderFeatureConfig> {
                 currentState = cachedChunk.getBlockState(blockposMutable);
             }
 
-            if(blockposMutable.getY() > ((chunkGenerator.getWorldHeight() - config.maxRadius) - 2))
+            if(blockposMutable.getY() > ((context.getGenerator().getWorldHeight() - context.getConfig().maxRadius) - 2))
             {
                 return false;
             }

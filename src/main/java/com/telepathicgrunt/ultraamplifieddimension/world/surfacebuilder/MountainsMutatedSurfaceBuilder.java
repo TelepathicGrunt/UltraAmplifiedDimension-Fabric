@@ -18,17 +18,17 @@ public class MountainsMutatedSurfaceBuilder extends SurfaceBuilder<TernarySurfac
 
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, TernarySurfaceConfig config) {
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, TernarySurfaceConfig config) {
         if (!(noise < -1.0D) && !(noise > 2.0D)) {
             if (noise > 1.0D) {
-                UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.STONE_CONFIG);
+                UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, SurfaceBuilder.STONE_CONFIG);
             }
             else {
-                UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.GRASS_CONFIG);
+                UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, SurfaceBuilder.GRASS_CONFIG);
             }
         }
         else {
-            UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.GRAVEL_CONFIG);
+            UADSurfaceBuilders.GRAVEL_SURFACE_BUILDER.generate(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minY, seed, SurfaceBuilder.GRAVEL_CONFIG);
         }
 
     }

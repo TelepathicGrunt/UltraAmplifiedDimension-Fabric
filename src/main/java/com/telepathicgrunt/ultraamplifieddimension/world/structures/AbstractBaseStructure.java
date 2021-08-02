@@ -63,11 +63,11 @@ public abstract class AbstractBaseStructure extends StructureFeature<DefaultFeat
                             if (structureStart != null && structureStart.hasChildren()) {
                                 if (skipExistingChunks && structureStart.isInExistingChunk()) {
                                     structureStart.incrementReferences();
-                                    return structureStart.getPos();
+                                    return structureStart.getPos().getStartPos();
                                 }
 
                                 if (!skipExistingChunks) {
-                                    return structureStart.getPos();
+                                    return structureStart.getPos().getStartPos();
                                 }
                             }
                         }

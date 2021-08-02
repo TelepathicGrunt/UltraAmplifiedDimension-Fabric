@@ -20,11 +20,14 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
+import java.io.Reader;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 
 public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
@@ -37,25 +40,29 @@ public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
     }
 
     @Override
-    public final boolean generate(StructureWorldAccess reader, ChunkGenerator generator, Random rand, BlockPos pos, TreeFeatureConfig config) {
+    public final boolean generate(FeatureContext<TreeFeatureConfig> context) {
         Set<BlockPos> set = Sets.newHashSet();
         Set<BlockPos> set1 = Sets.newHashSet();
         Set<BlockPos> set2 = Sets.newHashSet();
-        BlockBox mutableboundingbox = BlockBox.empty();
-        boolean flag = this.place(reader, generator, rand, pos, set, set1, mutableboundingbox, config);
-        if (mutableboundingbox.minX <= mutableboundingbox.maxX && flag && !set.isEmpty()) {
-            if (!config.decorators.isEmpty()) {
+        BlockBox mutableboundingbox = new BlockBox(0, 0, 0, 0, 0, 0);
+        BiConsumer<BlockPos, BlockState> biConsumer3 = (pos, state) -> {
+            set2.add(pos.toImmutable());
+            context.getWorld().setBlockState(pos, state, Block.NOTIFY_ALL | Block.FORCE_STATE);
+        };
+        boolean flag = this.place(context.getWorld(), context.getGenerator(), context.getRandom(), context.getOrigin(), set, set1, mutableboundingbox, context.getConfig());
+        if (mutableboundingbox.getMinX() <= mutableboundingbox.getMaxX() && flag && !set.isEmpty()) {
+            if (!context.getConfig().decorators.isEmpty()) {
                 List<BlockPos> list = Lists.newArrayList(set);
                 List<BlockPos> list1 = Lists.newArrayList(set1);
                 list.sort(Comparator.comparingInt(Vec3i::getY));
                 list1.sort(Comparator.comparingInt(Vec3i::getY));
-                config.decorators.forEach((p_236405_6_) -> {
-                    p_236405_6_.generate(reader, rand, list, list1, set2, mutableboundingbox);
+                context.getConfig().decorators.forEach((treeDecorator) -> {
+                    treeDecorator.generate(context.getWorld(), biConsumer3, context.getRandom(), list, list1);
                 });
             }
 
             VoxelSet voxelshapepart = new BitSetVoxelSet(1, 1, 1);
-            Structure.updateCorner(reader, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+            Structure.updateCorner(context.getWorld(), 3, voxelshapepart, mutableboundingbox.getMinX(), mutableboundingbox.getMinY(), mutableboundingbox.getMinZ());
             return true;
         }
         else {
@@ -68,7 +75,7 @@ public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
         WorldAccess world = (WorldAccess) worldReader;
 
         //checks to see if there is room to generate tree
-        if (!this.isSpaceAt(world, chunkGenerator, position, height + 4)) {
+        if (!this.isSpaceAt( world, chunkGenerator, position, height + 4)) {
             return false;
         }
 
@@ -123,7 +130,6 @@ public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
         }
 
         return true;
-
     }
 
 
@@ -298,16 +304,16 @@ public class TreeGiantDarkOak extends Feature<TreeFeatureConfig> {
     }
 
     private static boolean isDirtOrGrass(TestableWorld world, BlockPos pos) {
-        return world.testBlockState(pos, (state) -> {
-            Block block = state.getBlock();
-            return isSoil(block) || block == Blocks.FARMLAND || state.isIn(UADTags.COMMON_DIRT_BLOCKS);
+        return world.testBlockState(pos, (blockState) -> {
+            Block block = blockState.getBlock();
+            return isSoil(blockState) || block == Blocks.FARMLAND || blockState.isIn(UADTags.COMMON_DIRT_BLOCKS);
         });
     }
 
     protected static boolean cannotBeReplacedByLogs(TestableWorld world, BlockPos pos) {
         return !world.testBlockState(pos, (blockState) -> {
             Block block = blockState.getBlock();
-            return blockState.isAir() || blockState.isIn(BlockTags.LEAVES) || isSoil(block) || block.isIn(BlockTags.LOGS) || block.isIn(BlockTags.SAPLINGS) || block == Blocks.VINE;
+            return blockState.isAir() || blockState.isIn(BlockTags.LEAVES) || isSoil(blockState) || blockState.isIn(BlockTags.LOGS) || blockState.isIn(BlockTags.SAPLINGS) || block == Blocks.VINE;
         });
     }
 }

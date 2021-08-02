@@ -13,6 +13,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -34,12 +35,12 @@ public class Pond extends Feature<PondConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random rand, BlockPos position, PondConfig pondConfig) {
+    public boolean generate(FeatureContext<PondConfig> context) {
         // Set to chunk center as our pond will not cross chunk boundaries.
-        BlockPos.Mutable blockpos = new BlockPos.Mutable().set((position.getX() >> 4) << 4, position.getY(), (position.getZ() >> 4) << 4);
+        BlockPos.Mutable blockpos = new BlockPos.Mutable().set((context.getOrigin().getX() >> 4) << 4, context.getOrigin().getY(), (context.getOrigin().getZ() >> 4) << 4);
         blockpos.move(8, 0, 8);
         BlockPos centerPos = blockpos.toImmutable();
-        Chunk cachedChunk = world.getChunk(blockpos);
+        Chunk cachedChunk = context.getWorld().getChunk(blockpos);
 
         // Validation checks to make sure lake is in a safe spot to generate
         for(int x = -7; x < 7; x++){
@@ -58,7 +59,7 @@ public class Pond extends Feature<PondConfig> {
                             return false;
                         }
                         // No air/liquid space in lake space below (allow it's own inside state tho)
-                        else if(!GeneralUtils.isFullCube(world, blockpos, blockState) && blockState != pondConfig.insideState){
+                        else if(!GeneralUtils.isFullCube(context.getWorld(), blockpos, blockState) && blockState != context.getConfig().insideState){
                             return false;
                         }
                     }
@@ -67,7 +68,7 @@ public class Pond extends Feature<PondConfig> {
         }
 
         // Setup noise
-        setSeed(world.getSeed());
+        setSeed(context.getWorld().getSeed());
         BlockState aboveState = null;
         for(int x = -8; x < 8; x++){
             for(int z = -8; z < 8; z++){
@@ -84,53 +85,53 @@ public class Pond extends Feature<PondConfig> {
 
                         if(y == 4){
 
-                            if(pondConfig.placeOutsideStateOften && GeneralUtils.isFullCube(world, blockpos, blockState1) && rand.nextFloat() < 0.70f){
+                            if(context.getConfig().placeOutsideStateOften && GeneralUtils.isFullCube(context.getWorld(), blockpos, blockState1) && context.getRandom().nextFloat() < 0.70f){
                                 aboveState = cachedChunk.getBlockState(blockpos.move(Direction.UP));
                                 blockpos.move(Direction.DOWN);
 
                                 if(aboveState.isAir()){
-                                    cachedChunk.setBlockState(blockpos, pondConfig.topState, false);
+                                    cachedChunk.setBlockState(blockpos, context.getConfig().topState, false);
                                 }
                                 else{
-                                    cachedChunk.setBlockState(blockpos, pondConfig.outsideState, false);
+                                    cachedChunk.setBlockState(blockpos, context.getConfig().outsideState, false);
                                 }
                             }
 
-                            // Store y == 4 as that block in world must be stored as aboveState
+                            // Store y == 4 as that block in context.getWorld() must be stored as aboveState
                             aboveState = cachedChunk.getBlockState(blockpos);
                         }
 
-                        if(GeneralUtils.isFullCube(world, blockpos, blockState1) || blockState1.isIn(BlockTags.ICE)){
+                        if(GeneralUtils.isFullCube(context.getWorld(), blockpos, blockState1) || blockState1.isIn(BlockTags.ICE)){
                             // Edge of chunk and bottom of lake is always solid blocks.
                             // Threshold used for the encasing in outside blockstate.
                             if(x == -8 || z== -8 || x == 7 || z == 7 || lakeVal > -0.48d || y == -4){
-                                if(pondConfig.placeOutsideStateOften){
+                                if(context.getConfig().placeOutsideStateOften){
                                     if(aboveState.isAir() || aboveState.isOf(Blocks.SNOW)){
-                                        cachedChunk.setBlockState(blockpos, pondConfig.topState, false);
+                                        cachedChunk.setBlockState(blockpos, context.getConfig().topState, false);
                                     }
                                     else{
-                                        cachedChunk.setBlockState(blockpos, pondConfig.outsideState, false);
+                                        cachedChunk.setBlockState(blockpos, context.getConfig().outsideState, false);
                                     }
                                 }
                             }
                             else if (y <= 0){
-                                cachedChunk.setBlockState(blockpos, pondConfig.insideState, false);
+                                cachedChunk.setBlockState(blockpos, context.getConfig().insideState, false);
 
                                 for(Direction direction : Direction.values()){
                                     // Will never go into other chunk due to the edge of chunk check above.
                                     // This will contain the liquid as best as possible.
                                     if(direction != Direction.UP){
                                         BlockState blockState = cachedChunk.getBlockState(blockpos.move(direction));
-                                        if(!GeneralUtils.isFullCube(world, blockpos, blockState) && blockState != pondConfig.insideState){
-                                            cachedChunk.setBlockState(blockpos, pondConfig.outsideState, false);
+                                        if(!GeneralUtils.isFullCube(context.getWorld(), blockpos, blockState) && blockState != context.getConfig().insideState){
+                                            cachedChunk.setBlockState(blockpos, context.getConfig().outsideState, false);
                                         }
                                         blockpos.move(direction.getOpposite());
                                     }
                                     // Prevent stuff like lava ponds getting water placed above it.
-                                    else if(!pondConfig.insideState.getFluidState().isEmpty()){
+                                    else if(!context.getConfig().insideState.getFluidState().isEmpty()){
                                         BlockState blockState = cachedChunk.getBlockState(blockpos.move(direction));
-                                        if(!blockState.getFluidState().isEmpty() && blockState != pondConfig.insideState){
-                                            cachedChunk.setBlockState(blockpos, pondConfig.outsideState, false);
+                                        if(!blockState.getFluidState().isEmpty() && blockState != context.getConfig().insideState){
+                                            cachedChunk.setBlockState(blockpos, context.getConfig().outsideState, false);
                                         }
                                         blockpos.move(direction.getOpposite());
                                     }
@@ -138,7 +139,7 @@ public class Pond extends Feature<PondConfig> {
                             }
                             else {
                                 if(!aboveState.getFluidState().isEmpty()){
-                                    cachedChunk.setBlockState(blockpos, pondConfig.outsideState, false);
+                                    cachedChunk.setBlockState(blockpos, context.getConfig().outsideState, false);
                                 }
                                 else{
                                     cachedChunk.setBlockState(blockpos, Blocks.CAVE_AIR.getDefaultState(), false);
@@ -147,9 +148,9 @@ public class Pond extends Feature<PondConfig> {
 
                             // Remove floating plants.
                             BlockState plantCheckState = aboveState;
-                            while(blockpos.getY() <= chunkGenerator.getWorldHeight() &&
+                            while(blockpos.getY() <= context.getGenerator().getWorldHeight() &&
                                     !plantCheckState.isOpaque() &&
-                                    !plantCheckState.canPlaceAt(world, blockpos))
+                                    !plantCheckState.canPlaceAt(context.getWorld(), blockpos))
                             {
                                 cachedChunk.setBlockState(blockpos, Blocks.AIR.getDefaultState(), false);
                                 blockpos.move(Direction.UP);

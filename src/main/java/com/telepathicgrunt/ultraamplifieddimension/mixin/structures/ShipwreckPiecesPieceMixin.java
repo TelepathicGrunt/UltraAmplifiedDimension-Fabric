@@ -30,7 +30,7 @@ public abstract class ShipwreckPiecesPieceMixin {
     private void uad_fixedYHeightForUAD(StructureWorldAccess world, StructureAccessor structureManager, ChunkGenerator chunkGenerator, Random random, BlockBox mutableBoundingBox, ChunkPos chunkPosX, BlockPos chunkPosZ, CallbackInfoReturnable<Boolean> cir) {
         if (chunkGenerator instanceof UADChunkGenerator) {
             ShipwreckGenerator.Piece piece = ((ShipwreckGenerator.Piece)(Object)this);
-            int newHeight = OceanStructurePiecesUtils.getNewLedgeHeight(world, chunkGenerator, random, ((TemplateStructurePieceAccessor)piece).uad_getStructure(), ((ShipwreckPiecesPieceAccessor)piece).uad_getRotation(), ((TemplateStructurePieceAccessor)piece).uad_getPos());
+            int newHeight = OceanStructurePiecesUtils.getNewLedgeHeight(world, chunkGenerator, random, ((TemplateStructurePieceAccessor)piece).uad_getStructure(), piece.getRotation(), ((TemplateStructurePieceAccessor)piece).uad_getPos());
             BlockPos oldPos = ((TemplateStructurePieceAccessor)piece).uad_getPos();
             ((TemplateStructurePieceAccessor)piece).uad_setPos(new BlockPos(oldPos.getX(), newHeight, oldPos.getZ()));
         }

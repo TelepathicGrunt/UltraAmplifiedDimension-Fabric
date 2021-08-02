@@ -32,11 +32,11 @@ public class PlateauSurfaceBuilder extends SurfaceBuilder<QuadrarySurfaceBuilder
     }
 
     @Override
-    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, QuadrarySurfaceBuilderConfig config) {
-        this.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), config.getExtraMaterial(), seaLevel);
+    public void generate(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minY, long seed, QuadrarySurfaceBuilderConfig config) {
+        this.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), config.getExtraMaterial(), seaLevel, minY);
     }
 
-    protected void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState topBlock, BlockState middleBlock, BlockState bottomBlock, BlockState extraBlock, int seaLevel) {
+    protected void buildSurface(Random random, Chunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState topBlock, BlockState middleBlock, BlockState bottomBlock, BlockState extraBlock, int seaLevel, int minY) {
 
         BlockState currentTopBlock = topBlock;
         BlockState currentMiddleBlock = middleBlock;
@@ -51,7 +51,7 @@ public class PlateauSurfaceBuilder extends SurfaceBuilder<QuadrarySurfaceBuilder
         BlockState above2Block = Blocks.AIR.getDefaultState();
         BlockState above3Block = Blocks.AIR.getDefaultState();
 
-        for (int y = startHeight - 1; y >= 0; --y) {
+        for (int y = startHeight - 1; y >= minY; --y) {
             blockpos$Mutable.set(xInChunk, y, zInChunk);
             BlockState currentBlock = chunkIn.getBlockState(blockpos$Mutable);
 

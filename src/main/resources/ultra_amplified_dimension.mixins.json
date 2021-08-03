@@ -4,7 +4,6 @@
   "package": "com.telepathicgrunt.ultraamplifieddimension.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "dimension.StructureAccessorAccessor",
     "blocks.AbstractFireBlockMixin",
     "blocks.SpreadableSnowyDirtBlockAccessor",
     "dimension.BiomeContainerAccessor",
@@ -16,6 +15,9 @@
     "dimension.LocateBiomeCommandMixin",
     "dimension.MinecraftServerMixin",
     "dimension.NoiseChunkGeneratorAccessor",
+    "dimension.StructureAccessorAccessor",
+    "features.BeehiveTreeDecoratorMixin",
+    "features.CocoaBeansTreeDecoratorMixin",
     "features.TemplateAccessor",
     "features.TreeDecoratorTypeAccessor",
     "structures.DesertPyramidPieceMixin",

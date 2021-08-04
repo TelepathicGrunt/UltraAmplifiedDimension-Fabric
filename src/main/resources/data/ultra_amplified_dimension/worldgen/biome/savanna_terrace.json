@@ -30,50 +30,58 @@
   },
   "features": [
     [
-        "ultra_amplified_dimension:misc/contain_underground_liquids"
+      "ultra_amplified_dimension:misc/contain_underground_liquids"
     ],
     [
-        "ultra_amplified_dimension:ponds/surface_slime",
-        "ultra_amplified_dimension:ponds/underground_water_grass",
-        "ultra_amplified_dimension:ponds/underground_lava"
+      "ultra_amplified_dimension:ponds/surface_slime",
+      "ultra_amplified_dimension:ponds/underground_water_grass",
+      "ultra_amplified_dimension:ponds/underground_lava"
     ],
     [
-        "ultra_amplified_dimension:columns/vertical_grass",
-        "ultra_amplified_dimension:columns/ramp_grass",
-        "ultra_amplified_dimension:misc/glow_patch_underground",
-        "ultra_amplified_dimension:misc/contain_liquid_for_oceans"
+      "ultra_amplified_dimension:columns/vertical_grass",
+      "ultra_amplified_dimension:columns/ramp_grass",
+      "ultra_amplified_dimension:misc/glow_patch_underground",
+      "ultra_amplified_dimension:misc/contain_liquid_for_oceans"
     ],
     [
-        "ultra_amplified_dimension:dungeons/generic_high",
-        "ultra_amplified_dimension:dungeons/generic_middle",
-        "ultra_amplified_dimension:dungeons/generic_bottom"
+      "minecraft:amethyst_geode",
+      "ultra_amplified_dimension:columns/large_dripstone",
+      "ultra_amplified_dimension:dungeons/generic_high",
+      "ultra_amplified_dimension:dungeons/generic_middle",
+      "ultra_amplified_dimension:dungeons/generic_bottom"
     ],
     [
-        "ultra_amplified_dimension:ministructures/hanging_ruins"
+      "ultra_amplified_dimension:ministructures/hanging_ruins"
     ],
     [],
     [
-        "ultra_amplified_dimension:ores/ore_dirt",
-        "ultra_amplified_dimension:ores/ore_gravel",
-        "ultra_amplified_dimension:ores/ore_granite",
-        "ultra_amplified_dimension:ores/ore_diorite",
-        "ultra_amplified_dimension:ores/ore_andesite",
-        "ultra_amplified_dimension:ores/ore_coal",
-        "ultra_amplified_dimension:ores/ore_iron",
-        "ultra_amplified_dimension:ores/ore_iron_deep",
-        "ultra_amplified_dimension:ores/ore_gold",
-        "ultra_amplified_dimension:ores/ore_redstone_dense",
-        "ultra_amplified_dimension:ores/ore_diamond",
-        "ultra_amplified_dimension:ores/ore_lapis",
-        "ultra_amplified_dimension:ores/ore_gold_sealevel",
-        "ultra_amplified_dimension:ores/ore_redstone_sealevel_dense",
-        "ultra_amplified_dimension:ores/ore_lapis_sealevel",
-        "ultra_amplified_dimension:disk/coarse_dirt",
-        "ultra_amplified_dimension:disk/clay",
-        "ultra_amplified_dimension:disk/gravel"
+      "ultra_amplified_dimension:ores/ore_dirt",
+      "ultra_amplified_dimension:ores/ore_gravel",
+      "ultra_amplified_dimension:ores/ore_granite",
+      "ultra_amplified_dimension:ores/ore_diorite",
+      "ultra_amplified_dimension:ores/ore_andesite",
+      "ultra_amplified_dimension:ores/ore_coal",
+      "ultra_amplified_dimension:ores/ore_iron",
+      "ultra_amplified_dimension:ores/ore_iron_deep",
+      "ultra_amplified_dimension:ores/ore_gold",
+      "ultra_amplified_dimension:ores/ore_redstone_dense",
+      "ultra_amplified_dimension:ores/ore_diamond",
+      "ultra_amplified_dimension:ores/ore_lapis",
+      "ultra_amplified_dimension:ores/ore_gold_sealevel",
+      "ultra_amplified_dimension:ores/ore_redstone_sealevel_dense",
+      "ultra_amplified_dimension:ores/ore_lapis_sealevel",
+      "ultra_amplified_dimension:disk/coarse_dirt",
+      "ultra_amplified_dimension:disk/clay",
+      "ultra_amplified_dimension:disk/gravel",
+      "ultra_amplified_dimension:ores/ore_deepslate",
+      "ultra_amplified_dimension:ores/ore_tuff"
     ],
     [
       "ultra_amplified_dimension:ministructures/fossils_hanging_very_sparse",
+      "ultra_amplified_dimension:columns/dripstone_cluster",
+      "ultra_amplified_dimension:columns/rare_dripstone_cluster",
+      "ultra_amplified_dimension:columns/rare_small_dripstone",
+      "ultra_amplified_dimension:columns/small_dripstone",
       "ultra_amplified_dimension:springs/water",
       "ultra_amplified_dimension:springs/water_narrow_range",
       "ultra_amplified_dimension:springs/lava",
@@ -81,6 +89,7 @@
     ],
     [
       "ultra_amplified_dimension:vegetation/trees/savanna",
+      "ultra_amplified_dimension:vegetation/trees/rooted_azalea_trees",
       "ultra_amplified_dimension:vegetation/patch/default_flowers_sparse",
       "ultra_amplified_dimension:vegetation/patch/grass_5-04",
       "ultra_amplified_dimension:vegetation/patch/tall_grass_dense",
@@ -88,7 +97,10 @@
       "ultra_amplified_dimension:vegetation/patch/sugar_cane",
       "ultra_amplified_dimension:vegetation/underwater/seagrass_short_sparse",
       "ultra_amplified_dimension:vegetation/mushroom/red_normal",
-      "ultra_amplified_dimension:vegetation/mushroom/brown_normal"
+      "ultra_amplified_dimension:vegetation/mushroom/brown_normal",
+      "ultra_amplified_dimension:vegetation/flowers/spore_blossom",
+      "ultra_amplified_dimension:vegetation/glow_vines",
+      "ultra_amplified_dimension:vegetation/glow_lichen"
     ],
     [
       "ultra_amplified_dimension:misc/snow_ice_layer_handler_feature"

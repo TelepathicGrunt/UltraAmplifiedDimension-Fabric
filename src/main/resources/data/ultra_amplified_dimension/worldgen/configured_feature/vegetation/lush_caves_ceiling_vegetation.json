@@ -1,0 +1,54 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "feature": "minecraft:moss_patch_ceiling",
+                "decorator": {
+                  "config": {
+                    "surface": "ceiling",
+                    "floor_to_ceiling_search_range": 12
+                  },
+                  "type": "minecraft:cave_surface"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 68
+                  },
+                  "type": "minecraft:uniform"
+                }
+              },
+              "type": "minecraft:range"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "noise_level": -0.62,
+        "below_noise": 30,
+        "above_noise": 0
+      },
+      "type": "minecraft:count_noise"
+    }
+  },
+  "type": "minecraft:decorated"
+}

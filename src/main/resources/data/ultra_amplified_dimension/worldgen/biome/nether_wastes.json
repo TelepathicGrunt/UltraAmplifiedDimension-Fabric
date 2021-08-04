@@ -44,18 +44,18 @@
   },
   "features": [
     [
-        "ultra_amplified_dimension:misc/contain_underground_liquids"
+      "ultra_amplified_dimension:misc/contain_underground_liquids"
     ],
     [],
     [
-        "ultra_amplified_dimension:misc/contain_liquid_for_oceans"
+      "ultra_amplified_dimension:misc/contain_liquid_for_oceans"
     ],
     [],
     [],
     [
-        "ultra_amplified_dimension:dungeons/nether_high",
-        "ultra_amplified_dimension:dungeons/nether_middle",
-        "ultra_amplified_dimension:dungeons/nether_bottom"
+      "ultra_amplified_dimension:dungeons/nether_high",
+      "ultra_amplified_dimension:dungeons/nether_middle",
+      "ultra_amplified_dimension:dungeons/nether_bottom"
     ],
     [
       "ultra_amplified_dimension:springs/lava_ceiling",

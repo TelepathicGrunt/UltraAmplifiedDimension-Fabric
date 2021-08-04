@@ -1,0 +1,67 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "feature": {
+                  "config": {
+                    "to_place": {
+                      "state": {
+                        "Name": "minecraft:spore_blossom"
+                      },
+                      "type": "minecraft:simple_state_provider"
+                    },
+                    "place_on": [],
+                    "place_in": [],
+                    "place_under": []
+                  },
+                  "type": "minecraft:simple_block"
+                },
+                "decorator": {
+                  "config": {
+                    "surface": "ceiling",
+                    "floor_to_ceiling_search_range": 12
+                  },
+                  "type": "minecraft:cave_surface"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 60
+                  },
+                  "type": "minecraft:uniform"
+                }
+              },
+              "type": "minecraft:range"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "noise_level": -0.4,
+        "below_noise": 8,
+        "above_noise": 1
+      },
+      "type": "minecraft:count_noise"
+    }
+  },
+  "type": "minecraft:decorated"
+}

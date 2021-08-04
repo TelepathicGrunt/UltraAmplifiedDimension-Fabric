@@ -1,0 +1,40 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+		  "config": {
+			"feature": "minecraft:cave_vine",
+			"decorator": {
+			  "config": {
+				"surface": "ceiling",
+				"floor_to_ceiling_search_range": 12
+			  },
+			  "type": "minecraft:cave_surface"
+			}
+		  },
+		  "type": "minecraft:decorated"
+		},
+		"decorator": {
+		  "config": {
+			"column_passes": 1,
+			"valid_spot_chance": 0.65,
+			"skip_top_ledge": true,
+			"underside_only": true
+		  },
+		  "type": "ultra_amplified_dimension:ledge_surface_placer"
+		}
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "noise_level": 0,
+        "below_noise": 3,
+        "above_noise": 0
+      },
+      "type": "minecraft:count_noise"
+    }
+  },
+  "type": "minecraft:decorated"
+}

@@ -6,23 +6,23 @@
           "config": {
             "feature": {
               "config": {
-                "target": {
-                  "tag": "minecraft:base_stone_overworld",
-                  "predicate_type": "minecraft:tag_match"
-                },
-                "state": {
-                  "Name": "minecraft:diamond_ore"
-                },
-                "size": 6
+                "max_placements": 5,
+                "empty_space_search_radius": 10,
+                "max_offset_from_origin": 2,
+                "chance_of_taller_dripstone": 0.2
               },
-              "type": "ultra_amplified_dimension:ellipsoid_pocket"
+              "type": "minecraft:small_dripstone"
             },
             "decorator": {
               "config": {
                 "height": {
-                  "type": "minecraft:uniform",
-                  "min_inclusive": { "absolute": 1 },
-                  "max_inclusive": { "absolute": 25 }
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 68
+                  },
+                  "type": "minecraft:uniform"
                 }
               },
               "type": "minecraft:range"
@@ -39,11 +39,11 @@
     },
     "decorator": {
       "config": {
-        "count": 1,
-        "extra_chance": 1.5,
-        "extra_count": 1
+        "noise_level": 0.8,
+        "below_noise": 0,
+        "above_noise": 40
       },
-      "type": "minecraft:count_extra"
+      "type": "minecraft:count_noise"
     }
   },
   "type": "minecraft:decorated"

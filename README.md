@@ -33,13 +33,13 @@ dependencies {
 
 ![Ultra Amplified Logo](https://i.imgur.com/iOOp7IS.png)
 
-## **CURRENTLY FOR 1.16.5 MC**
+## **CURRENTLY FOR 1.17.1 MC**
 
-###### **Forge version can be found here: https://www.curseforge.com/minecraft/mc-mods/ultra-amplified-mod**
+###### Forge version can be found here: https://modrinth.com/mod/ultra-amplified-dimension
 
 &nbsp;
 
-**1.16.5 News:** Added Recipe Book entries of my mod's recipes
+**1.17.1 News:** Updated for 1.17.1 MC now!
 
 &nbsp;
 
@@ -60,6 +60,7 @@ dependencies {
 **SERVER OWNERS NOTE:  
 If you make a fresh new world with this mod on _a server, restart the server after the world is made_ due to this mojang bug causing json dimensions to not be made upon world creation only on servers. [https://bugs.mojang.com/browse/MC-195468](https://bugs.mojang.com/browse/MC-195468)**
 
+
 &nbsp;
 
 **____________________________________________________________________________**
@@ -72,7 +73,7 @@ Ultra Amplified Dimension is a dimension mod that flattens the land into floatin
 
 &nbsp;
 
-Furthermore, you can find some new structures like Mushroom Temples or Ice Spike Temples and when you dig down, you will find a massive maze-like network of Ravines that leads to giant Cave Cavities with the floor filled with lava! The world is meant to be very difficult and tough but also fun to explore every corner! Be sure to stay safe and bring torches with you as you explore the lower layers! (Also, turn on Heavy Fog in the configs for an even more amazing experience!)
+Furthermore, you can find some new structures like Mushroom Temples or Ice Spike Temples and when you dig down, you will find a massive maze-like network of Ravines that leads to giant Cave Cavities with the floor filled with lava! The world is meant to be very difficult and tough but also fun to explore every corner! Be sure to stay safe and bring torches with you as you explore the lower layers! (Also, turn on Heavy Fog in the configs for an even more amazing experience!)
 
 &nbsp;
 
@@ -80,7 +81,7 @@ And lastly, when using this mod, you can craft the 7 glowstone infused blocks wi
 
 &nbsp;
 
-**    Also, be sure to check out the images page for several screenshots of what the world looks like! And yes, you can use this mod in a modpack.**
+**Also, be sure to check out the images page for several screenshots of what the world looks like! And yes, you can use this mod in a modpack.**
 
 &nbsp;
 
@@ -88,7 +89,7 @@ And lastly, when using this mod, you can craft the 7 glowstone infused blocks wi
 
 ## **HOW DO I ENTER THIS WORLD?**
 
-When using this mod and want to enter this dimension in any worldtype, be sure to build this portal like shown below! 8 Polished Granite, 10 Polished Andesite Slabs, and 1 Polished Diorite. Then right click on the Polished Diorite with Flint and Steel to create the portal block. Right click again on portal block (while not sneaking or crouching) to teleport to the Ultra Amplified Dimension! The reason why right clicking while crouching won't teleport you is so you can now place blocks on the portal itself if you want to. Also, you can mine the portal with any tool or your bare hands if you misplaced it (the portal will drop Polished Diorite when mined). You can change what blocks are needed for the portal frames or what activation items work by using a datapack to override the default tags! An already made datapack you can edit is further down.
+When using this mod and want to enter this dimension in any worldtype, be sure to build this portal like shown below! 8 Polished Granite, 10 Polished Andesite Slabs, and 1 Polished Diorite. Then right click on the Polished Diorite with Flint and Steel to create the portal block. Right click again on portal block (while not sneaking or crouching) to teleport to the Ultra Amplified Dimension! The reason why right clicking while crouching won't teleport you is so you can now place blocks on the portal itself if you want to. Also, you can mine the portal with any tool or your bare hands if you misplaced it (the portal will drop Polished Diorite when mined). You can change what blocks are needed for the portal frames or what activation items work by using a datapack to override the default tags! An already made datapack you can edit is further down.
 
 &nbsp;
 
@@ -102,25 +103,27 @@ _While playing in UAD's dimension, do note that it may take a moment to load chu
 
 **______________________________________________________________________________**
 
- 
+ 
 
 ## **HOW CAN I CONFIGURE THIS MOD?**
 
-One of the biggest feature of this mod is nearly EVERYTHING worldgen is configurable! And to make it easier for you, all you have to do is download the below datapack that works for both Forge and Fabric, unzip it, edit the JSON files to the settings you want, and then put the datapack into your world's datapack folder which is found in the world's saves folder. When making a new world from scratch, you can click the datapack button and just put your datapack in the folder that was automatically opened for you. Though do note, there is a config file for this mod for the stuff that is not able to be done through datapacks such as heavy fog, allowing nether portals, cloud height, and making UAD's portal block always exit player's to the Overworld from UAD instead of their original dimensions.
+One of the biggest feature of this mod is nearly EVERYTHING worldgen is configurable! And to make it easier for you, all you have to do is download the below datapack that works for both Forge and Fabric, unzip it, edit the JSON files to the settings you want, and then put the datapack into your world's datapack folder which is found in the world's saves folder. When making a new world from scratch, you can click the datapack button and just put your datapack in the folder that was automatically opened for you. Though do note, there is a config file for this mod for the stuff that is not able to be done through datapacks such as heavy fog, allowing nether portals, cloud height, and making UAD's portal block always exit player's to the Overworld from UAD instead of their original dimensions.
 
 &nbsp;
 
 **------------------**
 
-## **DATAPACK**
+## **DATAPACK (Click link below)**
 
-**[https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X)**
+**[1.16.5 UAD DATAPACK](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X)**
+
+**[1.17.1 UAD DATAPACK](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/10.0.X)**
 
 **------------------**
 
 &nbsp;
 
-Lets take a look at the datapack! When you enter the data folder, you'll see 4 folder named c, forge, minecraft, and ultra_amplified_dimension. The first three are just for putting my blocks in the right tags for other mods to work with. We can just ignore these folder for most use cases. Instead, open up ultra_amplified_dimension and you will be greeted by several folders that we can check out!
+Lets take a look at the datapack! When you enter the data folder, you'll see 4 folder named c, forge, minecraft, and ultra_amplified_dimension. The first three are just for putting my blocks in the right tags for other mods to work with. We can just ignore these folder for most use cases. Instead, open up ultra_amplified_dimension and you will be greeted by several folders that we can check out!
 
 ![](https://imgur.com/PAgEN8o)
 
@@ -132,7 +135,7 @@ This folder holds the `ultra_amplified_dimension.json` file which creates the UA
 
 &nbsp;
 
-But the really cool thing is the "regions" section. In here, we have "ocean_biomes", "end_biomes", "nether_biomes", "hot_biomes", "warm_biomes", "cool_biomes", and "icy_biomes" lists. And each entry in this list is a group of biomes with a weight. We can add or remove biomes from here to customize the world more!Even other mod's biomes should work if you add them here. But make sure every region has at least 1 biome group in it. Now, "main_biome" and "weight" are the two entries all biome groups must define in order to work. Increase the weight to make a biome more likely to spawn. But you can add "sub_biome", "border_biome", "shore_biome", "mutated_biome", "mutated_sub_biome", or "mutated_border_biome" entries too to add some variety to the main biome. In the future, I would like to try and add a config option that automatically adds other mod's biomes to the dimension so you don't have to manually add them all by JSON but for now, you'll have to edit this file instead.
+But the really cool thing is the "regions" section. In here, we have "ocean_biomes", "end_biomes", "nether_biomes", "hot_biomes", "warm_biomes", "cool_biomes", and "icy_biomes" lists. And each entry in this list is a group of biomes with a weight. We can add or remove biomes from here to customize the world more!Even other mod's biomes should work if you add them here. But make sure every region has at least 1 biome group in it. Now, "main_biome" and "weight" are the two entries all biome groups must define in order to work. Increase the weight to make a biome more likely to spawn. But you can add "sub_biome", "border_biome", "shore_biome", "mutated_biome", "mutated_sub_biome", or "mutated_border_biome" entries too to add some variety to the main biome. In the future, I would like to try and add a config option that automatically adds other mod's biomes to the dimension so you don't have to manually add them all by JSON but for now, you'll have to edit this file instead.
 
 &nbsp;
 
@@ -142,13 +145,15 @@ If you are daring, go to the config for this mod instead and set "import_all_mod
 
 If you are looking to swap the Overworld with UAD's dimension, use this datapack instead that works for both Forge and Fabric:
 
-**[https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X2](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X2)**
+**[1.16.5 UAD DATAPACK](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/9.2.X2)**
+
+**[1.17.1 UAD DATAPACK](https://github.com/TelepathicGrunt/UltraAmplifiedDimension-Fabric/releases/tag/10.0.X2)**
 
 &nbsp;
 
 **DIMENSION_TYPE**
 
-The `ultra_amplified_dimension.json` in this folder determines additional properties of the world such as "ambient_light", "has_skylight", "ultrawarm" (evaporates placed water), "bed_works" (false will make beds explode), and a bit more.
+The `ultra_amplified_dimension.json` in this folder determines additional properties of the world such as "ambient_light", "has_skylight", "ultrawarm" (evaporates placed water), "bed_works" (false will make beds explode), and a bit more.
 
 &nbsp;
 
@@ -182,15 +187,15 @@ THIS is the BIG folder that contains most of UAD's worldgen logic! The three fol
 
 &nbsp;
 
-The configured_feature folder has nearly EVERYTHING you can think of. It controls the placements of trees, how common ores are, etc. The one entry you may want to edit is the "minecraft:count_extra" entry or "ultra_amplified_dimension:ledge_surface_placer" entry at the bottom of the jsons. These two control how often that feature spawn per chunk. For "minecraft:count_extra", the count is how many attempts to spawn the feature while extra_chance is how likely that extra_count number of attempts will be tried on top of count's number. For "ultra_amplified_dimension:ledge_surface_placer", the column_passes entry is how many times the game will scan the chunk from top to sea level and valid_spot_chance is how often it will attempt to spawn the feature when it hits the surface of land as it moved down the chunk.
+The configured_feature folder has nearly EVERYTHING you can think of. It controls the placements of trees, how common ores are, etc. The one entry you may want to edit is the "minecraft:count_extra" entry or "ultra_amplified_dimension:ledge_surface_placer" entry at the bottom of the jsons. These two control how often that feature spawn per chunk. For "minecraft:count_extra", the count is how many attempts to spawn the feature while extra_chance is how likely that extra_count number of attempts will be tried on top of count's number. For "ultra_amplified_dimension:ledge_surface_placer", the column_passes entry is how many times the game will scan the chunk from top to sea level and valid_spot_chance is how often it will attempt to spawn the feature when it hits the surface of land as it moved down the chunk.
 
 &nbsp;
 
-The rest of the the JSON should be somewhat easy to work with. Such as copying an ore's file and just swapping out "state": { "Name": "minecraft:coal_ore" }, to the ore you want to spawn instead. Then add the new ore feature you made into the biome's JSON file to have the biome spawn it. Just be aware, "state" entries needs all the properties of the block listed out if the block has properties. Example: "state": { "Properties": {"snowy": "false"}, "Name": "minecraft:grass_block" },
+The rest of the the JSON should be somewhat easy to work with. Such as copying an ore's file and just swapping out "state": { "Name": "minecraft:coal_ore" }, to the ore you want to spawn instead. Then add the new ore feature you made into the biome's JSON file to have the biome spawn it. Just be aware, "state" entries needs all the properties of the block listed out if the block has properties. Example: "state": { "Properties": {"snowy": "false"}, "Name": "minecraft:grass_block" },
 
 &nbsp;
 
-The one feature I would like to point out is in ministructures/hay_bale_piles_common.json. This configured feature uses my "ultra_amplified_dimension:nbt_feature" feature that I made and this feature lets you specify any nbt file to spawn! Remember back in the STRUCTURES section when I said you can add your own nbt files to that folder? Well, with this configured feature, you can spawn those nbt files in the world! Pretty neat right? Just be sure to add the new configured feature that you make with this to the biome's JSON file so the biome knows to spawn it.
+The one feature I would like to point out is in ministructures/hay_bale_piles_common.json. This configured feature uses my "ultra_amplified_dimension:nbt_feature" feature that I made and this feature lets you specify any nbt file to spawn! Remember back in the STRUCTURES section when I said you can add your own nbt files to that folder? Well, with this configured feature, you can spawn those nbt files in the world! Pretty neat right? Just be sure to add the new configured feature that you make with this to the biome's JSON file so the biome knows to spawn it.
 
 &nbsp;
 
@@ -204,4 +209,5 @@ The one feature I would like to point out is in ministructures/hay_bale_piles_co
 
 **[https://discord.gg/SM7WBT6FGu](https://discord.gg/SM7WBT6FGu "https://discord.gg/SM7WBT6FGu")**
 
-<img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="discord-logo-png-free-transparent-png-logos-discord-png-logo-300_300 (PNG)  | BeeIMG" width="112" height="112" /></a>
+<a class="anchor-3Z-8Bb anchorUnderlineOnHover-2ESHQB" style="font-size: 24px;" tabindex="0" title="https://discord.gg/SM7WBT6FGu" role="button" href="https://discord.gg/SM7WBT6FGu" target="_blank" rel="noopener noreferrer"><img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="discord-logo-png-free-transparent-png-logos-discord-png-logo-300_300 (PNG)  | BeeIMG" width="112" height="112" /></a>
+

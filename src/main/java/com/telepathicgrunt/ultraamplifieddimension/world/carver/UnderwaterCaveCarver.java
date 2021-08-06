@@ -44,12 +44,10 @@ public class UnderwaterCaveCarver extends CaveCarver
 		this.alwaysCarvableBlocks.add(Blocks.CAVE_AIR);
 	}
 
-
 	@Override
 	public boolean shouldCarve(CaveCarverConfig config, Random random) {
 		return random.nextFloat() <= config.probability;
 	}
-
 
 	@Override
 	protected boolean isRegionUncarvable(Chunk chunk, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
@@ -72,7 +70,7 @@ public class UnderwaterCaveCarver extends CaveCarver
 
 
 	protected static boolean carvingBlock(CarverContext context, CaveCarverConfig config, SimpleRegistry<Biome> biomeRegistry, Function<BlockPos, Biome> biomeBlockPos, Chunk chunkIn, BitSet carvingMask, Random random, BlockPos.Mutable pos, BlockPos.Mutable downPos, Set<Block> carvableBlocks) {
-		if (pos.getY() >= context.getMinY()) {
+		if (pos.getY() >= 60) {
 			return false;
 		}
 		else {

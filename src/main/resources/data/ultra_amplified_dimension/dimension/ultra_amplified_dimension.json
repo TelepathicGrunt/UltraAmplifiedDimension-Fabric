@@ -236,8 +236,8 @@
       "sea_level": 75,
       "noise": {
         "min_y": 0,
-        "height": 245,
-        "random_density_offset": true,
+        "height": 240,
+        "random_density_offset": false,
         "simplex_surface_noise": true,
         "size_horizontal": 1,
         "size_vertical": 2,
@@ -251,12 +251,12 @@
         "bottom_slide": {
           "target": 10,
           "size": 1,
-          "offset": 4
+          "offset": 5
         },
         "sampling": {
           "xz_scale": 2,
           "y_scale": 420,
-          "xz_factor": 5000,
+          "xz_factor": 10000,
           "y_factor": 68400
         }
       },

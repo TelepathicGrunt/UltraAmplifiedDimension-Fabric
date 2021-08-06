@@ -63,12 +63,12 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 		float xzCosNoise = (random.nextFloat() - 0.5F) / 8.0F;
 		float widthHeightBase = (random.nextFloat() * 1.3F + random.nextFloat()) * 1.3F;
 		int maxIteration = i + random.nextInt(i / 4); //length of ravine. probably in chunks
-		this.func_202535_a(region, biomeBlockPos, random.nextLong(), random, chunkPos, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIteration, config.tallness.get(random, carverContext) / 10D, mask, config);
+		this.func_202535_a(carverContext, region, biomeBlockPos, random.nextLong(), random, chunkPos, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIteration, config.tallness.get(random, carverContext) / 10D, mask, config);
 		return true;
 	}
 
 
-	private void func_202535_a(Chunk world, Function<BlockPos, Biome> biomeBlockPos, long randomSeed, Random random, ChunkPos chunkPos, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, RavineConfig config) {
+	private void func_202535_a(CarverContext carverContext, Chunk chunk, Function<BlockPos, Biome> biomeBlockPos, long randomSeed, Random random, ChunkPos chunkPos, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, RavineConfig config) {
 		float f = 1.0F;
 
 		for (int i = 0; i < config.cutoffHeight; ++i) {
@@ -102,23 +102,26 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 					return;
 				}
 
-				this.carveAtTarget(world, biomeBlockPos, random, chunkPos, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
+				this.carveAtTarget(carverContext, chunk, biomeBlockPos, random, chunkPos, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
 			}
 		}
 
 	}
 
 
-	protected void carveAtTarget(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, ChunkPos chunkPos, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, RavineConfig config) {
-		double d0 = chunkPos.getCenterX();
-		double d1 = chunkPos.getCenterZ();
+	protected void carveAtTarget(CarverContext carverContext, Chunk chunk, Function<BlockPos, Biome> biomeBlockPos, Random random, ChunkPos chunkPos, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, RavineConfig config) {
+		ChunkPos chunkPos2 = chunk.getPos();
+		double d0 = chunkPos2.getCenterX();
+		double d1 = chunkPos2.getCenterZ();
 		if (!(xRange < d0 - 16.0D - placementXZBound * 2.0D) && !(zRange < d1 - 16.0D - placementXZBound * 2.0D) && !(xRange > d0 + 16.0D + placementXZBound * 2.0D) && !(zRange > d1 + 16.0D + placementXZBound * 2.0D)) {
-			int i = Math.max(MathHelper.floor(xRange - placementXZBound) - chunkPos.getStartX() - 1, 0);
-			int j = Math.min(MathHelper.floor(xRange + placementXZBound) - chunkPos.getStartX() + 1, 16);
+			int startX = chunkPos2.getStartX();
+			int startZ = chunkPos2.getStartZ();
+			int i = Math.max(MathHelper.floor(xRange - placementXZBound) - startX - 1, 0);
+			int j = Math.min(MathHelper.floor(xRange + placementXZBound) - startX + 1, 16);
 			int minY = Math.max(MathHelper.floor(yRange - placementYBound) - 1, 6);
 			int maxY = Math.min(MathHelper.floor(yRange + placementYBound) + 1, config.cutoffHeight);
-			int i1 = Math.max(MathHelper.floor(zRange - placementXZBound) - chunkPos.getStartZ() - 1, 0);
-			int j1 = Math.min(MathHelper.floor(zRange + placementXZBound) - chunkPos.getStartZ() + 1, 16);
+			int i1 = Math.max(MathHelper.floor(zRange - placementXZBound) - startZ - 1, 0);
+			int j1 = Math.min(MathHelper.floor(zRange + placementXZBound) - startZ + 1, 16);
 			if (i <= j && minY <= maxY && i1 <= j1) {
 				BlockState fillerBlock;
 				BlockState secondaryFloorBlockstate;
@@ -127,11 +130,11 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 				BlockPos.Mutable blockpos$Mutabledown = new BlockPos.Mutable();
 
 				for (int xInChunk = i; xInChunk < j; ++xInChunk) {
-					int x = xInChunk + chunkPos.getStartX();
+					int x = chunkPos2.getOffsetX(xInChunk);
 					double xSquaringModified = (x + 0.5D - xRange) / placementXZBound;
 
 					for (int zInChunk = i1; zInChunk < j1; ++zInChunk) {
-						int z = zInChunk + chunkPos.getStartZ();
+						int z = chunkPos2.getOffsetZ(zInChunk);
 						double zSquaringModified = (z + 0.5D - zRange) / placementXZBound;
 						double xzSquaredModified = xSquaringModified * xSquaringModified + zSquaringModified * zSquaringModified;
 
@@ -161,10 +164,10 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 
 									blockpos$Mutable.set(x, y, z);
 
-									BlockState currentBlockstate = world.getBlockState(blockpos$Mutable);
+									BlockState currentBlockstate = chunk.getBlockState(blockpos$Mutable);
 									blockpos$Mutableup.set(blockpos$Mutable).move(Direction.UP);
 									blockpos$Mutabledown.set(blockpos$Mutable).move(Direction.DOWN);
-									BlockState aboveBlockstate = world.getBlockState(blockpos$Mutableup);
+									BlockState aboveBlockstate = chunk.getBlockState(blockpos$Mutableup);
 
 									if (!mask.get(xInChunk | zInChunk << 4 | y << 8) &&
 										(this.canCarveBlock(currentBlockstate, aboveBlockstate)))
@@ -176,9 +179,9 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 											//ocean biomes. Also helps to break up the blandness of ocean
 											//floors.
 
-											world.setBlockState(blockpos$Mutable, fillerBlock, false);
-											world.setBlockState(blockpos$Mutableup, fillerBlock, false);
-											world.setBlockState(blockpos$Mutabledown, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutable, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutableup, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutabledown, fillerBlock, false);
 										}
 										else if (y < 11) {
 											currentBlockstate = Blocks.LAVA.getDefaultState();
@@ -198,11 +201,11 @@ public class SuperLongRavineCarver extends Carver<RavineConfig>
 												}
 											}
 
-											world.setBlockState(blockpos$Mutable, currentBlockstate, false);
+											chunk.setBlockState(blockpos$Mutable, currentBlockstate, false);
 										}
 										else {
 											//carves the ravine
-											world.setBlockState(blockpos$Mutable, CAVE_AIR, false);
+											chunk.setBlockState(blockpos$Mutable, CAVE_AIR, false);
 										}
 
 										mask.set(xInChunk | zInChunk << 4 | y << 8);

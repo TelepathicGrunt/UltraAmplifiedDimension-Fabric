@@ -15,6 +15,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeArray;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.carver.Carver;
 import net.minecraft.world.gen.carver.CarverContext;
@@ -65,9 +66,10 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 
 	@Override
 	public boolean carve(CarverContext carverContext, CaveConfig config, Chunk region, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, ChunkPos chunkPos, BitSet mask) {
-		IndexedIterable<Biome> reg = region.getBiomeArray() != null ? ((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes() : null;
-		if(reg instanceof SimpleRegistry && reg != biomeRegistry){
-			biomeRegistry = (SimpleRegistry<Biome>)((BiomeContainerAccessor)region.getBiomeArray()).uad_getBiomes();
+		BiomeArray biomeArray = region.getBiomeArray();
+		IndexedIterable<Biome> biomeIterable = biomeArray != null ? ((BiomeContainerAccessor)biomeArray).uad_getBiomes() : null;
+		if(biomeIterable != biomeRegistry && biomeIterable instanceof SimpleRegistry<Biome> regCasted){
+			biomeRegistry = regCasted;
 		}
 
 		int maxIterations = (this.getBranchFactor() * 2 - 1) * 16;
@@ -77,12 +79,12 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 		float xzNoise2 = random.nextFloat() * ((float) Math.PI);
 		float xzCosNoise = (random.nextFloat() - 0.5F) / 16.0F;
 		float widthHeightBase = (random.nextFloat() + random.nextFloat()) / 16; // width And Height Modifier
-		this.carveCavity(region, biomeBlockPos, random, aquiferSampler, chunkPos.x, chunkPos.z, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIterations, random.nextDouble() + 20D, mask, config);
+		this.carveCavity(carverContext, region, biomeBlockPos, random, aquiferSampler, chunkPos.x, chunkPos.z, xpos, height, zpos, widthHeightBase, xzNoise2, xzCosNoise, 0, maxIterations, random.nextDouble() + 20D, mask, config);
 		return true;
 	}
 
 
-	private void carveCavity(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, int mainChunkX, int mainChunkZ, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, CaveConfig config) {
+	private void carveCavity(CarverContext carverContext, Chunk chunk, Function<BlockPos, Biome> biomeBlockPos, Random random, AquiferSampler aquiferSampler, int mainChunkX, int mainChunkZ, double randomBlockX, double randomBlockY, double randomBlockZ, float widthHeightBase, float xzNoise2, float xzCosNoise, int startIteration, int maxIteration, double heightMultiplier, BitSet mask, CaveConfig config) {
 		float ledgeWidth = 1.0F;
 
 		// CONTROLS THE LEDGES' WIDTH! FINALLY FOUND WHAT THIS JUNK DOES
@@ -110,24 +112,26 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 		placementXZBound = placementXZBound * 32D; // thickness of the "room" itself
 		placementYBound = placementYBound * 2.2D;
 
-		this.carveAtTarget(world, biomeBlockPos, random, mainChunkX, mainChunkZ, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
+		this.carveAtTarget(carverContext, chunk, biomeBlockPos, random, mainChunkX, mainChunkZ, randomBlockX, randomBlockY, randomBlockZ, placementXZBound, placementYBound, mask, config);
 	}
 
 
-	protected void carveAtTarget(Chunk world, Function<BlockPos, Biome> biomeBlockPos, Random random, int mainChunkX, int mainChunkZ, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, CaveConfig config) {
-
-		double xPos = mainChunkX * 16 + 8;
-		double zPos = mainChunkZ * 16 + 8;
+	protected void carveAtTarget(CarverContext carverContext, Chunk chunk, Function<BlockPos, Biome> biomeBlockPos, Random random, int mainChunkX, int mainChunkZ, double xRange, double yRange, double zRange, double placementXZBound, double placementYBound, BitSet mask, CaveConfig config) {
+		ChunkPos chunkPos = chunk.getPos();
+		double xPos = chunkPos.getCenterX();
+		double zPos = chunkPos.getCenterZ();
 		double multipliedXZBound = placementXZBound * 2.0D;
 
 		if (!(xRange < xPos - 16.0D - multipliedXZBound) && !(zRange < zPos - 16.0D - multipliedXZBound) && !(xRange > xPos + 16.0D + multipliedXZBound) && !(zRange > zPos + 16.0D + multipliedXZBound)) {
 
-			int xMin = Math.max(MathHelper.floor(xRange - placementXZBound) - mainChunkX * 16 - 1, 0);
-			int xMax = Math.min(MathHelper.floor(xRange + placementXZBound) - mainChunkX * 16 + 1, 16);
+			int startX = chunkPos.getStartX();
+			int startZ = chunkPos.getStartZ();
+			int xMin = Math.max(MathHelper.floor(xRange - placementXZBound) - startX - 1, 0);
+			int xMax = Math.min(MathHelper.floor(xRange + placementXZBound) - startX + 1, 16);
 			int yMin = Math.max(MathHelper.floor(yRange - placementYBound) - 1, 5);
 			int yMax = Math.min(MathHelper.floor(yRange + placementYBound) + 1, config.cutoffHeight);
-			int zMin = Math.max(MathHelper.floor(zRange - placementXZBound) - mainChunkZ * 16 - 1, 0);
-			int zMax = Math.min(MathHelper.floor(zRange + placementXZBound) - mainChunkZ * 16 + 1, 16);
+			int zMin = Math.max(MathHelper.floor(zRange - placementXZBound) - startZ - 1, 0);
+			int zMax = Math.min(MathHelper.floor(zRange + placementXZBound) - startZ + 1, 16);
 			if (xMin <= xMax && yMin <= yMax && zMin <= zMax) {
 				BlockState fillerBlock;
 				BlockState secondaryFloorBlockstate;
@@ -139,11 +143,11 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 				double stalagmiteDouble = 0;
 
 				for (int xInChunk = xMin; xInChunk < xMax; ++xInChunk) {
-					int x = xInChunk + mainChunkX * 16;
+					int x = chunkPos.getOffsetX(xInChunk);
 					double xSquaringModified = (x + 0.5D - xRange) / placementXZBound;
 
 					for (int zInChunk = zMin; zInChunk < zMax; ++zInChunk) {
-						int z = zInChunk + mainChunkZ * 16;
+						int z = chunkPos.getOffsetZ(zInChunk);
 						double zSquaringModified = (z + 0.5D - zRange) / placementXZBound;
 						double xzSquaredModified = xSquaringModified * xSquaringModified + zSquaringModified * zSquaringModified;
 
@@ -261,10 +265,10 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 								if (xzSquaredModified * this.ledgeWidthArrayYIndex[y - 1] + ySquaringModified * ySquaringModified / 6.0D + random.nextFloat() * 0.015f < 1.0D) {
 
 									blockpos$Mutable.set(x, y, z);
-									currentBlockstate = world.getBlockState(blockpos$Mutable);
+									currentBlockstate = chunk.getBlockState(blockpos$Mutable);
 									blockpos$Mutableup.set(blockpos$Mutable).move(Direction.UP);
 									blockpos$Mutabledown.set(blockpos$Mutable).move(Direction.DOWN);
-									aboveBlockstate = world.getBlockState(blockpos$Mutableup);
+									aboveBlockstate = chunk.getBlockState(blockpos$Mutableup);
 
 									if (y >= 60) {
 										//Creates the messy but cool plateau of stone on the ocean floor 
@@ -273,12 +277,12 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 										//floors.
 
 										if (!currentBlockstate.getFluidState().isEmpty()) {
-											world.setBlockState(blockpos$Mutable, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutable, fillerBlock, false);
 										}
 										else if (!aboveBlockstate.getFluidState().isEmpty()) {
-											world.setBlockState(blockpos$Mutable, fillerBlock, false);
-											world.setBlockState(blockpos$Mutableup, fillerBlock, false);
-											world.setBlockState(blockpos$Mutabledown, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutable, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutableup, fillerBlock, false);
+											chunk.setBlockState(blockpos$Mutabledown, fillerBlock, false);
 										}
 									}
 									else if (this.canCarveBlock(currentBlockstate, aboveBlockstate))
@@ -301,11 +305,11 @@ public class CaveCavityCarver extends Carver<CaveConfig>
 												}
 											}
 
-											world.setBlockState(blockpos$Mutable, currentBlockstate, false);
+											chunk.setBlockState(blockpos$Mutable, currentBlockstate, false);
 										}
 										else {
 											//carves the cave
-											world.setBlockState(blockpos$Mutable, CAVE_AIR, false);
+											chunk.setBlockState(blockpos$Mutable, CAVE_AIR, false);
 										}
 
 										mask.set(xInChunk | zInChunk << 4 | y << 8);

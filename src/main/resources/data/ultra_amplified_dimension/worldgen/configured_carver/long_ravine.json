@@ -4,8 +4,8 @@
     "cutoff_height": 50,
     "tallness": {
       "type": "minecraft:uniform",
-      "min_inclusive": { "absolute": 5 },
-      "max_inclusive": { "absolute": 15 }
+      "min_inclusive": { "absolute": 9 },
+      "max_inclusive": { "absolute": 20 }
     },
     "lava_level": {
       "above_bottom": 10
@@ -13,10 +13,10 @@
     "aquifers_enabled": false,
     "y": {
       "min_inclusive": {
-        "absolute": 11
+        "absolute": 14
       },
       "max_inclusive": {
-        "absolute": 19
+        "absolute": 23
       },
       "inner": 1,
       "type": "minecraft:biased_to_bottom"

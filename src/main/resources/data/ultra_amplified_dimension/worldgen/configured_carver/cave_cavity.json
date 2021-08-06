@@ -8,7 +8,7 @@
     "aquifers_enabled": false,
     "y": {
       "min_inclusive": {
-        "absolute": 0
+        "absolute": 1
       },
       "max_inclusive": {
         "absolute": 70

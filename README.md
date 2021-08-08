@@ -16,14 +16,14 @@ repositories {
 
 &nbsp;
 
-Don't forget to change 9.1.4 with the actual latest version of this mod.
+Don't forget to change 10.0.0 with the actual latest version of this mod.
 
 <blockquote>
 dependencies {
 
 ...
 
-&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedMod-Fabric:1.16.5-9.1.4-fabric"
+&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedMod-Fabric:10.0.0+1.17.1"
 
 }</blockquote>
 

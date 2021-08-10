@@ -134,7 +134,7 @@ public class EllipsoidPocket extends Feature<EllipsoidFeatureConfig>
 		}
 
 		// shrink cache if it is too large to clear out old chunk refs no longer needed.
-		if(worldStorage.size() > 100){
+		if(worldStorage.size() > 9){
 			worldStorage.clear();
 		}
 

@@ -23,7 +23,7 @@ dependencies {
 
 ...
 
-&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedMod-Fabric:10.0.0+1.17.1"
+&nbsp;&nbsp;&nbsp;&nbsp;modImplementation "com.telepathicgrunt:UltraAmplifiedModFabric:10.0.0+1.17.1"
 
 }</blockquote>
 

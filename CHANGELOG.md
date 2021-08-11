@@ -1,3 +1,9 @@
+### **(V.10.0.2 Changes) (1.17.1 Minecraft)**
+
+##### Teleportation:
+* Fixed UAD portal block teleporting players underground in UAD if the Overworld's min y was lowered below y = 0.
+
+
 ### **(V.10.0.1 Changes) (1.17.1 Minecraft)**
 
 ##### Features:

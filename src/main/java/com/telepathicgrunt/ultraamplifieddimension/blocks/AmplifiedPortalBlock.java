@@ -130,10 +130,10 @@ public class AmplifiedPortalBlock extends Block
 				// If it is player's first time teleporting to UA dimension, 
 				// find top block at world origin closest to portal
 				BlockPos worldOriginBlockPos = new BlockPos(10, 0, 8);
-				int portalY = world.getTopY();
+				int portalY = destinationWorld.getTopY();
 
 				//finds where portal block is
-				while (portalY > world.getBottomY()) {
+				while (portalY > destinationWorld.getBottomY()) {
 					if (destinationWorld.getBlockState(worldOriginBlockPos.up(portalY)) == UADBlocks.AMPLIFIED_PORTAL.getDefaultState()) {
 						break;
 					}
@@ -141,7 +141,7 @@ public class AmplifiedPortalBlock extends Block
 				}
 
 				//not sure how the portal block was not found but if so, spawn player at highest piece of land
-				if (portalY == 0) {
+				if (portalY == destinationWorld.getBottomY()) {
 					playerVec3Pos = Vec3d.ofCenter(destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, worldOriginBlockPos)).add(0, 0.5D, 0);
 				}
 				else {
@@ -165,7 +165,7 @@ public class AmplifiedPortalBlock extends Block
 
 					if (!validSpaceFound) {
 						//no valid space found around portal. get top solid block instead
-						worldOriginBlockPos = destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(10, world.getTopY(), 8));
+						worldOriginBlockPos = destinationWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(10, destinationWorld.getTopY(), 8));
 					}
 
 					playerVec3Pos = Vec3d.ofCenter(worldOriginBlockPos).add(0, -0.3D, 0); // Set where player spawns
@@ -240,7 +240,7 @@ public class AmplifiedPortalBlock extends Block
 
 					// finds the highest portal at world origin
 					BlockPos posOfHighestPortal = new BlockPos(pos.getX(), world.getTopY(), pos.getZ());
-					while (posOfHighestPortal.getY() >= 0) {
+					while (posOfHighestPortal.getY() >= world.getBottomY()) {
 						Block blockToCheck = world.getBlockState(posOfHighestPortal).getBlock();
 						if (blockToCheck == UADBlocks.AMPLIFIED_PORTAL) {
 							break;

@@ -42,7 +42,7 @@ public class AmplifiedPortalCreation {
         BlockPos pos = new BlockPos(8, worldUA.getTopY(), 8);
         worldUA.getChunk(pos);
 
-        while (pos.getY() >= 0) {
+        while (pos.getY() >= worldUA.getBottomY()) {
             if (worldUA.getBlockState(pos) == UADBlocks.AMPLIFIED_PORTAL.getDefaultState()) {
                 return true;
             }

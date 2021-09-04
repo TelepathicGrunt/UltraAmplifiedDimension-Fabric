@@ -15,6 +15,9 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 
 public class EllipsoidPocket extends Feature<EllipsoidFeatureConfig>
 {
@@ -122,16 +125,12 @@ public class EllipsoidPocket extends Feature<EllipsoidFeatureConfig>
 	}
 
 
-	private static final Reference2ObjectOpenHashMap<RegistryKey<World>, Long2ReferenceOpenHashMap<Chunk>> CACHED_CHUNKS_ALL_WORLDS = new Reference2ObjectOpenHashMap<>();
+	private static final WeakHashMap<RegistryKey<World>, Map<Long, Chunk>> CACHED_CHUNKS_ALL_WORLDS = new WeakHashMap<>();
 	public static Chunk getCachedChunk(StructureWorldAccess world, BlockPos blockpos) {
 
 		// get the world's cache or make one if map doesnt exist.
 		RegistryKey<World> worldKey = world.toServerWorld().getRegistryKey();
-		Long2ReferenceOpenHashMap<Chunk> worldStorage = CACHED_CHUNKS_ALL_WORLDS.get(worldKey);
-		if(worldStorage == null){
-			worldStorage = new Long2ReferenceOpenHashMap<>();
-			CACHED_CHUNKS_ALL_WORLDS.put(worldKey, worldStorage);
-		}
+		Map<Long, Chunk> worldStorage = CACHED_CHUNKS_ALL_WORLDS.computeIfAbsent(worldKey, k -> new WeakHashMap<>());
 
 		// shrink cache if it is too large to clear out old chunk refs no longer needed.
 		if(worldStorage.size() > 9){

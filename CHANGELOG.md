@@ -1,3 +1,9 @@
+### **(V.10.0.4 Changes) (1.16.5 Minecraft)**
+
+##### Misc:
+Added zh_cn.json translations. Special thanks to the guy who donated this translation!
+
+
 ### **(V.10.0.3 Changes) (1.16.5 Minecraft)**
 
 ##### Misc:

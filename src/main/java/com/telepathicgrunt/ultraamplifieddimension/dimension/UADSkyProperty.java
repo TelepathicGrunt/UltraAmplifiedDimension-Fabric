@@ -9,10 +9,12 @@ import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Locale;
+
 @Environment(EnvType.CLIENT)
 public class UADSkyProperty extends SkyProperties {
     public UADSkyProperty() {
-        super(UltraAmplifiedDimension.UAD_CONFIG.cloudHeight, true, SkyType.NORMAL, false, false);
+        super(UltraAmplifiedDimension.UAD_CONFIG.cloudHeight, true, SkyType.valueOf(UltraAmplifiedDimension.UAD_CONFIG.skyType.toUpperCase(Locale.ROOT)), UltraAmplifiedDimension.UAD_CONFIG.netherLighting, false);
     }
 
     @Override
@@ -21,6 +23,20 @@ public class UADSkyProperty extends SkyProperties {
         return UltraAmplifiedDimension.UAD_CONFIG.heavyFog;
     }
 
+    @Override
+    public float getCloudsHeight() {
+        return UltraAmplifiedDimension.UAD_CONFIG.cloudHeight;
+    }
+
+    @Override
+    public SkyProperties.SkyType getSkyType() {
+        return SkyType.valueOf(UltraAmplifiedDimension.UAD_CONFIG.skyType.toUpperCase(Locale.ROOT));
+    }
+
+    @Override
+    public boolean shouldBrightenLighting() {
+        return UltraAmplifiedDimension.UAD_CONFIG.netherLighting;
+    }
 
     @Override
     // sky/fog color

@@ -29,6 +29,21 @@ public class UADConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip(count = 0)
     @Comment(value = """
 
+            Darkens the dimension to be Nether's lighting which is darker skylight but has ambient lighting.""")
+    public boolean netherLighting = false;
+
+
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.Gui.Tooltip(count = 0)
+    @Comment(value = """
+
+            What sky type the dimension should use. Only values allowed are NORMAL, END, and NONE.""")
+    public String skyType = "NORMAL";
+
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.Gui.Tooltip(count = 0)
+    @Comment(value = """
+
             Lets Nether Portals be able to be created in Ultra Amplified Dimension.
             Using the portal in this dimension will take you to the Nether but Nether
             Portals in the Nether will take you to the Overworld instead. So this option

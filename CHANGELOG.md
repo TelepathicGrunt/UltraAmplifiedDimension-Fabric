@@ -1,3 +1,15 @@
+### **(V.10.0.6 Changes) (1.16.5 Minecraft)**
+
+##### Misc:
+Updated Fabric API code usage to not use deprecated code to prevent blowing up in future fabric API updates. Hopefully.
+
+
+### **(V.10.0.5 Changes) (1.16.5 Minecraft)**
+
+##### Teleportation:
+Fixed forceExitToOverworld always spawning a new portal when going to overworld.
+
+
 ### **(V.10.0.4 Changes) (1.16.5 Minecraft)**
 
 ##### Config:

@@ -29,26 +29,23 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 
-public class AmplifiedPortalBlock extends Block
-{
+public class AmplifiedPortalBlock extends Block {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
 
-	public AmplifiedPortalBlock()
-	{
+	public AmplifiedPortalBlock() {
 		super(Settings.of(Material.GLASS, MapColor.BLACK).luminance((blockState) -> 15).strength(5.0F, 3600000.0F));
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
-	{
+	@SuppressWarnings("deprecation")
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return SHAPE;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public ActionResult onUse(BlockState thisBlockState, World world, BlockPos position, PlayerEntity playerEntity, Hand playerHand, BlockHitResult raytraceResult)
-	{
+	public ActionResult onUse(BlockState thisBlockState, World world, BlockPos position, PlayerEntity playerEntity, Hand playerHand, BlockHitResult raytraceResult) {
 		// Extra checking to make sure it's just the player alone and not riding, being ridden, etc 
 		// Also makes sure player isn't sneaking so players can crouch place blocks on the portal
 		// But only teleport if we aren't in UA worldtype
@@ -67,22 +64,20 @@ public class AmplifiedPortalBlock extends Block
 			float pitch;
 			float yaw;
 			boolean enteringUA = false;
+			boolean wasFromOverworld = false;
 
 			// Player is leaving Ultra Amplified dimension
 			if (playerEntity.world.getRegistryKey().equals(UADDimension.UAD_WORLD_KEY)) {
-				if (UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld)
-				{
+				// Gets stored dimension
+				destinationKey = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUADimension();
+				wasFromOverworld = destinationKey.equals(World.OVERWORLD);
+
+				if (UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld) {
 					// Go to Overworld directly because of config option.
 					destinationKey = World.OVERWORLD;
 				}
-				else {
-					// Gets stored dimension
-					destinationKey = UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUADimension();
-
-					// Impressive if this is reached...........
-					if (destinationKey == null) {
-						destinationKey = World.OVERWORLD;
-					}
+				else if (destinationKey == null) {
+					destinationKey = World.OVERWORLD;
 				}
 
 				// Get direction to face for Non-UA dimension
@@ -180,7 +175,9 @@ public class AmplifiedPortalBlock extends Block
 				}
 				else {
 					// Check for null which would be impressive if it occurs
-					if (destinationWorld != null && (UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAPos() == null || UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld))
+					if (destinationWorld != null &&
+							(UltraAmplifiedDimension.PLAYER_COMPONENT.get(playerEntity).getNonUAPos() == null ||
+							(UltraAmplifiedDimension.UAD_CONFIG.forceExitToOverworld && !wasFromOverworld)))
 					{
 						// Set player at world spawn then with Amplified Portal at feet
 						// The portal will try to not replace any block and be at the next air block above non-air blocks.
@@ -191,7 +188,8 @@ public class AmplifiedPortalBlock extends Block
 							blockState = destinationWorld.getBlockState(playerBlockPos);
 						}
 
-						destinationWorld.setBlockState(playerBlockPos, UADBlocks.AMPLIFIED_PORTAL.getDefaultState());
+						if(destinationWorld.getBlockState(playerBlockPos.down()).getBlock() != UADBlocks.AMPLIFIED_PORTAL)
+							destinationWorld.setBlockState(playerBlockPos, UADBlocks.AMPLIFIED_PORTAL.getDefaultState());
 
 						playerVec3Pos = Vec3d.ofCenter(playerBlockPos).add(0, 0.5D, 0);
 					}
@@ -221,8 +219,7 @@ public class AmplifiedPortalBlock extends Block
 	 * mining portal block in ultra amplified dimension will be denied if it is the highest Amplified Portal Block at x=8,
 	 * z=8
 	 */
-	public static boolean removedByPlayer(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity)
-	{
+	public static boolean removedByPlayer(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 
 		// if player is in creative mode, just remove block completely
 		if (player != null && player.isCreative()) {

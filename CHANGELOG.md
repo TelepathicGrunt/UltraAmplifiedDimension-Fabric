@@ -1,4 +1,10 @@
-### **(V.10.0.4 Changes) (1.16.5 Minecraft)**
+### **(V.10.0.5 Changes) (1.17.1 Minecraft)**
+
+##### Structure:
+Made the UAD portal in the UAD dimension now use an nbt file to spawn it. Can be replaced by datapack now
+
+
+### **(V.10.0.4 Changes) (1.17.1 Minecraft)**
 
 ##### Config:
 Added netherLighting config to make UAD dimension have nether ambient lighting or not.
@@ -11,7 +17,7 @@ Cloud height config now will take effect right away and not need a restart.
 Added zh_cn.json translations. Special thanks to the guy who donated this translation!
 
 
-### **(V.10.0.3 Changes) (1.16.5 Minecraft)**
+### **(V.10.0.3 Changes) (1.17.1 Minecraft)**
 
 ##### Misc:
 Fixed a memory leak from the cache that UAD's ores uses. The leak only happens if you explore UAD's dimension.

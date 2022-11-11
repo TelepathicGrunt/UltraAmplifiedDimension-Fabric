@@ -44,7 +44,7 @@ public class AmplifiedPortalFrame extends Feature<DefaultFeatureConfig>
 	//is called in AmplifiedPortalBehavior which doesn't have a chunk generator passed in
 	public boolean generate(StructureWorldAccess world, BlockPos pos) {
 
-		StructureManager templatemanager = world.getServer().getStructureManager();
+		StructureManager templatemanager = world.toServerWorld().getStructureManager();
 		Structure template = templatemanager.getStructureOrBlank(PORTAL_RL);
 
 		if (template == null) {
@@ -55,7 +55,7 @@ public class AmplifiedPortalFrame extends Feature<DefaultFeatureConfig>
 		BlockPos halfLengths = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
 		placementsettings.setRotation(BlockRotation.random(world.getRandom())).setPosition(halfLengths).setIgnoreEntities(false);
 		BlockPos.Mutable mutable = new BlockPos.Mutable().set(pos).move(-halfLengths.getX(), 0, -halfLengths.getZ());
-		template.place(world, mutable, mutable, placementsettings, world.getRandom(), Block.NO_REDRAW);
+		template.place(world, mutable, mutable, placementsettings, world.getRandom(), 2);
 
 		return true;
 	}

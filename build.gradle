@@ -29,7 +29,7 @@ repositories {
 	maven { url 'https://jitpack.io' }
 	maven {
 		name = "Ladysnake Libs"
-		url = 'https://dl.bintray.com/ladysnake/libs'
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
 	}
 	maven { url 'https://maven.fabricmc.net/io/github/prospector/modmenu/' }
 	maven { url "https://maven.shedaniel.me/" }
